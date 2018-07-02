@@ -7,6 +7,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import {ComponentsModule} from "../components/components.module";
+import { AppConfigProvider } from '../providers/app-config/app-config';
+import {Geolocation} from "@ionic-native/geolocation";
 
 @NgModule({
   declarations: [
@@ -16,7 +18,7 @@ import {ComponentsModule} from "../components/components.module";
   imports: [
     BrowserModule,
     ComponentsModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -26,7 +28,9 @@ import {ComponentsModule} from "../components/components.module";
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    Geolocation,
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    AppConfigProvider
   ]
 })
 export class AppModule {}

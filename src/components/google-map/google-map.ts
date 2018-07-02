@@ -1,17 +1,18 @@
-import { Component } from '@angular/core';
+import {AfterViewInit, Component} from '@angular/core';
 import {GoogleMapProvider} from "../../providers/google-map/google-map";
+import Map = google.maps.Map;
 
 @Component({
-  selector: 'google-map',
+  selector: 'fk-google-map',
   templateUrl: 'google-map.html',
 })
-export class GoogleMapComponent {
-
-  text: string;
-
+export class GoogleMapComponent implements AfterViewInit{
   constructor(private mapProvider: GoogleMapProvider) {
     console.log('Hello GoogleMapComponent Component');
-    this.text = 'Hello World';
   }
 
+  ngAfterViewInit(){
+    let mapElement = document.getElementById('google-map') as HTMLDivElement;
+    this.mapProvider.createMap(mapElement);
+  }
 }
