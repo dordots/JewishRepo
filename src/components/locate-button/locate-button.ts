@@ -1,9 +1,6 @@
 import {Component} from '@angular/core';
 import {GoogleMapProvider} from "../../providers/google-map/google-map";
 import {Geolocation} from "@ionic-native/geolocation";
-import {promisify} from "es6-promisify";
-import {Position} from "@angular/compiler";
-
 
 @Component({
   selector: 'fk-locate-button',

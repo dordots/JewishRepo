@@ -1,8 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>
-      Ionic Blank
-    </ion-title>
+    <ion-title>Ionic Blank</ion-title>
   </ion-navbar>
   <fk-home-toolbar (activeSegmentEvent)="updateActiveSegment($event)"></fk-home-toolbar>
 </ion-header>
@@ -10,4 +8,5 @@
 <ion-content>
   <fk-google-map [hidden]="activeSegment!=='map'"></fk-google-map>
   <fk-events-list [hidden]="activeSegment!=='list'"></fk-events-list>
+  <fk-home-fabs [activeSegment]="activeSegment"></fk-home-fabs>
 </ion-content>
