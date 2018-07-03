@@ -2,13 +2,14 @@ import {Injectable} from '@angular/core';
 import MapOptions = google.maps.MapOptions;
 import GoogleMapsLoader = require("google-maps");
 import Map = google.maps.Map;
+import {Geolocation} from "@ionic-native/geolocation";
 
 @Injectable()
 export class GoogleMapProvider {
 
   public map: Map;
 
-  constructor() {
+  constructor(private geolocation: Geolocation) {
     console.log('Hello GoogleMapProvider Provider');
   }
 
@@ -27,6 +28,10 @@ export class GoogleMapProvider {
     await this.loadAPI();
     this.map = new google.maps.Map(mapDivElement, this.mapOptions);
     return this.map;
+  }
+
+  async getCurrentPosition(){
+      return await this.geolocation.getCurrentPosition();
   }
 
   private loadAPI(): Promise<void> {
