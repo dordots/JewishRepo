@@ -9,6 +9,7 @@ import { HomePage } from '../pages/home/home';
 import {ComponentsModule} from "../components/components.module";
 import { AppConfigProvider } from '../providers/app-config/app-config';
 import {Geolocation} from "@ionic-native/geolocation";
+import { SearchEventFormProvider } from '../providers/search-event-form/search-event-form';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import {Geolocation} from "@ionic-native/geolocation";
     SplashScreen,
     Geolocation,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    AppConfigProvider
+    AppConfigProvider,
+    SearchEventFormProvider
   ]
 })
 export class AppModule {}

@@ -8,6 +8,8 @@ import { EventCardComponent } from './event-card/event-card';
 import { LocateButtonComponent } from './locate-button/locate-button';
 import { SearchEventButtonComponent } from './search-event-button/search-event-button';
 import { HomeFabsComponent } from './home-fabs/home-fabs';
+import { ApplicationMenuComponent } from './application-menu/application-menu';
+import { AccessibilityOptionsComponent } from './accessibility-options/accessibility-options';
 
 @NgModule({
 	declarations: [GoogleMapComponent, HomeToolbarComponent,
@@ -15,7 +17,9 @@ import { HomeFabsComponent } from './home-fabs/home-fabs';
     EventCardComponent,
     LocateButtonComponent,
     SearchEventButtonComponent,
-    HomeFabsComponent],
+    HomeFabsComponent,
+    ApplicationMenuComponent,
+    AccessibilityOptionsComponent],
 	imports: [IonicModule.forRoot(HomeToolbarComponent)],
   providers: [GoogleMapProvider],
 	exports: [GoogleMapComponent,HomeToolbarComponent,
@@ -23,6 +27,8 @@ import { HomeFabsComponent } from './home-fabs/home-fabs';
     EventCardComponent,
     LocateButtonComponent,
     SearchEventButtonComponent,
-    HomeFabsComponent]
+    HomeFabsComponent,
+    ApplicationMenuComponent,
+    AccessibilityOptionsComponent]
 })
 export class ComponentsModule {}

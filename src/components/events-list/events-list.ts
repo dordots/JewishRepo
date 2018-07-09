@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {Event} from "../../Models/event";
+import {Event} from "../../Models/event/event";
 
 @Component({
   selector: 'fk-events-list',
@@ -11,10 +11,10 @@ export class EventsListComponent {
 
   constructor() {
     console.log('Hello EventsListComponent Component');
-    this.events = [{title: 'Hello', content: 'My content'}];
-    this.events = this.events.concat(this.events);
-    this.events = this.events.concat(this.events);
-    this.events = this.events.concat(this.events);
+    this.events = [];
+    // this.events = this.events.concat(this.events);
+    // this.events = this.events.concat(this.events);
+    // this.events = this.events.concat(this.events);
   }
 
 }
