@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
-import {AccessibilityOption} from "../../models/common/accessibility";
+import {Accessibility} from "../../models/common/accessibility";
+import AccessibilityOption = Accessibility.AccessibilityOption;
 
 @Component({
   selector: 'fk-accessibility-options',
@@ -8,22 +9,30 @@ import {AccessibilityOption} from "../../models/common/accessibility";
 export class AccessibilityOptionsComponent {
 
   accessibilityList: string[];
-  selectionModel: {[accessibility: string]: boolean};
 
+  @Input()
+  selections: string[];
 
   constructor() {
     console.log('Hello AccessibilityOptionsComponent Component');
-    this.accessibilityList = Object.keys(AccessibilityOption);
-    this.selectionModel = {};
+    this.accessibilityList = Object.keys(AccessibilityOption).map(key => AccessibilityOption[key]);
+    this.selections = [];
   }
 
-  onSelectionChanged(){
-    this.selections;
+  isAccessibilityChecked(accessibility: string){
+    return this.selections.indexOf(accessibility) != -1;
   }
-
-  get selections(): Array<AccessibilityOption> {
-    return Object.keys(this.selectionModel)
-                 .filter(selection => this.selectionModel[selection])
-                 .map(selection => AccessibilityOption[selection]);
+  // get selections(): Array<AccessibilityOption> {
+  //   return Object.keys(this.selectionModel)
+  //                .filter(selection => this.selectionModel[selection])
+  //                .map(selection => AccessibilityOption[selection]);
+  // }
+  onSelectionChanged(accessibility: string) {
+    if (!this.isAccessibilityChecked(accessibility))
+      this.selections.push(accessibility);
+    else{
+      let index = this.selections.indexOf(accessibility);
+      this.selections.splice(index,1);
+    }
   }
 }

@@ -10,21 +10,24 @@ import {ComponentsModule} from "../components/components.module";
 import { AppConfigProvider } from '../providers/app-config/app-config';
 import {Geolocation} from "@ionic-native/geolocation";
 import { SearchEventFormProvider } from '../providers/search-event-form/search-event-form';
+import {AddSynagoguePageModule} from "../pages/add-synagogue/add-synagogue.module";
+import {AddSynagoguePage} from "../pages/add-synagogue/add-synagogue";
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage
+    HomePage,
   ],
   imports: [
     BrowserModule,
     ComponentsModule,
+    AddSynagoguePageModule,
     IonicModule.forRoot(MyApp),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage
+    HomePage,
   ],
   providers: [
     StatusBar,

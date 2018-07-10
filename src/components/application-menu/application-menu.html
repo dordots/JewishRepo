@@ -3,11 +3,11 @@
     <ion-icon name="menu" item-start></ion-icon>
   </button>
 </div>
-<ion-menu *ngIf="applicationContent" [content]="applicationContent" side="right" persistent="true">
+<ion-menu *ngIf="applicationContentNav" [content]="applicationContentNav" side="right" persistent="true">
   <ion-content>
     <ion-list>
       <ion-item *ngFor="let page of getPagesTitle()">
-        <button class="application-menu-item" ion-item menuClose (click)="changePage(page)">{{page.title}}</button>
+        <button class="application-menu-item" ion-item menuClose (click)="changePage(page.componentName)">{{page.title}}</button>
       </ion-item>
     </ion-list>
   </ion-content>

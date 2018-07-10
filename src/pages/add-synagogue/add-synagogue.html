@@ -4,8 +4,8 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding style="text-align:center;" dir="rtl" >
-  <form [formGroup]="synagogueFormGroup">
+<ion-content padding style="text-align:center;" >
+  <form [formGroup]="synagogueFormGroup" (submit)="submitNewSynagogue()">
     <ion-item>
       <ion-input formControlName="name" placeholder="שם בית כנסת" [(ngModel)]="synagogue.name"></ion-input>
     </ion-item>
@@ -14,8 +14,8 @@
       <ion-input formControlName="location" placeholder="כתובת" [(ngModel)]="synagogue.location.latLng"></ion-input>
     </ion-item>
 
-    <fk-accessibility-options></fk-accessibility-options>
+    <fk-accessibility-options [selections]="synagogue.location.accessibilityOptions"></fk-accessibility-options>
 
-    <button ion-button >הוסף</button>
+    <button ion-button type="submit" [disabled]="!synagogueFormGroup.valid">הוסף</button>
   </form>
 </ion-content>

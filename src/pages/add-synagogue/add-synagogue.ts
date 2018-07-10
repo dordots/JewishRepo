@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import {FormGroup} from "@angular/forms";
-// import {CreateSynagogueValidator} from "../../models/synagogue/create-synagogue-validator";
-// import {Synagogue} from "../../models/synagogue/synagogue";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {Synagogue} from "../../models/synagogue/synagogue";
 
 @IonicPage()
 @Component({
@@ -11,15 +10,36 @@ import {FormGroup} from "@angular/forms";
 })
 export class AddSynagoguePage {
   synagogueFormGroup: FormGroup;
-  // synagogue: Synagogue;
+  synagogue: Synagogue;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    // this.synagogue = new Synagogue();
-    // this.synagogueFormGroup = CreateSynagogueValidator(this.synagogue);
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              private formBuilder: FormBuilder) {
+    this.synagogueFormGroup = this.createSynagogueValidator();
+    this.synagogue = this.createEmptySynagogue();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AddSynagoguePage');
   }
 
+  createSynagogueValidator(){
+    return this.formBuilder.group({
+      name: ['', [Validators.required]],
+      location: ['', [Validators.required]],
+    });
+  }
+
+  createEmptySynagogue(): Synagogue{
+    return {
+      name: null,
+      location: {latLng: null, accessibilityOptions: []},
+      events: [],
+      services: []
+    }
+  }
+
+  submitNewSynagogue(){
+    console.log(this.synagogue);
+  }
 }
