@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {Nav, NavController} from "ionic-angular";
+import {AddSynagoguePage} from "../../pages/add-synagogue/add-synagogue";
 
 declare type PagesDictionary = {[componentName: string]: {title: string}}
 
@@ -17,7 +18,7 @@ export class ApplicationMenuComponent {
   constructor() {
     console.log('Hello ApplicationMenuComponent Component');
     this.pages = {};
-    this.pages.MyPage = {title: "My cool page"};
+    this.pages.AddSynagoguePage = {title: "הוספת בית כנסת"};
   }
 
   getPagesTitle(){

@@ -4,13 +4,6 @@ import {FormGroup} from "@angular/forms";
 // import {CreateSynagogueValidator} from "../../models/synagogue/create-synagogue-validator";
 // import {Synagogue} from "../../models/synagogue/synagogue";
 
-/**
- * Generated class for the AddSynagoguePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @IonicPage()
 @Component({
   selector: 'page-add-synagogue',

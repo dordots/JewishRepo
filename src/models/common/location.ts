@@ -1,10 +1,5 @@
 import LatLng = google.maps.LatLng;
-
-export enum AccessibilityOption {
-  HandicappedParking,
-  FreeParking,
-  PaidParking
-}
+import {AccessibilityOption} from "./accessibility";
 
 export class Location {
   accessibilityOptions?: Array<AccessibilityOption>;

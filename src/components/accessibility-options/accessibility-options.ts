@@ -1,4 +1,5 @@
 import {Component, Input} from '@angular/core';
+import {AccessibilityOption} from "../../models/common/accessibility";
 
 @Component({
   selector: 'fk-accessibility-options',
@@ -12,17 +13,17 @@ export class AccessibilityOptionsComponent {
 
   constructor() {
     console.log('Hello AccessibilityOptionsComponent Component');
-    // this.accessibilityList = Object.keys(AccessibilityOption);
+    this.accessibilityList = Object.keys(AccessibilityOption);
     this.selectionModel = {};
   }
 
-  // onSelectionChanged(){
-  //   this.selections;
-  // }
+  onSelectionChanged(){
+    this.selections;
+  }
 
-  // get selections(): Array<AccessibilityOption> {
-  //   return Object.keys(this.selectionModel)
-  //     .filter(selection => this.selectionModel[selection])
-  //     .map(selection => AccessibilityOption[selection]);
-  // }
+  get selections(): Array<AccessibilityOption> {
+    return Object.keys(this.selectionModel)
+                 .filter(selection => this.selectionModel[selection])
+                 .map(selection => AccessibilityOption[selection]);
+  }
 }
