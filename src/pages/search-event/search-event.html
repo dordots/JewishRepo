@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>search-event</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <form [formGroup]="genericEventForm">
+    <ion-item dir="ltr">
+      <ion-range min="1" max="25" pin="true" formControlName="radius">
+        <ion-label range-left>1</ion-label>
+        <ion-label range-right>25</ion-label>
+      </ion-range>
+    </ion-item>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label>החל מ-</ion-label>
+          <ion-datetime displayFormat="HH:mm" pickerFormat="HH mm" formControlName="start"></ion-datetime>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label>עד ל-</ion-label>
+          <ion-datetime displayFormat="HH:mm" pickerFormat="HH mm" formControlName="end"></ion-datetime>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-item>
+      <ion-label>מקווה</ion-label>
+      <ion-checkbox></ion-checkbox>
+    </ion-item>
+    <ion-item>
+      <ion-label>חניה</ion-label>
+      <ion-checkbox></ion-checkbox>
+    </ion-item>
+    <ion-item>
+      <ion-label>נגישות לנכים</ion-label>
+      <ion-checkbox></ion-checkbox>
+    </ion-item>
+    <ion-item>
+      <ion-label>שטיבלך</ion-label>
+      <ion-checkbox></ion-checkbox>
+    </ion-item>
+  </form>
+</ion-content>

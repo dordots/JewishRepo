@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>הוסף בית כנסת</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding style="text-align:center;" dir="rtl" >
+  <form [formGroup]="synagogueFormGroup">
+    <ion-item>
+      <ion-input formControlName="name" placeholder="שם בית כנסת" [(ngModel)]="synagogue.name"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input formControlName="location" placeholder="כתובת" [(ngModel)]="synagogue.location.latLng"></ion-input>
+    </ion-item>
+
+    <fk-accessibility-options></fk-accessibility-options>
+
+    <button ion-button >הוסף</button>
+  </form>
+</ion-content>

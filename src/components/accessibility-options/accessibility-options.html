@@ -1,0 +1,6 @@
+<ion-list>
+  <ion-item *ngFor="let accessibility of accessibilityList">
+    <ion-label>{{accessibility}}</ion-label>
+    <ion-checkbox [(ngModel)]="selectionModel[accessibility]"></ion-checkbox>
+  </ion-item>
+</ion-list>

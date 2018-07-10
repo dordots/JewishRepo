@@ -1,0 +1,12 @@
+<div id="menu-container">
+  <button ion-button menuToggle clear color="dark">
+    <ion-icon name="menu" item-start></ion-icon>
+  </button>
+</div>
+<ion-menu *ngIf="applicationContent" [content]="applicationContent" side="right" persistent="true">
+  <ion-list>
+    <ion-item *ngFor="let page of getPagesTitle()">
+      <button menuClose (click)="changePage(page)">{{page.title}}</button>
+    </ion-item>
+  </ion-list>
+</ion-menu>
