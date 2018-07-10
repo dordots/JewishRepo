@@ -27,12 +27,14 @@ export class AddSynagoguePage {
     return this.formBuilder.group({
       name: ['', [Validators.required]],
       location: ['', [Validators.required]],
+      mainVersion: ['', [Validators.required]],
     });
   }
 
   createEmptySynagogue(): Synagogue{
     return {
       name: null,
+      mainVersion: null,
       location: {latLng: null, accessibilityOptions: []},
       events: [],
       services: []
