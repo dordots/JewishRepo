@@ -10,25 +10,34 @@ import { SearchEventButtonComponent } from './search-event-button/search-event-b
 import { HomeFabsComponent } from './home-fabs/home-fabs';
 import { ApplicationMenuComponent } from './application-menu/application-menu';
 import { AccessibilityOptionsComponent } from './accessibility-options/accessibility-options';
+import { PrayerVersionOptionsComponent } from './prayer-version-options/prayer-version-options';
 
 @NgModule({
-	declarations: [GoogleMapComponent, HomeToolbarComponent,
+	declarations: [
+	  GoogleMapComponent,
+    HomeToolbarComponent,
     EventsListComponent,
     EventCardComponent,
     LocateButtonComponent,
     SearchEventButtonComponent,
     HomeFabsComponent,
     ApplicationMenuComponent,
-    AccessibilityOptionsComponent],
+    AccessibilityOptionsComponent,
+    PrayerVersionOptionsComponent
+  ],
 	imports: [IonicModule.forRoot(HomeToolbarComponent)],
   providers: [GoogleMapProvider],
-	exports: [GoogleMapComponent,HomeToolbarComponent,
+	exports: [
+	  GoogleMapComponent,
+    HomeToolbarComponent,
     EventsListComponent,
     EventCardComponent,
     LocateButtonComponent,
     SearchEventButtonComponent,
     HomeFabsComponent,
     ApplicationMenuComponent,
-    AccessibilityOptionsComponent]
+    AccessibilityOptionsComponent,
+    PrayerVersionOptionsComponent
+  ]
 })
 export class ComponentsModule {}

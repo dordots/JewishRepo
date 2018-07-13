@@ -1,8 +1,7 @@
 import LatLng = google.maps.LatLng;
-import {Accessibility} from "./accessibility";
-import AccessibilityOption = Accessibility.AccessibilityOption;
+import {Accessibility} from "./enums";
 
 export class Location {
-  accessibilityOptions?: Array<AccessibilityOption>;
+  accessibilityOptions?: Array<Accessibility>;
   latLng: LatLng;
 }

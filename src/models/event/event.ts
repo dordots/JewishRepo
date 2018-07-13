@@ -1,9 +1,19 @@
 import {Location} from "../common/location";
+import {Events} from "../common/enums";
 
-export interface Event {
+export interface SearchableEvent {
+  title: Events;
+  searchComponentType: any
+}
+
+export const SearchableEvents: Array<SearchableEvent> = [
+  {title: Events.Prayer, searchComponentType: null}
+];
+
+export abstract class Event {
   title: string;
   date: EventDate;
-  location: Location
+  location: Location;
 }
 
 export interface EventDate {

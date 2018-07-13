@@ -1,12 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-/**
- * Generated class for the SearchEventPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import {FormBuilder, FormGroup} from "@angular/forms";
+import {BasicEventQuery} from "../../models/query-forms/basic-event-query";
+import {SearchableEvent, SearchableEvents} from "../../models/event/event";
 
 @IonicPage()
 @Component({
@@ -15,11 +11,22 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class SearchEventPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  basicEventQuery: BasicEventQuery;
+  eventFormGroup: FormGroup;
+  searchableEvents: Array<SearchableEvent>;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public formBuilder: FormBuilder) {
+    this.basicEventQuery = {} as any;
+    this.searchableEvents = SearchableEvents;
+    this.initEventFormGroup();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SearchEventPage');
+  }
+
+  private initEventFormGroup(){
+    this.eventFormGroup = this.formBuilder.group({});
   }
 
 }

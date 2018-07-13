@@ -27,7 +27,7 @@ export class AddSynagoguePage {
     return this.formBuilder.group({
       name: ['', [Validators.required]],
       location: ['', [Validators.required]],
-      mainVersion: ['', [Validators.required]],
+      mainPrayerVersion: ['', [Validators.required]],
     });
   }
 
@@ -38,7 +38,7 @@ export class AddSynagoguePage {
       location: {latLng: null, accessibilityOptions: []},
       events: [],
       services: []
-    }
+    } as any;
   }
 
   submitNewSynagogue(){

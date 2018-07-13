@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
+import {IonicPageModule} from 'ionic-angular';
 import { AddSynagoguePage } from './add-synagogue';
 import {ComponentsModule} from "../../components/components.module";
 
@@ -9,7 +9,8 @@ import {ComponentsModule} from "../../components/components.module";
   ],
   imports: [
     IonicPageModule.forChild(AddSynagoguePage),
-    ComponentsModule
+
+    ComponentsModule,
   ],
 })
 export class AddSynagoguePageModule {}

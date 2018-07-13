@@ -1,0 +1,7 @@
+<ion-item>
+  <ion-select [(ngModel)]="selectedVersion" (ionChange)="onSelectionChanged($event)"
+              placeholder="placeholder"
+              [multiple]="multiple">
+    <ion-option *ngFor="let version of versions">{{version}}</ion-option>
+  </ion-select>
+</ion-item>

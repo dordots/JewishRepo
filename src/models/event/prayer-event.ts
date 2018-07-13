@@ -1,9 +1,8 @@
 import {Event, EventDate} from "./event";
 import {Location} from "../common/location";
-import {Prayer} from "../common/prayer";
-import PrayerVersion = Prayer.PrayerVersion;
+import {PrayerVersion} from "../common/enums";
 
-export class PrayerEvent implements Event {
+export class PrayerEvent extends Event {
   date: EventDate;
   location: Location;
   title: string;

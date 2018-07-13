@@ -1,12 +1,11 @@
 import {Location} from "../common/location";
 import {Event} from "../event/event";
 import {SynagogueService} from "./synagogue-service";
-import {Prayer} from "../common/prayer";
-import PrayerVersion = Prayer.PrayerVersion;
+import {PrayerVersion} from "../common/enums";
 
 export class Synagogue {
   name: string;
-  mainVersion: PrayerVersion
+  mainPrayerVersion: PrayerVersion;
   location: Location;
   events: Array<Event>;
   services: Array<SynagogueService>;

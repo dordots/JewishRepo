@@ -1,6 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {Accessibility} from "../../models/common/accessibility";
-import AccessibilityOption = Accessibility.AccessibilityOption;
+import {Accessibility} from "../../models/common/enums";
 
 @Component({
   selector: 'fk-accessibility-options',
@@ -15,18 +14,14 @@ export class AccessibilityOptionsComponent {
 
   constructor() {
     console.log('Hello AccessibilityOptionsComponent Component');
-    this.accessibilityList = Object.keys(AccessibilityOption).map(key => AccessibilityOption[key]);
+    this.accessibilityList = Object.keys(Accessibility).map(key => Accessibility[key]);
     this.selections = [];
   }
 
   isAccessibilityChecked(accessibility: string){
     return this.selections.indexOf(accessibility) != -1;
   }
-  // get selections(): Array<AccessibilityOption> {
-  //   return Object.keys(this.selectionModel)
-  //                .filter(selection => this.selectionModel[selection])
-  //                .map(selection => AccessibilityOption[selection]);
-  // }
+
   onSelectionChanged(accessibility: string) {
     if (!this.isAccessibilityChecked(accessibility))
       this.selections.push(accessibility);
