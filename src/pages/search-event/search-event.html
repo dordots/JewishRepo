@@ -14,6 +14,10 @@
         <ion-label range-right>25</ion-label>
       </ion-range>
     </ion-item>
+    <ion-item>
+      <ion-label>כתובת</ion-label>
+      <button ion-button item-end clear small (click)="openLocationPicker()">בחר מיקום</button>
+    </ion-item>
     <ion-row dir="rtl">
       <ion-col>
         <ion-item>
@@ -30,7 +34,17 @@
     </ion-row>
     <ion-item>
       <ion-label>מה תרצה לחפש?</ion-label>
-      <ion-select><ion-option *ngFor="let eventType of searchableEvents">{{eventType.title}}</ion-option></ion-select>
+      <ion-select formControlName="eventType">
+        <ion-option *ngFor="let eventType of searchableEvents">{{eventType.title}}</ion-option>
+      </ion-select>
     </ion-item>
+    <div style="text-align: center">
+      <fk-accessibility-options></fk-accessibility-options>
+    </div>
+    <ion-grid>
+      <ion-row justify-content-center>
+        <button ion-button round type="submit" [disabled]="!eventFormGroup.valid">חפש</button>
+      </ion-row>
+    </ion-grid>
   </form>
 </ion-content>

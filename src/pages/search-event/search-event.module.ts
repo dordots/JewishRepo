@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { SearchEventPage } from './search-event';
+import {ComponentsModule} from "../../components/components.module";
 
 @NgModule({
   declarations: [
@@ -8,6 +9,7 @@ import { SearchEventPage } from './search-event';
   ],
   imports: [
     IonicPageModule.forChild(SearchEventPage),
-  ],
+    ComponentsModule
+  ]
 })
 export class SearchEventPageModule {}

@@ -1,6 +1,6 @@
 import {Event, EventDate} from "./event";
-import {Location} from "../common/location";
-import {PrayerVersion} from "../common/enums";
+import {Location} from "../location";
+import {PrayerVersion} from "../all-enums";
 
 export class PrayerEvent extends Event {
   date: EventDate;

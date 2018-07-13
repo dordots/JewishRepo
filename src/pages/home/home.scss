@@ -1,3 +1,14 @@
-page-home {
+#fabs-container {
+  position: fixed;
+  bottom: 0;
+}
 
+#fabs {
+  display: flex;
+  flex-direction: column;
+}
+
+.fab-size {
+  width: $fab-size;
+  height: $fab-size;
 }

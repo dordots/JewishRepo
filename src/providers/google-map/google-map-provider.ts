@@ -3,11 +3,11 @@ import MapOptions = google.maps.MapOptions;
 import GoogleMapsLoader = require("google-maps");
 import Map = google.maps.Map;
 import {Geolocation} from "@ionic-native/geolocation";
+import LatLng = google.maps.LatLng;
 
 @Injectable()
 export class GoogleMapProvider {
-
-  public map: Map;
+  private isApiLoaded: boolean;
 
   constructor(private geolocation: Geolocation) {
     console.log('Hello GoogleMapProvider Provider');
@@ -25,13 +25,22 @@ export class GoogleMapProvider {
   }
 
   async createMap(mapDivElement: HTMLDivElement): Promise<Map>{
-    await this.loadAPI();
-    this.map = new google.maps.Map(mapDivElement, this.mapOptions);
-    return this.map;
+    if (!this.isApiLoaded){
+      await this.loadAPI();
+      this.isApiLoaded = true;
+    }
+    return new google.maps.Map(mapDivElement, this.mapOptions);
   }
 
   async getCurrentPosition(){
       return await this.geolocation.getCurrentPosition();
+  }
+
+  createMarkerAt(map: Map, latLng: LatLng){
+    return new google.maps.Marker({
+      position: latLng,
+      map: map
+    });
   }
 
   private loadAPI(): Promise<void> {

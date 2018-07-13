@@ -1,7 +1,7 @@
-import {Location} from "../common/location";
+import {Location} from "../location";
 import {Event} from "../event/event";
 import {SynagogueService} from "./synagogue-service";
-import {PrayerVersion} from "../common/enums";
+import {PrayerVersion} from "../all-enums";
 
 export class Synagogue {
   name: string;

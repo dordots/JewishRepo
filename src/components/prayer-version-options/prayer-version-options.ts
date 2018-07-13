@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {PrayerVersion} from "../../models/common/enums";
+import {PrayerVersion} from "../../models/all-enums";
 
 @Component({
   selector: 'fk-prayer-version-options',

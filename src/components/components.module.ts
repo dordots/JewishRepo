@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { GoogleMapComponent } from './google-map/google-map';
-import {GoogleMapProvider} from "../providers/google-map/google-map";
+import {GoogleMapProvider} from "../providers/google-map/google-map-provider";
 import { HomeToolbarComponent } from './home-toolbar/home-toolbar';
 import {IonicModule} from "ionic-angular";
 import { EventsListComponent } from './events-list/events-list';
@@ -11,6 +11,7 @@ import { HomeFabsComponent } from './home-fabs/home-fabs';
 import { ApplicationMenuComponent } from './application-menu/application-menu';
 import { AccessibilityOptionsComponent } from './accessibility-options/accessibility-options';
 import { PrayerVersionOptionsComponent } from './prayer-version-options/prayer-version-options';
+import { LocationPickerComponent } from './location-picker/location-picker';
 
 @NgModule({
 	declarations: [
@@ -23,9 +24,10 @@ import { PrayerVersionOptionsComponent } from './prayer-version-options/prayer-v
     HomeFabsComponent,
     ApplicationMenuComponent,
     AccessibilityOptionsComponent,
-    PrayerVersionOptionsComponent
+    PrayerVersionOptionsComponent,
+    LocationPickerComponent
   ],
-	imports: [IonicModule.forRoot(HomeToolbarComponent)],
+	imports: [IonicModule],
   providers: [GoogleMapProvider],
 	exports: [
 	  GoogleMapComponent,
@@ -37,7 +39,8 @@ import { PrayerVersionOptionsComponent } from './prayer-version-options/prayer-v
     HomeFabsComponent,
     ApplicationMenuComponent,
     AccessibilityOptionsComponent,
-    PrayerVersionOptionsComponent
+    PrayerVersionOptionsComponent,
+    LocationPickerComponent
   ]
 })
 export class ComponentsModule {}

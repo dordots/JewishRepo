@@ -31,3 +31,10 @@ export enum PrayerTypes {
   Minha = "מנחה",
   Arvit = "ערבית",
 }
+
+export enum RepeatedPeriod {
+  Day,
+  Week,
+  Month,
+  Year
+}

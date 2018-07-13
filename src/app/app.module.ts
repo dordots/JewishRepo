@@ -9,7 +9,7 @@ import { HomePage } from '../pages/home/home';
 import {ComponentsModule} from "../components/components.module";
 import { AppConfigProvider } from '../providers/app-config/app-config';
 import {Geolocation} from "@ionic-native/geolocation";
-import { SearchEventFormProvider } from '../providers/search-event-form/search-event-form';
+import {LocationPickerComponent} from "../components/location-picker/location-picker";
 
 @NgModule({
   declarations: [
@@ -25,6 +25,7 @@ import { SearchEventFormProvider } from '../providers/search-event-form/search-e
   entryComponents: [
     MyApp,
     HomePage,
+    LocationPickerComponent
   ],
   providers: [
     StatusBar,
@@ -32,7 +33,6 @@ import { SearchEventFormProvider } from '../providers/search-event-form/search-e
     Geolocation,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AppConfigProvider,
-    SearchEventFormProvider
   ]
 })
 export class AppModule {}

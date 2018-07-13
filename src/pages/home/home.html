@@ -6,7 +6,15 @@
 </ion-header>
 
 <ion-content>
-  <fk-google-map [hidden]="activeSegment!=='map'"></fk-google-map>
+  <fk-google-map #mapComponent [hidden]="activeSegment!=='map'"></fk-google-map>
   <fk-events-list [hidden]="activeSegment!=='list'"></fk-events-list>
-  <fk-home-fabs [activeSegment]="activeSegment"></fk-home-fabs>
+
+  <div id="fabs-container">
+    <div id="fabs">
+      <fk-search-event-button class="fab-size"></fk-search-event-button>
+      <fk-locate-button class="fab-size"
+                        [map]="mapComponent.map"
+                        *ngIf="activeSegment == 'map'"></fk-locate-button>
+    </div>
+  </div>
 </ion-content>

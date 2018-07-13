@@ -1,5 +1,5 @@
-import {Location} from "../common/location";
-import {Events} from "../common/enums";
+import {Location} from "../location";
+import {Events, RepeatedPeriod} from "../all-enums";
 
 export interface SearchableEvent {
   title: Events;
@@ -26,11 +26,4 @@ export interface EventDate {
 export interface RepeatedEventDate extends EventDate {
   periodType: RepeatedPeriod;
   period: number[]
-}
-
-export enum RepeatedPeriod {
-  Day,
-  Week,
-  Month,
-  Year
 }

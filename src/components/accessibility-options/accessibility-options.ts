@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {Accessibility} from "../../models/common/enums";
+import {Accessibility} from "../../models/all-enums";
 
 @Component({
   selector: 'fk-accessibility-options',
