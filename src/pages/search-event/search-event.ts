@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {BasicEventQuery} from "../../models/query-forms/basic-event-query";
@@ -29,7 +29,7 @@ export class SearchEventPage {
     console.log('ionViewDidLoad SearchEventPage');
   }
 
-  private initEventFormGroup(){
+  private initEventFormGroup() {
     this.eventFormGroup = this.formBuilder.group({
       eventType: ['', [Validators.required]],
       location: ['', [Validators.required]]
@@ -51,4 +51,11 @@ export class SearchEventPage {
       console.log("end");
     });
   }
+
+  // private initPlaceAutocompleteOptions() {
+  //   this.placeAutocompleteOptions = {
+  //     types: ['address'],
+  //     componentRestrictions: {country: 'IL'}
+  //   } as any;
+  // }
 }

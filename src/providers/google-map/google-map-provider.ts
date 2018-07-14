@@ -13,6 +13,16 @@ export class GoogleMapProvider {
     console.log('Hello GoogleMapProvider Provider');
   }
 
+  loadAPI(): Promise<void> {
+    if (this.isApiLoaded)
+      return;
+    GoogleMapsLoader.KEY = "AIzaSyBCptJVdxT9qytWXFkm4cVfXa6qdDWOncI";
+    GoogleMapsLoader.LANGUAGE = 'he';
+    GoogleMapsLoader.REGION = 'IL';
+    GoogleMapsLoader.LIBRARIES = ['places'];
+    return new Promise<void>(resolve => GoogleMapsLoader.load(() => resolve()));
+  }
+
   get mapOptions(): MapOptions {
     return {
       center: {
@@ -41,12 +51,5 @@ export class GoogleMapProvider {
       position: latLng,
       map: map
     });
-  }
-
-  private loadAPI(): Promise<void> {
-    GoogleMapsLoader.KEY = "AIzaSyBCptJVdxT9qytWXFkm4cVfXa6qdDWOncI";
-    GoogleMapsLoader.LANGUAGE = 'he';
-    GoogleMapsLoader.REGION = 'IL';
-    return new Promise<void>(resolve => GoogleMapsLoader.load(() => resolve()));
   }
 }

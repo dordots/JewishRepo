@@ -2585,9 +2585,9 @@ next-tick@1:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
 
-ngx-google-places-autocomplete@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/ngx-google-places-autocomplete/-/ngx-google-places-autocomplete-2.0.1.tgz#5a504594e5927f29b4010f8fb37389f9f6e27751"
+ng2-completer@^2.0.8:
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/ng2-completer/-/ng2-completer-2.0.8.tgz#36101eb5a796f966897e7894fc437effd88ebdfb"
 
 node-gyp@^3.3.1:
   version "3.7.0"
