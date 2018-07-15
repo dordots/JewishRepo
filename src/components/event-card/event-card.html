@@ -1,8 +1,16 @@
-<ion-card>
-  <ion-card-header>
-    <div>{{event.title}}</div>
-  </ion-card-header>
-  <ion-card-content>
-    <div>{{event.content}}</div>
-  </ion-card-content>
+<ion-card class="event-card" dir="rtl">
+  <!--<img src="https://picsum.photos/400/120"/>-->
+  <div class="card-content">
+    <ion-grid>
+      <ion-row justify-content-between>
+        <div class="relative-distance"><span dir="ltr">{{event.relativeDistance}}m <ion-icon name="pin"></ion-icon></span></div>
+        <div class="last-updated-at">עודכן לאחרונה {{event.verifiedRecentlyAt}}</div>
+      </ion-row>
+    </ion-grid>
+    <h1 class="event-title">{{event.title}}</h1>
+    <ion-row justify-content-between padding-bottom>
+      <small class="event-short-description">{{event.shortDescription}}</small>
+      <small class="event-times" dir="ltr">{{event.occursBetween.start}} - {{event.occursBetween.end}}</small>
+    </ion-row>
+  </div>
 </ion-card>

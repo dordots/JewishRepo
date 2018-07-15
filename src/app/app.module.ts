@@ -10,6 +10,7 @@ import {ComponentsModule} from "../components/components.module";
 import { AppConfigProvider } from '../providers/app-config/app-config';
 import {Geolocation} from "@ionic-native/geolocation";
 import {LocationPickerComponent} from "../components/location-picker/location-picker";
+import { EventsDataProvider } from '../providers/events-data/events-data';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import {LocationPickerComponent} from "../components/location-picker/location-pi
     Geolocation,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AppConfigProvider,
+    EventsDataProvider,
   ]
 })
 export class AppModule {}

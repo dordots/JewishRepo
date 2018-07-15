@@ -6,10 +6,8 @@ import {Component, Input} from '@angular/core';
 })
 export class EventCardComponent {
 
-  text: string;
-
   @Input()
-  event: Event;
+  event: any;
 
   constructor() {
     console.log('Hello EventCardComponent Component');

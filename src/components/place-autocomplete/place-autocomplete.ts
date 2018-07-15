@@ -15,7 +15,7 @@ export class PlaceAutocompleteComponent {
   selectedPlace: string;
 
   @Input()
-  map: google.maps.Map;
+  map;
 
   constructor(private googleMapProvider: GoogleMapProvider) {
     console.log('Hello PlaceAutocompleteComponent Component');
