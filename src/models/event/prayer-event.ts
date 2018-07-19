@@ -1,11 +1,11 @@
-import {Event, EventDate} from "./event";
-import {Location} from "../location";
-import {PrayerVersion} from "../all-enums";
+import {Event} from "./event";
+import {MomentRange} from "moment-range";
+import {PrayerNosach} from "../common/enums/prayer-nosach";
 
-export class PrayerEvent extends Event {
-  date: EventDate;
-  location: Location;
+export class PrayerEvent implements Event {
   title: string;
-  styles: PrayerVersion[];
+  nosach: PrayerNosach;
+  dateRange: MomentRange;
+  repeatedDays: number[];
   types: PrayerEvent;
 }

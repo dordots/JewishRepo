@@ -1,12 +1,13 @@
-import {Location} from "../location";
 import {Event} from "../event/event";
-import {SynagogueService} from "./synagogue-service";
-import {PrayerVersion} from "../all-enums";
+import LatLng = google.maps.LatLng;
+import {PrayerNosach} from "../common/enums/prayer-nosach";
 
 export class Synagogue {
   name: string;
-  mainPrayerVersion: PrayerVersion;
-  location: Location;
+  primaryPrayerNosach: PrayerNosach;
+  location: LatLng;
+  friendlyAddress: string;
   events: Array<Event>;
-  services: Array<SynagogueService>;
+  phone: string;
+  picture: string;
 }

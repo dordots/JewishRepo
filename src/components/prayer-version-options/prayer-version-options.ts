@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {PrayerVersion} from "../../models/all-enums";
+import {PrayerNosach} from "../../models/common/enums/prayer-nosach";
 
 @Component({
   selector: 'fk-prayer-version-options',
@@ -30,7 +30,7 @@ export class PrayerVersionOptionsComponent {
   constructor() {
     console.log('Hello PrayerVersionOptionsComponent Component');
     this.title = 'בחר נוסח תפילה';
-    this.versions = Object.keys(PrayerVersion).map(key => PrayerVersion[key]);
+    this.versions = Object.keys(PrayerNosach).map(key => PrayerNosach[key]);
     this.initSelectionIndex = 0;
     this.selectedVersion = this.versions[this.initSelectionIndex];
     this.onVersionSelected = new EventEmitter<string|string[]>();

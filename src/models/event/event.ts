@@ -1,29 +1,7 @@
-import {Location} from "../location";
-import {Events, RepeatedPeriod} from "../all-enums";
+import {MomentRange} from "moment-range";
 
-export interface SearchableEvent {
-  title: Events;
-  searchComponentType: any
-}
-
-export const SearchableEvents: Array<SearchableEvent> = [
-  {title: Events.Prayer, searchComponentType: null}
-];
-
-export abstract class Event {
+export interface Event {
   title: string;
-  date: EventDate;
-  location: Location;
-}
-
-export interface EventDate {
-  startDate: Date;
-  endDate: Date;
-  startTime: Date;
-  endTime: Date;
-}
-
-export interface RepeatedEventDate extends EventDate {
-  periodType: RepeatedPeriod;
-  period: number[]
+  dateRange: MomentRange;
+  repeatedDays: number[]
 }
