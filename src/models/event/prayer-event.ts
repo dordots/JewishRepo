@@ -4,8 +4,7 @@ import {PrayerNosach} from "../common/enums/prayer-nosach";
 
 export class PrayerEvent implements Event {
   title: string;
-  location: Location;
-  nosachList: PrayerNosach[];
+  nosach: PrayerNosach;
   dateRange: MomentRange;
   repeatedDays: number[];
   types: PrayerEvent;
