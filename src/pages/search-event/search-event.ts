@@ -1,8 +1,6 @@
 import {Component} from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {BasicEventQuery} from "../../models/query-forms/basic-event-query";
-import {SearchableEvent, SearchableEvents} from "../../models/event/event";
 import {LocationPickerComponent} from "../../components/location-picker/location-picker";
 
 @IonicPage()
@@ -12,16 +10,16 @@ import {LocationPickerComponent} from "../../components/location-picker/location
 })
 export class SearchEventPage {
 
-  basicEventQuery: BasicEventQuery;
+  // basicEventQuery: BasicEventQuery;
   eventFormGroup: FormGroup;
-  searchableEvents: Array<SearchableEvent>;
+  // searchableEvents: Array<SearchableEvent>;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private modalCtrl: ModalController,
               public formBuilder: FormBuilder) {
-    this.basicEventQuery = {} as any;
-    this.searchableEvents = SearchableEvents;
+    // this.basicEventQuery = {} as any;
+    // this.searchableEvents = SearchableEvents;
     this.initEventFormGroup();
   }
 
