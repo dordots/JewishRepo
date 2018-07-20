@@ -10,6 +10,7 @@ import {ComponentsModule} from "../components/components.module";
 import { AppConfigProvider } from '../providers/app-config/app-config';
 import {Geolocation} from "@ionic-native/geolocation";
 import {LocationPickerComponent} from "../components/location-picker/location-picker";
+import {ImagePicker} from "@ionic-native/image-picker";
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import {LocationPickerComponent} from "../components/location-picker/location-pi
     StatusBar,
     SplashScreen,
     Geolocation,
+    ImagePicker,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AppConfigProvider,
   ]

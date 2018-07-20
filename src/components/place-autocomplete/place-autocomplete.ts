@@ -1,35 +1,45 @@
-import {Component, Input} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import Autocomplete = google.maps.places.Autocomplete;
 import {GoogleMapProvider} from "../../providers/google-map/google-map-provider";
+import {MapObject} from "../../common/models/map-objects/map-object";
 
 @Component({
   selector: 'fk-place-autocomplete',
-  templateUrl: 'place-autocomplete.html'
+  templateUrl: 'place-autocomplete.html',
 })
-export class PlaceAutocompleteComponent {
+export class PlaceAutocompleteComponent implements AfterViewInit{
 
-  inputId: string;
-  autoComplete: Autocomplete;
-  marker: google.maps.Marker;
-  matchedPlaces: string[];
-  selectedPlace: string;
+  @ViewChild("input", {read: ElementRef}) inputElement: ElementRef;
 
   @Input()
   map;
 
+  @Input()
+  inputId: string = "";
+
+  @Output()
+  onPlaceSelected: EventEmitter<MapObject>;
+
+  autoComplete: Autocomplete;
+  marker: google.maps.Marker;
+
   constructor(private googleMapProvider: GoogleMapProvider) {
     console.log('Hello PlaceAutocompleteComponent Component');
-    this.inputId = "place-auto-complete-input";
+    this.onPlaceSelected = new EventEmitter<MapObject>();
   }
 
   async ngAfterViewInit() {
-    await this.googleMapProvider.loadAPI();
+    try{
+      await this.googleMapProvider.loadAPI();
+    }
+    catch (e) {
+      console.error(e);
+    }
     this.initAutoComplete();
   }
 
   initAutoComplete() {
-    let ionInput = document.getElementById(this.inputId);
-    let htmlInput = ionInput.getElementsByTagName('input')[0] as HTMLInputElement;
+    let htmlInput = (this.inputId && document.getElementById(this.inputId)) || this.inputElement.nativeElement.firstElementChild;
     htmlInput.style.width = "100%";
     this.autoComplete = new google.maps.places.Autocomplete(htmlInput);
 
@@ -49,6 +59,10 @@ export class PlaceAutocompleteComponent {
         // pressed the Enter key, or the Place Details request failed.
         return;
       }
+      this.onPlaceSelected.emit({
+        latLng: place.geometry.location,
+        userFriendlyAddress: place.formatted_address
+      });
 
       if (!this.map)
         return;

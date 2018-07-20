@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {Event} from "../../Models/event/event";
+import {Event} from "../../common/models/event/event";
 import moment = require("moment");
 import {CardEvents} from "../../mocks/rendered-data/card-event-data";
 
