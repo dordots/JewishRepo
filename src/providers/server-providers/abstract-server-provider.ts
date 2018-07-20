@@ -1,7 +1,11 @@
 import {HttpErrorResponse} from "@angular/common/http";
 import {ErrorObservable} from "rxjs/observable/ErrorObservable";
 
-export class AbstractServerProvider {
+export abstract class AbstractServerProvider {
+
+  protected abstract toServerModel(): any;
+  protected abstract fromServerModel(serverModel): any;
+
   protected handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
