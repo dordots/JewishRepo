@@ -45,7 +45,7 @@ export class AddSynagoguePage {
   }
 
   async pickImage() {
-    try{
+    try {
       let imagePickerOptions = {maximumImagesCount: 1, outputType: OutputType.DATA_URL};
       this.synagogue.picture = await this.imagePicker.getPictures(imagePickerOptions);
     }
