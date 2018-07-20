@@ -60,7 +60,7 @@ export class PlaceAutocompleteComponent implements AfterViewInit{
         return;
       }
       this.onPlaceSelected.emit({
-        latLng: place.geometry.location,
+        latLng: place.geometry.location.toJSON(),
         userFriendlyAddress: place.formatted_address
       });
 

@@ -3,7 +3,8 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Synagogue} from "../../common/models/map-objects/synagogue";
 import {MapObject} from "../../common/models/map-objects/map-object";
-import {ImagePicker, OutputType} from "@ionic-native/image-picker";
+import {ImagePicker, ImagePickerOptions, OutputType} from "@ionic-native/image-picker";
+import {ServerSynagogueProvider} from "../../providers/server-providers/server-synagogue/server-synagogue";
 
 @IonicPage()
 @Component({
@@ -17,7 +18,8 @@ export class AddSynagoguePage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private formBuilder: FormBuilder,
-              private imagePicker: ImagePicker) {
+              private imagePicker: ImagePicker,
+              private synagogueProvider: ServerSynagogueProvider) {
     this.synagogueFormGroup = this.createSynagogueValidator();
     this.synagogue = {} as any;
   }
@@ -35,8 +37,10 @@ export class AddSynagoguePage {
     });
   }
 
-  submitNewSynagogue(){
+  async submitNewSynagogue(){
     console.log(this.synagogue);
+    await this.synagogueProvider.createSynagogue(this.synagogue);
+    console.log("Done");
   }
 
   onPlaceSelected(mapObject: MapObject){
@@ -46,7 +50,7 @@ export class AddSynagoguePage {
 
   async pickImage() {
     try {
-      let imagePickerOptions = {maximumImagesCount: 1, outputType: OutputType.DATA_URL};
+      let imagePickerOptions = {maximumImagesCount: 1, outputType: OutputType.FILE_URL} as ImagePickerOptions;
       this.synagogue.picture = await this.imagePicker.getPictures(imagePickerOptions);
     }
     catch (e) {

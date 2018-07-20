@@ -1,6 +1,6 @@
-import LatLng = google.maps.LatLng;
+import LatLngLiteral = google.maps.LatLngLiteral;
 
 export interface MapObject {
-  latLng: LatLng;
+  latLng: LatLngLiteral;
   userFriendlyAddress: string;
 }

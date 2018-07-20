@@ -11,6 +11,8 @@ import { AppConfigProvider } from '../providers/app-config/app-config';
 import {Geolocation} from "@ionic-native/geolocation";
 import {LocationPickerComponent} from "../components/location-picker/location-picker";
 import {ImagePicker} from "@ionic-native/image-picker";
+import { ServerSynagogueProvider } from '../providers/server-providers/server-synagogue/server-synagogue';
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -19,6 +21,7 @@ import {ImagePicker} from "@ionic-native/image-picker";
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     ComponentsModule,
     IonicModule.forRoot(MyApp),
   ],
@@ -35,6 +38,7 @@ import {ImagePicker} from "@ionic-native/image-picker";
     ImagePicker,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AppConfigProvider,
+    ServerSynagogueProvider,
   ]
 })
 export class AppModule {}

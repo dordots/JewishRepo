@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {PrayerNosach} from "../../common/models/common/enums/prayer-nosach";
 import {AbstractValueAccessor, MakeProvider} from "../../common/component-helpers/abstract-value-accessor";
 
