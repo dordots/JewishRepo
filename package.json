@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "ionic:serve": "ionic-app-scripts serve",
+    "mock:jsonserver": "json-server mocks/json-server-db.js",
     "android": "ionic cordova run android",
     "android:livereload": "yarn android --livereload",
     "clean": "ionic-app-scripts clean",
