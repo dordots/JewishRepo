@@ -4,10 +4,22 @@
     <ion-input formControlName="name" placeholder="לדוגמה: מנחה"></ion-input>
   </ion-item>
   <fk-prayer-version-options formControlName="nosach" label="נוסח תפילה" [(ngModel)]="prayer.nosach" title="בחר נוסח תפילה"></fk-prayer-version-options>
-  <ion-item>
-    <ion-label stacked>שעת התחלה</ion-label>
-    <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" placeholder="בחר שעה"></ion-datetime>
-  </ion-item>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label stacked>שעת התחלה</ion-label>
+          <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" placeholder="בחר שעה"></ion-datetime>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label stacked>שעת סיום (אם ידועה)</ion-label>
+          <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" placeholder="בחר שעה"></ion-datetime>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
   <ion-item *ngIf="synagogue == null">
     <ion-label stacked>בחר בית כנסת</ion-label>
     <fk-select-map-object item-content></fk-select-map-object>
