@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import {ChangeDetectorRef, Component} from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Synagogue} from "../../common/models/map-objects/synagogue";
 import {MapObject} from "../../common/models/map-objects/map-object";
 import {ImagePicker, ImagePickerOptions, OutputType} from "@ionic-native/image-picker";
@@ -19,9 +19,11 @@ export class AddSynagoguePage {
               public navParams: NavParams,
               private formBuilder: FormBuilder,
               private imagePicker: ImagePicker,
-              private synagogueProvider: ServerSynagogueProvider) {
+              private synagogueProvider: ServerSynagogueProvider,
+              private cd: ChangeDetectorRef) {
+    this.synagogue = new Synagogue();
+    this.synagogue.events = [];
     this.synagogueFormGroup = this.createSynagogueValidator();
-    this.synagogue = {} as any;
   }
 
   ionViewDidLoad() {
@@ -29,23 +31,29 @@ export class AddSynagoguePage {
   }
 
   createSynagogueValidator(){
-    return this.formBuilder.group({
+    let group = this.formBuilder.group({
       name: ['', [Validators.required]],
-      mapObject: ['', [Validators.required]],
       primaryNosach: ['', [Validators.required]],
+      location: ['', []],
       phone: ['', [Validators.pattern(/^\d{2,3}-?\d{7}$/)]]
     });
+    group.controls['location'].setErrors({'incorrect': true});
+    return group;
   }
 
   async submitNewSynagogue(){
-    console.log(this.synagogue);
     await this.synagogueProvider.createSynagogue(this.synagogue);
-    console.log("Done");
   }
 
   onPlaceSelected(mapObject: MapObject){
-    this.synagogue.latLng = mapObject.latLng;
-    this.synagogue.userFriendlyAddress = mapObject.userFriendlyAddress;
+    if (mapObject.userFriendlyAddress == null || mapObject.latLng == null){
+      this.synagogueFormGroup.controls['location'].setErrors({'incorrect': true});
+    } else {
+      this.synagogue.latLng = mapObject.latLng;
+      this.synagogue.userFriendlyAddress = mapObject.userFriendlyAddress;
+      this.synagogueFormGroup.get('location').setErrors(null);
+    }
+    this.cd.detectChanges();
   }
 
   async pickImage() {

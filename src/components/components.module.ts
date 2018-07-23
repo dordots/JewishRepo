@@ -13,6 +13,8 @@ import { AccessibilityOptionsComponent } from './accessibility-options/accessibi
 import { PrayerVersionOptionsComponent } from './prayer-version-options/prayer-version-options';
 import { LocationPickerComponent } from './location-picker/location-picker';
 import { PlaceAutocompleteComponent } from './place-autocomplete/place-autocomplete';
+import { AddPrayerComponent } from './add-prayer/add-prayer';
+import { SelectMapObjectComponent } from './select-map-object/select-map-object';
 
 @NgModule({
 	declarations: [
@@ -27,7 +29,9 @@ import { PlaceAutocompleteComponent } from './place-autocomplete/place-autocompl
     AccessibilityOptionsComponent,
     PrayerVersionOptionsComponent,
     LocationPickerComponent,
-    PlaceAutocompleteComponent
+    PlaceAutocompleteComponent,
+    AddPrayerComponent,
+    SelectMapObjectComponent
   ],
 	imports: [IonicModule],
   providers: [GoogleMapProvider],
@@ -43,7 +47,9 @@ import { PlaceAutocompleteComponent } from './place-autocomplete/place-autocompl
     AccessibilityOptionsComponent,
     PrayerVersionOptionsComponent,
     LocationPickerComponent,
-    PlaceAutocompleteComponent
+    PlaceAutocompleteComponent,
+    AddPrayerComponent,
+    SelectMapObjectComponent
   ]
 })
 export class ComponentsModule {}

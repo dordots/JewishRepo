@@ -7,21 +7,15 @@ import {catchError, retry} from "rxjs/operators";
 
 @Injectable()
 export class ServerSynagogueProvider extends AbstractServerProvider{
-  constructor(private http: HttpClient, private appConfig: AppConfigProvider) {
-    super();
+  constructor(private http: HttpClient, appConfig: AppConfigProvider) {
+    super(appConfig);
     console.log('Hello ServerSynagogueProvider Provider');
   }
 
   async createSynagogue(synagogue: Synagogue, retryCount=1){
-    let config = await this.appConfig.config.toPromise();
-    await this.http.post<Synagogue>(config.serverBaseUrl, synagogue)
-                   .pipe(retry(retryCount), catchError(this.handleError));
-    console.log(config.serverBaseUrl);
-  }
-
-  protected fromServerModel(serverModel): any {
-  }
-
-  protected toServerModel(): any {
+    let config = await this.config();
+    let postRoute = await this.makeRelativeRoute([config.synagogueRest]);
+    return this.http.post<Synagogue>(postRoute, synagogue.toServerModel())
+                    .pipe(retry(retryCount), catchError(this.handleError)).toPromise();
   }
 }

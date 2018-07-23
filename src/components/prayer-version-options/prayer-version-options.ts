@@ -19,16 +19,17 @@ export class PrayerVersionOptionsComponent extends AbstractValueAccessor{
   placeholder: string = "בחר נוסח";
 
   @Input()
-  versions: string[];
+  label: string;
 
   @Input()
-  label: string;
+  versions: string[];
 
   selectedVersion: string | string[];
 
   constructor() {
     super();
     console.log('Hello PrayerVersionOptionsComponent Component');
+
     this.versions = Object.keys(PrayerNosach).map(key => PrayerNosach[key]);
   }
 

@@ -21,7 +21,9 @@ export class AppConfigProvider{
   }
 
   private async initAppConfig() {
-    this._appConfig = {} as any;
-    this._appConfig.serverBaseUrl = "my-url";
+    this._appConfig = {
+      serverBaseUrl: "http://localhost:3000",
+      synagogueRest: "synagogue"
+    };
   }
 }

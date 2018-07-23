@@ -19,6 +19,7 @@ export class ApplicationMenuComponent {
     console.log('Hello ApplicationMenuComponent Component');
     this.pages = {};
     this.pages.AddSynagoguePage = {title: "הוספת בית כנסת", componentName: "AddSynagoguePage"};
+    this.pages.AddEventPage = {title: "הוספת מניין", componentName: "AddEventPage"};
   }
 
   getPagesTitle(){

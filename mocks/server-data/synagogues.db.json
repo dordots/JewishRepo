@@ -1,26 +1,18 @@
-{
-  "_id": "5b38c0b52a3134221cd9affc",
-  "name": "בית כנסת חב\"ד, אבטליון",
-  "address": "מרכז היישוב  אבטליון",
-  "location": {
-    "type": "Point",
-    "coordinates": [35.350442, 32.835781]
-  },
-  "nosahc": "נוסח תפילה חב\"ד",
-  "phone_number": null,
-  "externals": {
-    "mikve": null,
-    "parking": false,
-    "disabled_access": false,
-    "shtiblach": null
-  },
-  "minyans": [
-    {
-      "minyan": "שחרית",
-      "hour": "06:30",
-      "hour_float": 6.5,
-      "days": [ 1,2, 3, 4, 5]
+[
+  {
+    "_id": "5b5468974f46c65fa709efcb",
+    "name": "חמד",
+    "userFriendlyAddress": "המשקיף, אשדוד",
+    "latlng": {
+      "lat": 31.799048,
+      "lng": 34.65136849999999
+    },
+    "primaryPrayerNosach": "ספרדי - החידא",
+    "events": [],
+    "externals": {
+      "accessibility": [
+        "חניית נכים"
+      ]
     }
-  ],
-  "image": null
-}
+  }
+]

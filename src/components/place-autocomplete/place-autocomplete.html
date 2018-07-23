@@ -1,1 +1,1 @@
-<ion-input #input [attr.id]="inputId"></ion-input>
+<ion-input #input [attr.id]="inputId" (ionChange)="onInputChanged()" [(ngModel)]="value.userFriendlyAddress"></ion-input>

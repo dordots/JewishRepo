@@ -1,6 +1,6 @@
 module.exports = function() {
   return {
-    events: require('./server-data/events.db'),
-    synagogues: require('./server-data/synagogues.db')
+    event: require('./server-data/events.db'),
+    synagogue: require('./server-data/synagogues.db')
   }
 };

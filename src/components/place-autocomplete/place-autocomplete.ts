@@ -2,12 +2,14 @@ import {AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewC
 import Autocomplete = google.maps.places.Autocomplete;
 import {GoogleMapProvider} from "../../providers/google-map/google-map-provider";
 import {MapObject} from "../../common/models/map-objects/map-object";
+import {AbstractValueAccessor, MakeProvider} from "../../common/component-helpers/abstract-value-accessor";
 
 @Component({
   selector: 'fk-place-autocomplete',
   templateUrl: 'place-autocomplete.html',
+  providers: [MakeProvider(PlaceAutocompleteComponent)]
 })
-export class PlaceAutocompleteComponent implements AfterViewInit{
+export class PlaceAutocompleteComponent extends AbstractValueAccessor implements AfterViewInit{
 
   @ViewChild("input", {read: ElementRef}) inputElement: ElementRef;
 
@@ -17,15 +19,13 @@ export class PlaceAutocompleteComponent implements AfterViewInit{
   @Input()
   inputId: string = "";
 
-  @Output()
-  onPlaceSelected: EventEmitter<MapObject>;
-
   autoComplete: Autocomplete;
   marker: google.maps.Marker;
 
   constructor(private googleMapProvider: GoogleMapProvider) {
+    super();
     console.log('Hello PlaceAutocompleteComponent Component');
-    this.onPlaceSelected = new EventEmitter<MapObject>();
+    this._value = {} as any;
   }
 
   async ngAfterViewInit() {
@@ -51,18 +51,18 @@ export class PlaceAutocompleteComponent implements AfterViewInit{
 
     // Set the data fields to return when the user selects a place.
     this.autoComplete.setValues(['address_components', 'geometry', 'icon', 'name']);
-
     this.autoComplete.addListener('place_changed', () => {
       let place = this.autoComplete.getPlace();
       if (!place.geometry) {
         // User entered the name of a Place that was not suggested and
         // pressed the Enter key, or the Place Details request failed.
+        this.value = null;
         return;
       }
-      this.onPlaceSelected.emit({
+      this.value = {
         latLng: place.geometry.location.toJSON(),
         userFriendlyAddress: place.formatted_address
-      });
+      };
 
       if (!this.map)
         return;
@@ -80,5 +80,9 @@ export class PlaceAutocompleteComponent implements AfterViewInit{
         this.map.setZoom(17);  // Why 17? Because it looks good.
       }
     });
+  }
+
+  onInputChanged() {
+    this.value = {}
   }
 }

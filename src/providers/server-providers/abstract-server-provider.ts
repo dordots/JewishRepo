@@ -1,10 +1,22 @@
 import {HttpErrorResponse} from "@angular/common/http";
 import {ErrorObservable} from "rxjs/observable/ErrorObservable";
+import {AppConfigProvider} from "../app-config/app-config";
 
 export abstract class AbstractServerProvider {
 
-  protected abstract toServerModel(): any;
-  protected abstract fromServerModel(serverModel): any;
+  protected constructor(protected appConfig: AppConfigProvider){}
+
+  protected makeRoute(segments: string[]){
+    return segments.join('/');
+  }
+
+  protected async makeRelativeRoute(segments: string[]){
+    return (await this.config()).serverBaseUrl + '/' + this.makeRoute(segments);
+  }
+
+  protected async config(){
+    return this.appConfig.config.toPromise();
+  }
 
   protected handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
