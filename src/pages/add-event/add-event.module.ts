@@ -8,6 +8,7 @@ import {AddPrayerComponent} from "./components/add-prayer/add-prayer";
 @NgModule({
   declarations: [
     AddEventPage,
+    AddPrayerComponent,
   ],
   imports: [
     IonicPageModule.forChild(AddEventPage),

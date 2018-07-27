@@ -34,6 +34,14 @@ export class EventBasedMapObjectProvider extends AbstractServerProvider{
                     }).toPromise();
   }
 
+  async update<T extends ServerModel&EventBasedMapObject>(model: T, retryCount=1) {
+    let config = await this.config();
+    let putRoute = await this.makeRelativeRoute([config.mapObjectsRoute, model._id]);
+    return this.http.put<T>(putRoute, model.toServerModel())
+                    .pipe(retry(retryCount), catchError(this.handleError))
+                    .toPromise();
+  }
+
   getAllInRadius(latLng: LatLngLiteral, radius: number): Observable<ServerMapObject[]> {
     return Observable.of(MockedMapObjects);
   }

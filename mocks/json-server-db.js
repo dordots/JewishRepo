@@ -1,5 +1,5 @@
 module.exports = function() {
   return {
-    synagogue: require('./server-data/synagogues.db')
+    mapObjects: require('./server-data/map-objects.db')
   }
 };

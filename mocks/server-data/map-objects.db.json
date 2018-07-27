@@ -1,6 +1,7 @@
 [
   {
     "_id": "5b5468974f46c65fa709efcb",
+    "type": "synagogue",
     "name": "חמד",
     "userFriendlyAddress": "המשקיף, אשדוד",
     "latlng": {

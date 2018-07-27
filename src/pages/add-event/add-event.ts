@@ -2,7 +2,13 @@ import {Component, ComponentRef} from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {EventBasedMapObject} from "../../common/models/map-objects/server-map-object";
 import {SelectMapObjectComponent} from "../../components/select-map-object/select-map-object";
-import {AbstractAddEvent} from "./components/abstract-add-event";
+import {AbstractAddEventComponent} from "./components/abstract-add-event-component";
+import {ServerModel} from "../../common/models/common/server-model";
+
+export interface AddEventPageNavigationArgs {
+  addEventComponentType: any;
+  mapObject?: EventBasedMapObject&ServerModel;
+}
 
 @IonicPage()
 @Component({
@@ -12,16 +18,15 @@ import {AbstractAddEvent} from "./components/abstract-add-event";
 export class AddEventPage {
 
   addEventComponentType: any;
-  addEventComponent: AbstractAddEvent;
-  mapObject: EventBasedMapObject;
+  addEventComponent: AbstractAddEventComponent;
+  mapObject: EventBasedMapObject&ServerModel;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private mapObjectProvider: EventBasedMapObject,
               private modalCtrl: ModalController) {
-    /*optional*/ this.mapObject = this.navParams.get('mapObject');
-    /*required*/ this.addEventComponent = this.navParams.get('addEventComponentType');
-
+    let pageParams = this.navParams.data as AddEventPageNavigationArgs;
+    this.mapObject = pageParams.mapObject;
+    this.addEventComponentType = pageParams.addEventComponentType;
   }
 
   ionViewDidLoad() {
@@ -35,17 +40,23 @@ export class AddEventPage {
         return;
 
       this.mapObject = await this.getMapObjectById(id);
+      this.addEventComponent.mapObject = this.mapObject;
       console.log(this.mapObject);
     });
 
     await modal.present();
   }
 
-  getMapObjectById(id: string): Promise<EventBasedMapObject>{
+  getMapObjectById(id: string): Promise<EventBasedMapObject&ServerModel>{
     return this.addEventComponent.mapObjectProvider.getById(id, this.addEventComponent.mapObjectType);
   }
 
-  onAddEventComponentCreated(compRef: ComponentRef<AbstractAddEvent>) {
+  onAddEventComponentCreated(compRef: ComponentRef<AbstractAddEventComponent>) {
     this.addEventComponent = compRef.instance;
+    this.addEventComponent.formSubmitted.subscribe(async (event) => {
+      this.mapObject.events.push(event);
+      await this.addEventComponent.mapObjectProvider.update(this.mapObject);
+      console.log("update done successfully");
+    });
   }
 }

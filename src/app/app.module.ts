@@ -30,7 +30,7 @@ import {AppAssetsProvider} from '../providers/app-assets/app-assets';
   entryComponents: [
     MyApp,
     HomePage,
-    LocationPickerComponent
+    LocationPickerComponent,
   ],
   providers: [
     StatusBar,

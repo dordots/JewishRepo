@@ -7,7 +7,7 @@
   <ion-content>
     <ion-list>
       <ion-item *ngFor="let page of getPagesTitle()">
-        <button class="application-menu-item" ion-item menuClose (click)="changePage(page.componentName)">{{page.title}}</button>
+        <button class="application-menu-item" ion-item menuClose (click)="changePage(page)">{{page.title}}</button>
       </ion-item>
     </ion-list>
   </ion-content>

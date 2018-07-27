@@ -23,7 +23,7 @@ export class AppConfigProvider{
   private async initAppConfig() {
     this._appConfig = {
       serverBaseUrl: "http://localhost:3000",
-      mapObjectsRoute: "synagogue",
+      mapObjectsRoute: "mapObjects",
       assetsPaths: {
         basePath: 'assets',
         iconsRelativePath: 'icons',

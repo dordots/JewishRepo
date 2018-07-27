@@ -8,7 +8,7 @@
 
 
 <ion-content padding dir="rtl">
-  <div *ngIf="!mapObject" text-center>
+  <div *ngIf="!mapObject && addEventComponent" text-center>
     <div>
       <span>לא ניתן להוסיף </span>
       <span> {{eventType}}</span>
@@ -16,8 +16,7 @@
     </div>
     <button ion-button (click)="openSelectMapObject()">בחר מקום</button>
   </div>
-  <div *ngIf="mapObject">
-    <ndc-dynamic [ndcDynamicComponent]="addEventComponent" (ndcDynamicCreated)="onAddEventComponentCreated($event)"></ndc-dynamic>
-    <!-- Add event dynamic form -->
+  <div [hidden]="!mapObject">
+    <ndc-dynamic [ndcDynamicComponent]="addEventComponentType" (ndcDynamicCreated)="onAddEventComponentCreated($event)"></ndc-dynamic>
   </div>
 </ion-content>

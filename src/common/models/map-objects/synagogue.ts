@@ -16,14 +16,14 @@ export class Synagogue implements EventBasedMapObject, ServerModel {
   type = MapObjectTypes.Synagogue;
   name: string;
   primaryPrayerNosach: PrayerNosach;
-  events: Array<Event>;
+  events: Array<Event> = [];
   phone: string;
   accessibility: Accessibility[];
   picture: string;
 
   fromServerModel(serverModel: any): Synagogue{
     let model = new Synagogue();
-    merge(model, pick(serverModel, ['name','primaryPrayerNosach','latlng', 'userFriendlyAddress','events','phone','picture']));
+    merge(model, pick(serverModel, ['_id', 'name','primaryPrayerNosach','latlng', 'userFriendlyAddress','events','phone','picture']));
     model.accessibility = serverModel.externals.accessibility;
     return model;
   }
@@ -42,9 +42,5 @@ export class Synagogue implements EventBasedMapObject, ServerModel {
         accessibility: this.accessibility
       }
     }
-  }
-
-  addEvent(event: Event) {
-    return Promise.resolve();
   }
 }

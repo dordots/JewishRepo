@@ -3,7 +3,7 @@ import {MapObjectTypes} from "../common/enums/map-object-types";
 import {Event} from "../event/event";
 
 export interface EventBasedMapObject extends ServerMapObject{
-  addEvent: (event: Event) => Promise<void>;
+  events: Array<Event>;
 }
 
 export interface ServerMapObject extends MapObject{
