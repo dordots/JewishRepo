@@ -1,12 +1,23 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>add-event</ion-title>
+    <ion-title>הוספה</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding dir="rtl">
-  <fk-add-prayer></fk-add-prayer>
+  <div *ngIf="!mapObject" text-center>
+    <div>
+      <span>לא ניתן להוסיף </span>
+      <span> {{eventType}}</span>
+      <span>מבלי שנבחר מקום. נא בחר מקום</span>
+    </div>
+    <button ion-button (click)="openSelectMapObject()">בחר מקום</button>
+  </div>
+  <div *ngIf="mapObject">
+    <ndc-dynamic [ndcDynamicComponent]="addEventComponent" (ndcDynamicCreated)="onAddEventComponentCreated($event)"></ndc-dynamic>
+    <!-- Add event dynamic form -->
+  </div>
 </ion-content>

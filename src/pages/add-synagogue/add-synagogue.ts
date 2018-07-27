@@ -1,10 +1,10 @@
 import {ChangeDetectorRef, Component} from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {IonicPage, NavController, NavParams} from 'ionic-angular';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Synagogue} from "../../common/models/map-objects/synagogue";
-import {MapObject} from "../../common/models/map-objects/map-object";
+import {ServerMapObject} from "../../common/models/map-objects/server-map-object";
 import {ImagePicker, ImagePickerOptions, OutputType} from "@ionic-native/image-picker";
-import {ServerSynagogueProvider} from "../../providers/server-providers/server-synagogue/server-synagogue";
+import {EventBasedMapObjectProvider} from "../../providers/server-providers/event-based-map-object.provider";
 
 @IonicPage()
 @Component({
@@ -19,7 +19,7 @@ export class AddSynagoguePage {
               public navParams: NavParams,
               private formBuilder: FormBuilder,
               private imagePicker: ImagePicker,
-              private synagogueProvider: ServerSynagogueProvider,
+              private mapObjectProvider: EventBasedMapObjectProvider,
               private cd: ChangeDetectorRef) {
     this.synagogue = new Synagogue();
     this.synagogue.events = [];
@@ -42,10 +42,10 @@ export class AddSynagoguePage {
   }
 
   async submitNewSynagogue(){
-    await this.synagogueProvider.createSynagogue(this.synagogue);
+    await this.mapObjectProvider.create(this.synagogue);
   }
 
-  onPlaceSelected(mapObject: MapObject){
+  onPlaceSelected(mapObject: ServerMapObject){
     if (mapObject.userFriendlyAddress == null || mapObject.latLng == null){
       this.synagogueFormGroup.controls['location'].setErrors({'incorrect': true});
     } else {

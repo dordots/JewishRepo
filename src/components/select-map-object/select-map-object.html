@@ -1,4 +1,6 @@
-<!-- Generated template for the SelectMapObjectComponent component -->
-<div>
-  {{text}}
-</div>
+<ion-content>
+  <ion-row class="place-autocomplete-container">
+    <fk-place-autocomplete (placeSelected)="onValidPlace($event)" [map]="mapComponent.map"></fk-place-autocomplete>
+  </ion-row>
+  <fk-google-map #mapComponent></fk-google-map>
+</ion-content>

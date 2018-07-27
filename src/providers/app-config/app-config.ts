@@ -1,5 +1,5 @@
 // import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {AppConfig} from "../../common/models/common/app-config";
 import {Observable} from "rxjs/Observable";
 import "rxjs/add/observable/of";
@@ -23,7 +23,11 @@ export class AppConfigProvider{
   private async initAppConfig() {
     this._appConfig = {
       serverBaseUrl: "http://localhost:3000",
-      synagogueRest: "synagogue"
+      mapObjectsRoute: "synagogue",
+      assetsPaths: {
+        basePath: 'assets',
+        iconsRelativePath: 'icons',
+      }
     };
   }
 }

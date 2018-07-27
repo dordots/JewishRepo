@@ -20,10 +20,6 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <ion-item *ngIf="synagogue == null">
-    <ion-label stacked>בחר בית כנסת</ion-label>
-    <fk-select-map-object item-content></fk-select-map-object>
-  </ion-item>
   <ion-row padding justify-content-center>
     <button ion-button outline [disabled]="!prayerForm.valid">הוסף</button>
   </ion-row>

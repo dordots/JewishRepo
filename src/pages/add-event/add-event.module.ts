@@ -1,7 +1,9 @@
-import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
-import { AddEventPage } from './add-event';
+import {NgModule} from '@angular/core';
+import {IonicPageModule} from 'ionic-angular';
+import {AddEventPage} from './add-event';
 import {ComponentsModule} from "../../components/components.module";
+import {DynamicModule} from "ng-dynamic-component";
+import {AddPrayerComponent} from "./components/add-prayer/add-prayer";
 
 @NgModule({
   declarations: [
@@ -9,7 +11,8 @@ import {ComponentsModule} from "../../components/components.module";
   ],
   imports: [
     IonicPageModule.forChild(AddEventPage),
-    ComponentsModule
+    ComponentsModule,
+    DynamicModule.withComponents([AddPrayerComponent])
   ],
 })
 export class AddEventPageModule {}

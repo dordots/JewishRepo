@@ -1,8 +1,9 @@
-import {AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild} from '@angular/core';
-import Autocomplete = google.maps.places.Autocomplete;
+import {AfterViewInit, Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {GoogleMapProvider} from "../../providers/google-map/google-map-provider";
-import {MapObject} from "../../common/models/map-objects/map-object";
 import {AbstractValueAccessor, MakeProvider} from "../../common/component-helpers/abstract-value-accessor";
+import {Searchbar} from "ionic-angular";
+import {MapObject, ServerMapObject} from "../../common/models/map-objects/server-map-object";
+import Autocomplete = google.maps.places.Autocomplete;
 
 @Component({
   selector: 'fk-place-autocomplete',
@@ -11,35 +12,43 @@ import {AbstractValueAccessor, MakeProvider} from "../../common/component-helper
 })
 export class PlaceAutocompleteComponent extends AbstractValueAccessor implements AfterViewInit{
 
-  @ViewChild("input", {read: ElementRef}) inputElement: ElementRef;
+  @ViewChild("input") inputElement: Searchbar;
 
   @Input()
   map;
 
   @Input()
-  inputId: string = "";
+  inputId: string;
 
+  @Input()
+  toMarkerSelectedPlace: boolean = false;
+
+  @Output()
+  placeSelected: EventEmitter<MapObject>;
+
+  userFriendlyAddress: string;
   autoComplete: Autocomplete;
   marker: google.maps.Marker;
 
   constructor(private googleMapProvider: GoogleMapProvider) {
     super();
     console.log('Hello PlaceAutocompleteComponent Component');
-    this._value = {} as any;
+    this.placeSelected = new EventEmitter<ServerMapObject>();
   }
 
   async ngAfterViewInit() {
     try{
       await this.googleMapProvider.loadAPI();
+      this.initAutoComplete();
     }
     catch (e) {
       console.error(e);
     }
-    this.initAutoComplete();
   }
 
   initAutoComplete() {
-    let htmlInput = (this.inputId && document.getElementById(this.inputId)) || this.inputElement.nativeElement.firstElementChild;
+    let htmlInput = (this.inputId && document.getElementById(this.inputId)) ||
+                    this.inputElement._searchbarInput.nativeElement;
     htmlInput.style.width = "100%";
     this.autoComplete = new google.maps.places.Autocomplete(htmlInput);
 
@@ -56,13 +65,15 @@ export class PlaceAutocompleteComponent extends AbstractValueAccessor implements
       if (!place.geometry) {
         // User entered the name of a Place that was not suggested and
         // pressed the Enter key, or the Place Details request failed.
-        this.value = null;
         return;
       }
       this.value = {
         latLng: place.geometry.location.toJSON(),
         userFriendlyAddress: place.formatted_address
       };
+      this.placeSelected.emit(this.value);
+
+      this.userFriendlyAddress = place.formatted_address;
 
       if (!this.map)
         return;
@@ -70,7 +81,8 @@ export class PlaceAutocompleteComponent extends AbstractValueAccessor implements
       if (this.marker)
         this.marker.setMap(null);
 
-      this.marker = this.googleMapProvider.createMarkerAt(this.map, place.geometry.location);
+      if (this.toMarkerSelectedPlace)
+        this.marker = this.googleMapProvider.createMarkerAt(this.map, place.geometry.location.toJSON());
 
       // If the place has a geometry, then present it on a map.
       if (place.geometry.viewport) {

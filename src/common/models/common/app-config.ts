@@ -1,4 +1,8 @@
 export interface AppConfig {
   serverBaseUrl: string;
-  synagogueRest: string;
+  mapObjectsRoute: string;
+  assetsPaths: {
+    basePath: string;
+    iconsRelativePath: string;
+  }
 }
