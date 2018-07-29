@@ -4,6 +4,7 @@ import {Event} from "../event/event";
 
 export interface EventBasedMapObject extends ServerMapObject{
   events: Array<Event>;
+  isEventExist(event: Event);
 }
 
 export interface ServerMapObject extends MapObject{

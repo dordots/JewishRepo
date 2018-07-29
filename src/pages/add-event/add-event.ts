@@ -20,6 +20,7 @@ export class AddEventPage {
   addEventComponentType: any;
   addEventComponent: AbstractAddEventComponent;
   mapObject: EventBasedMapObject&ServerModel;
+  errors: string[];
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -27,6 +28,7 @@ export class AddEventPage {
     let pageParams = this.navParams.data as AddEventPageNavigationArgs;
     this.mapObject = pageParams.mapObject;
     this.addEventComponentType = pageParams.addEventComponentType;
+    this.errors = [];
   }
 
   ionViewDidLoad() {
@@ -54,6 +56,11 @@ export class AddEventPage {
   onAddEventComponentCreated(compRef: ComponentRef<AbstractAddEventComponent>) {
     this.addEventComponent = compRef.instance;
     this.addEventComponent.formSubmitted.subscribe(async (event) => {
+      this.errors = [];
+      if (this.mapObject.isEventExist(event)){
+        this.errors.push('Such event is already exists');
+        return;
+      }
       this.mapObject.events.push(event);
       await this.addEventComponent.mapObjectProvider.update(this.mapObject);
       console.log("update done successfully");

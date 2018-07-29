@@ -9,13 +9,13 @@
       <ion-col>
         <ion-item>
           <ion-label stacked>שעת התחלה</ion-label>
-          <ion-datetime formControlName="startsIn" [(ngModel)]="prayer.beginTime" displayFormat="HH:mm" pickerFormat="HH:mm" placeholder="בחר שעה"></ion-datetime>
+          <ion-datetime formControlName="startsIn" (ngModelChange)="onStartTimeChanged($event)" [(ngModel)]="prayer.beginTime" displayFormat="HH:mm" pickerFormat="HH:mm" placeholder="בחר שעה"></ion-datetime>
         </ion-item>
       </ion-col>
       <ion-col>
         <ion-item>
           <ion-label stacked>שעת סיום (אם ידועה)</ion-label>
-          <ion-datetime formControlName="endsIn" [(ngModel)]="prayer.endTime" displayFormat="HH:mm" pickerFormat="HH:mm" placeholder="בחר שעה"></ion-datetime>
+          <ion-datetime formControlName="endsIn" (ngModelChange)="onEndTimeChanged($event)" [(ngModel)]="prayer.endTime" displayFormat="HH:mm" pickerFormat="HH:mm" placeholder="בחר שעה"></ion-datetime>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -23,5 +23,6 @@
   <ion-row padding justify-content-center>
     <button ion-button outline [disabled]="!prayerForm.valid">הוסף</button>
     <div>{{prayerForm.getRawValue() | json}}</div>
+    <div>{{prayerForm.errors | json}}</div>
   </ion-row>
 </form>

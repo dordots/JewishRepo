@@ -4,6 +4,8 @@ import {Synagogue} from "../../../../common/models/map-objects/synagogue";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {EventBasedMapObjectProvider} from "../../../../providers/server-providers/event-based-map-object.provider";
 import {AbstractAddEventComponent} from "../abstract-add-event-component";
+import {ValidateEndTime} from "../../../../validators/time-range.validator";
+import moment = require("moment");
 
 @Component({
   selector: 'fk-add-prayer',
@@ -30,8 +32,16 @@ export class AddPrayerComponent extends AbstractAddEventComponent{
       "nosach": ['', [Validators.required]],
       "name": ['',[Validators.required]],
       "startsIn": ['', [Validators.required]],
-      "endsIn": ['', []]
+      "endsIn": ['', [ValidateEndTime(()=>this.prayer.startTime, "HH:mm")]]
     });
+  }
+
+  onStartTimeChanged(time){
+    this.prayer.startTime = moment(time, "HH:mm").toDate();
+  }
+
+  onEndTimeChanged(time){
+    this.prayer.endTime = moment(time, "HH:mm").toDate();
   }
 
   async submitPrayer(){
