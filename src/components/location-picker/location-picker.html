@@ -1,8 +1,12 @@
 <ion-content>
+  <div class="place-autocomplete-text-input-container">
+    <ion-searchbar class="place-autocomplete-text-input" #ionSearchbar fkPlaceAutoComplete [inputElement]="ionSearchbar._searchbarInput?.nativeElement"
+                   [map]="mapComponent.map"></ion-searchbar>
+  </div>
   <fk-google-map #mapComponent></fk-google-map>
 </ion-content>
 <ion-footer>
-  <ion-buttons>
+  <ion-buttons text-center>
     <button ion-button (click)="onDismiss()">ביטול</button>
     <button ion-button (click)="onSubmit()">אישור</button>
   </ion-buttons>

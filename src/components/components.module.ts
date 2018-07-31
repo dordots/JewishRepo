@@ -12,8 +12,9 @@ import {ApplicationMenuComponent} from './application-menu/application-menu';
 import {AccessibilityOptionsComponent} from './accessibility-options/accessibility-options';
 import {PrayerVersionOptionsComponent} from './prayer-version-options/prayer-version-options';
 import {LocationPickerComponent} from './location-picker/location-picker';
-import {PlaceAutocompleteComponent} from './place-autocomplete/place-autocomplete';
+import {PlaceAutoCompleteComponent} from '../directives/place-autocomplete/place-autocomplete';
 import {SelectMapObjectComponent} from './select-map-object/select-map-object';
+import {DayRangeComponent} from './day-range/day-range';
 
 @NgModule({
 	declarations: [
@@ -28,8 +29,9 @@ import {SelectMapObjectComponent} from './select-map-object/select-map-object';
     AccessibilityOptionsComponent,
     PrayerVersionOptionsComponent,
     LocationPickerComponent,
-    PlaceAutocompleteComponent,
-    SelectMapObjectComponent
+    PlaceAutoCompleteComponent,
+    SelectMapObjectComponent,
+    DayRangeComponent
   ],
 	imports: [IonicModule],
   providers: [GoogleMapProvider],
@@ -46,8 +48,9 @@ import {SelectMapObjectComponent} from './select-map-object/select-map-object';
     AccessibilityOptionsComponent,
     PrayerVersionOptionsComponent,
     LocationPickerComponent,
-    PlaceAutocompleteComponent,
-    SelectMapObjectComponent
+    PlaceAutoCompleteComponent,
+    SelectMapObjectComponent,
+    DayRangeComponent
   ]
 })
 export class ComponentsModule {}

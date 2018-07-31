@@ -13,10 +13,10 @@
     <fk-prayer-version-options label="נוסח עיקרי " formControlName="primaryNosach"
                                [(ngModel)]="synagogue.primaryPrayerNosach"></fk-prayer-version-options>
 
-    <div>{{synagogueFormGroup.get('location').valid}}</div>
     <ion-item>
       <ion-label>כתובת</ion-label>
-      <fk-place-autocomplete item-content (ngModelChange)="onPlaceSelected($event)" formControlName="location"></fk-place-autocomplete>
+      <ion-input #ionInput fkPlaceAutoComplete [inputElement]="ionInput._native?.nativeElement"
+                 (placeSelected)="onPlaceSelected($event)" formControlName="location"></ion-input>
     </ion-item>
 
     <fk-accessibility-options [(ngModel)]="synagogue.accessibility" [ngModelOptions]="{standalone: true}"></fk-accessibility-options>
@@ -37,5 +37,4 @@
       <button ion-button type="submit" [disabled]="!synagogueFormGroup.valid">הוסף</button>
     </ion-row>
   </form>
-  {{synagogue | json}}
 </ion-content>

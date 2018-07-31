@@ -35,6 +35,8 @@ export class SelectMapObjectComponent {
   }
 
   async onValidPlace(mapObject: MapObject) {
+    if (mapObject == null)
+      return;
     let nearby = await this.mapObjectProvider.getAllInRadius(mapObject.latLng,5).toPromise();
     nearby[0].latLng = mapObject.latLng;
     this.nearbyMapObjectsMarkers = await this.googleMapProvider.drawMapObjects(this.map, nearby);

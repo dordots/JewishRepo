@@ -46,7 +46,7 @@ export class AddSynagoguePage {
   }
 
   onPlaceSelected(mapObject: ServerMapObject){
-    if (mapObject.userFriendlyAddress == null || mapObject.latLng == null){
+    if (mapObject == null || mapObject.userFriendlyAddress == null || mapObject.latLng == null){
       this.synagogueFormGroup.controls['location'].setErrors({'incorrect': true});
     } else {
       this.synagogue.latLng = mapObject.latLng;

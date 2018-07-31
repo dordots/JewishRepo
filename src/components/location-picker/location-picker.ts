@@ -1,10 +1,9 @@
 import {Component, ViewChild} from '@angular/core';
-import LatLng = google.maps.LatLng;
 import {ViewController} from "ionic-angular";
-import Map = google.maps.Map;
 import {GoogleMapProvider} from "../../providers/google-map/google-map-provider";
-import Marker = google.maps.Marker;
 import {GoogleMapComponent} from "../google-map/google-map";
+import Map = google.maps.Map;
+import Marker = google.maps.Marker;
 
 @Component({
   selector: 'fk-location-picker',
@@ -22,7 +21,7 @@ export class LocationPickerComponent {
 
   ngAfterViewInit(){
     this.mapComponent.onMapCreated.subscribe(args=>{
-      this.initOnLocationSelected(this.mapComponent.map);
+      this.initOnLocationPressed(this.mapComponent.map);
     });
   }
 
@@ -34,7 +33,7 @@ export class LocationPickerComponent {
     this.viewCtrl.dismiss(this.marker.getPosition());
   }
 
-  private initOnLocationSelected(map: Map){
+  private initOnLocationPressed(map: Map){
     map.addListener('click',args => {
       if (this.marker)
         this.marker.setMap(null);
