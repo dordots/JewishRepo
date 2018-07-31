@@ -1,7 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {Event} from "../../Models/event/event";
-import moment = require("moment");
-import {CardEvents} from "../../mocks/rendered-data/card-event-data";
+import {CardEvents} from "../../../mocks/rendered-data/card-event-data";
 
 @Component({
   selector: 'fk-events-list',

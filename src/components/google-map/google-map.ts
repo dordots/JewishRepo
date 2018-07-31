@@ -13,18 +13,18 @@ export class GoogleMapComponent implements AfterViewInit {
   public map: Map;
 
   @Output()
-  onMapCreated: EventEmitter<void>;
+  onMapCreated: EventEmitter<Map>;
 
   constructor(private mapProvider: GoogleMapProvider) {
     console.log('Hello GoogleMapComponent Component');
     GoogleMapComponent.mapCounter++;
     this.id = `google-map-${GoogleMapComponent.mapCounter}`;
-    this.onMapCreated = new EventEmitter<void>();
+    this.onMapCreated = new EventEmitter<Map>();
   }
 
   async ngAfterViewInit(){
     let mapElement = document.getElementById(this.id) as HTMLDivElement;
     this.map = await this.mapProvider.createMap(mapElement);
-    this.onMapCreated.emit();
+    this.onMapCreated.emit(this.map);
   }
 }

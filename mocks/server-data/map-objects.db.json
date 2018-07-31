@@ -1,0 +1,19 @@
+[
+  {
+    "_id": "5b5468974f46c65fa709efcb",
+    "type": "synagogue",
+    "name": "חמד",
+    "userFriendlyAddress": "המשקיף, אשדוד",
+    "latlng": {
+      "lat": 31.799048,
+      "lng": 34.65136849999999
+    },
+    "primaryPrayerNosach": "ספרדי - החידא",
+    "events": [],
+    "externals": {
+      "accessibility": [
+        "חניית נכים"
+      ]
+    }
+  }
+]

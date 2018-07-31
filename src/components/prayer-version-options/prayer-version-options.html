@@ -1,5 +1,8 @@
-  <ion-select class="version-select" [(ngModel)]="selectedVersion" (ionChange)="onSelectionChanged($event)"
-              placeholder="placeholder"
-              [multiple]="multiple">
+<ion-item dir="rtl">
+  <ion-label stacked *ngIf="label">{{label}}</ion-label>
+  <ion-select class="version-select" [(ngModel)]="value" (ionChange)="onSelectionChanged($event)"
+              [placeholder]="placeholder"
+              [multiple]="allowMultiple">
     <ion-option *ngFor="let version of versions">{{version}}</ion-option>
   </ion-select>
+</ion-item>

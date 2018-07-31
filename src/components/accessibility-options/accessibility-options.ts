@@ -1,33 +1,37 @@
 import {Component, Input} from '@angular/core';
-import {Accessibility} from "../../models/common/enums/accessibility";
+import {Accessibility} from "../../common/models/common/enums/accessibility";
+import {AbstractValueAccessor, MakeProvider} from "../../common/component-helpers/abstract-value-accessor";
 
 @Component({
   selector: 'fk-accessibility-options',
-  templateUrl: 'accessibility-options.html'
+  templateUrl: 'accessibility-options.html',
+  providers: [MakeProvider(AccessibilityOptionsComponent)]
 })
-export class AccessibilityOptionsComponent {
+export class AccessibilityOptionsComponent extends AbstractValueAccessor{
 
-  accessibilityList: string[];
-
-  @Input()
-  selections: string[];
+  private accessibilityList: string[];
+  private readonly selectedAccessibility: string[];
 
   constructor() {
+    super();
     console.log('Hello AccessibilityOptionsComponent Component');
     this.accessibilityList = Object.keys(Accessibility).map(key => Accessibility[key]);
-    this.selections = [];
+    this.selectedAccessibility = [];
   }
 
   isAccessibilityChecked(accessibility: string){
-    return this.selections.indexOf(accessibility) != -1;
+    return this.selectedAccessibility.indexOf(accessibility) != -1;
   }
 
   onSelectionChanged(accessibility: string) {
-    if (!this.isAccessibilityChecked(accessibility))
-      this.selections.push(accessibility);
+    if (!this.isAccessibilityChecked(accessibility)){
+      this.selectedAccessibility.push(accessibility);
+      this.value = this.selectedAccessibility;
+    }
     else{
-      let index = this.selections.indexOf(accessibility);
-      this.selections.splice(index,1);
+      let index = this._value.indexOf(accessibility);
+      this.selectedAccessibility.splice(index,1);
+      this.value = this.selectedAccessibility;
     }
   }
 }
