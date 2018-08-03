@@ -7,6 +7,11 @@
 
 <ion-content>
   <form [formGroup]="eventFormGroup" dir="rtl">
+    <ion-item>
+      <ion-label>כתובת</ion-label>
+      <ion-input #ionInput fkPlaceAutoComplete [inputElement]="ionInput._native?.nativeElement"></ion-input>
+      <button ion-button item-end clear small (click)="openLocationPicker()">בחר מיקום</button>
+    </ion-item>
     <ion-item dir="ltr">
       <ion-label>טווח רדיוס</ion-label>
       <ion-range min="1" max="25" pin="true">
@@ -14,31 +19,22 @@
         <ion-label range-right>25</ion-label>
       </ion-range>
     </ion-item>
-    <ion-item>
-      <ion-label>כתובת</ion-label>
-      <ion-input #ionInput fkPlaceAutoComplete [inputElement]="ionInput._native?.nativeElement"></ion-input>
-      <button ion-button item-end clear small (click)="openLocationPicker()">בחר מיקום</button>
-    </ion-item>
     <ion-row dir="rtl">
       <ion-col>
         <ion-item>
           <ion-label>החל מ-</ion-label>
-          <ion-datetime displayFormat="HH:mm" pickerFormat="HH mm"></ion-datetime>
+          <ion-datetime formControlName="startsAt" [(ngModel)]="event.startTime"
+                        displayFormat="HH:mm" pickerFormat="HH:mm" placeholder="בחר שעה"></ion-datetime>
         </ion-item>
       </ion-col>
       <ion-col>
         <ion-item>
           <ion-label>עד ל-</ion-label>
-          <ion-datetime displayFormat="HH:mm" pickerFormat="HH mm"></ion-datetime>
+          <ion-datetime formControlName="startsAt" [(ngModel)]="event.endTime"
+                        displayFormat="HH:mm" pickerFormat="HH:mm" placeholder="בחר שעה"></ion-datetime>
         </ion-item>
       </ion-col>
     </ion-row>
-    <ion-item>
-      <ion-label>מה תרצה לחפש?</ion-label>
-      <ion-select formControlName="eventType">
-        <ion-option *ngFor="let eventType of searchableEvents">{{eventType.title}}</ion-option>
-      </ion-select>
-    </ion-item>
     <div style="text-align: center">
       <fk-synagogue-options></fk-synagogue-options>
     </div>
