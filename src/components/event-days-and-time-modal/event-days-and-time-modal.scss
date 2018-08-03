@@ -1,0 +1,32 @@
+#modal-card-content{
+  position: relative;
+  height: 100%;
+  padding-bottom: 20%;
+}
+
+.submit-button-container{
+  border-radius: 0;
+  bottom:0px;
+  right: 0;
+  position:absolute;
+  width:100%;
+
+  .submit-button{
+    border-radius: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+}
+
+ion-modal {
+  .modal-wrapper{
+    position: relative;
+    top: 25%;
+  }
+  ion-backdrop {
+    visibility: visible;
+    opacity: 0.4 !important;
+    z-index: 0;
+  }
+}

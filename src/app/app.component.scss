@@ -1,6 +1,4 @@
 // http://ionicframework.com/docs/theming/
-
-
 // App Global Sass
 // --------------------------------------------------
 // Put style rules here that you want to apply globally. These
@@ -14,7 +12,24 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+@import "../theme/mixins";
+@import "../theme/typography";
 
 .alert-wrapper {
-  //direction: rtl;
+  direction: rtl;
+  .alert-radio-icon {
+    left: 0;
+    right: 13px;
+  }
+  .alert-button-group{
+    justify-content: space-between;
+  }
+}
+
+.transparent {
+  background-color: transparent;
+}
+
+.form-background-color {
+  background-color: map_get($colors, cream)
 }

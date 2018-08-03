@@ -1,11 +1,12 @@
-import { forwardRef } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {forwardRef} from '@angular/core';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {isEqual} from "lodash-es";
 
 export abstract class AbstractValueAccessor implements ControlValueAccessor {
   protected _value: any = '';
   get value(): any { return this._value; };
   set value(v: any) {
-    if (v !== this._value) {
+    if (!isEqual(v, this._value)) {
       this._value = v;
       this.onChange(v);
     }

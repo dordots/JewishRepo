@@ -18,6 +18,7 @@
   </div>
   <div [hidden]="!mapObject">
     <div><div *ngFor="let error of errors">{{error}}</div></div>
-    <ndc-dynamic [ndcDynamicComponent]="addEventComponentType" (ndcDynamicCreated)="onAddEventComponentCreated($event)"></ndc-dynamic>
+    <ndc-dynamic [ndcDynamicComponent]="addEventComponentType"
+                 (ndcDynamicCreated)="onAddEventComponentCreated($event)"></ndc-dynamic>
   </div>
 </ion-content>

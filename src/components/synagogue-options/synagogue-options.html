@@ -1,0 +1,7 @@
+<ion-row>
+  <ion-col *ngFor="let option of getOptionsList()" text-center>
+    <ion-label>{{option.translation}}</ion-label>
+    <ion-checkbox [checked]="isOptionChecked(option.opt)"
+                  (ionChange)="onSelectionChanged(option.opt)"></ion-checkbox>
+  </ion-col>
+</ion-row>

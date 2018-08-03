@@ -2,7 +2,74 @@ input{
   text-align: right;
 }
 
-.choose-picture-label{
-  display: flex;
-  align-items: center;
+.phone-item {
+  background-color: #fbfbfb;
+  border-radius: 7px;
+  border: 2px solid #f8f8f8;
+  height: 80%;
+  font-size: 1em;
+  input[type='phone']:focus{
+    text-align:left;
+    &::placeholder{
+
+    }
+  }
+  input[type='phone']::placeholder{
+    color: #bdbdbd;
+  }
+}
+
+ion-icon[name=call]{
+  color: #21d672;
+}
+
+.mini-phone-plus-button {
+  width: 30px;
+  height: 30px;
+  background-color: transparent;
+  ion-icon[name=call]{
+    font-size: 20px !important;
+    position: relative;
+    ion-icon[name=add]{
+      font-size: 15px !important;
+      font-weight: bolder;
+      position: absolute;
+      top:-5px;
+      left: 9px;
+    }
+  }
+}
+
+.add-times-fab {
+  @include fab-low-shadow(map_get($colors,orange))
+}
+
+.add-image-fab{
+  @include fab-low-shadow(map_get($colors,strong-cyan))
+}
+
+.footer {
+  background-color: map_get($colors, dark);
+}
+
+.footer-disabled {
+  background-color: transparentize(map_get($colors, dark), 0.5);
+}
+
+.save-synagogue-button {
+  color: map_get($colors, light);
+  font-weight: bold;
+}
+
+.text-input-clear-icon {
+  left: 0;
+}
+
+.input-md[clearInput] {
+  .text-input {
+    padding-right: 0;
+  }
+  .text-input-clear-icon{
+    right: inherit;
+  }
 }

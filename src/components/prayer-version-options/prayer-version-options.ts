@@ -1,6 +1,7 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import {PrayerNosach} from "../../common/models/common/enums/prayer-nosach";
 import {AbstractValueAccessor, MakeProvider} from "../../common/component-helpers/abstract-value-accessor";
+import {Select} from "ionic-angular";
 
 @Component({
   selector: 'fk-prayer-version-options',
@@ -8,6 +9,8 @@ import {AbstractValueAccessor, MakeProvider} from "../../common/component-helper
   providers: [MakeProvider(PrayerVersionOptionsComponent)]
 })
 export class PrayerVersionOptionsComponent extends AbstractValueAccessor{
+
+  @ViewChild('selectComponent') private selectComponent: Select;
 
   @Input()
   allowMultiple: boolean;
@@ -31,6 +34,11 @@ export class PrayerVersionOptionsComponent extends AbstractValueAccessor{
     console.log('Hello PrayerVersionOptionsComponent Component');
 
     this.versions = Object.keys(PrayerNosach).map(key => PrayerNosach[key]);
+  }
+
+  ngAfterViewInit(){
+    this.selectComponent.okText = "בחר";
+    this.selectComponent.cancelText = "בטל";
   }
 
   onSelectionChanged(selection){
