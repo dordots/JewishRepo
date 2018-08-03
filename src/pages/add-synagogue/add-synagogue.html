@@ -76,7 +76,7 @@
               <div dir="ltr">
                 <span>{{formatTimeRange(event)}}</span>
               </div>
-              <ion-icon name="close-circle"></ion-icon>
+              <button class="transparent" (click)="removeEvent(event)"><ion-icon name="close-circle"></ion-icon></button>
             </ion-row>
           </ion-card-content>
         </ion-card>
@@ -89,7 +89,6 @@
       <div class="bold">+ הוספת תמונה של המקום</div>
     </ion-row>
   </form>
-  <div dir="ltr">{{synagogue | json}}</div>
 </ion-content>
 
 <ion-footer padding class="footer" [ngClass]="{'footer-disabled': !synagogueFormGroup.valid}" text-center>

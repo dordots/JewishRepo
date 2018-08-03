@@ -67,7 +67,7 @@ export class AddSynagoguePage {
 
   async pickImage() {
     try {
-      let imagePickerOptions = {maximumImagesCount: 1, outputType: OutputType.FILE_URL} as ImagePickerOptions;
+      let imagePickerOptions = {maximumImagesCount: 1, outputType: OutputType.DATA_URL} as ImagePickerOptions;
       this.synagogue.picture = await this.imagePicker.getPictures(imagePickerOptions);
     }
     catch (e) {
@@ -104,5 +104,9 @@ export class AddSynagoguePage {
 
   formatDays(event: Event){
     return FormatDaysArray(event.repeatedDays);
+  }
+
+  removeEvent(event) {
+    this.synagogue.events.splice(this.synagogue.events.findIndex(ev => ev == event), 1);
   }
 }

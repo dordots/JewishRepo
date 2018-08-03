@@ -49,16 +49,4 @@ export class EventDaysAndTimeModalComponent {
   get formatTimeRange(){
     return FormatTimeRange(this.datePipe, this.event.startTime, this.event.endTime);
   }
-
-  getFormValidationErrors() {
-    Object.keys(this.form.controls).forEach(key => {
-
-      const controlErrors = this.form.get(key).errors;
-      if (controlErrors != null) {
-        Object.keys(controlErrors).forEach(keyError => {
-          console.log('Key control: ' + key + ', keyError: ' + keyError + ', err value: ', controlErrors[keyError]);
-        });
-      }
-    });
-  }
 }
