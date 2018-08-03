@@ -14,6 +14,7 @@ import {ImagePicker} from "@ionic-native/image-picker";
 import {EventBasedMapObjectProvider} from '../providers/server-providers/event-based-map-object.provider';
 import {HttpClientModule} from "@angular/common/http";
 import {AppAssetsProvider} from '../providers/app-assets/app-assets';
+import {EventDaysAndTimeModalComponent} from "../components/event-days-and-time-modal/event-days-and-time-modal";
 
 @NgModule({
   declarations: [
@@ -24,13 +25,14 @@ import {AppAssetsProvider} from '../providers/app-assets/app-assets';
     BrowserModule,
     HttpClientModule,
     ComponentsModule,
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp,{scrollPadding: false}),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     HomePage,
     LocationPickerComponent,
+    EventDaysAndTimeModalComponent
   ],
   providers: [
     StatusBar,

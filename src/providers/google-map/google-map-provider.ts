@@ -3,6 +3,7 @@ import {Geolocation} from "@ionic-native/geolocation";
 import {merge} from "lodash";
 import {AppAssetsProvider} from "../app-assets/app-assets";
 import {ServerMapObject} from "../../common/models/map-objects/server-map-object";
+import {Subject} from "rxjs/Subject";
 import GoogleMapsLoader = require("google-maps");
 import MapOptions = google.maps.MapOptions;
 import Map = google.maps.Map;
@@ -14,11 +15,13 @@ import LatLngLiteral = google.maps.LatLngLiteral;
 
 @Injectable()
 export class GoogleMapProvider {
-  private isApiLoaded: boolean;
+  public isApiLoaded: boolean;
+  public apiLoaded$: Subject<void>;
 
   constructor(private geolocation: Geolocation,
               private appAssets: AppAssetsProvider) {
     console.log('Hello GoogleMapProvider Provider');
+    this.apiLoaded$ = new Subject<void>();
   }
 
   loadAPI(): Promise<void> {
@@ -28,7 +31,10 @@ export class GoogleMapProvider {
     GoogleMapsLoader.LANGUAGE = 'he';
     GoogleMapsLoader.REGION = 'IL';
     GoogleMapsLoader.LIBRARIES = ['places'];
-    return new Promise<void>(resolve => GoogleMapsLoader.load(() => resolve()));
+    return new Promise<void>(resolve => GoogleMapsLoader.load(() => {
+      this.apiLoaded$.next();
+      resolve();
+    }));
   }
 
   get mapOptions(): MapOptions {

@@ -1,4 +1,4 @@
-import {AfterContentInit, Directive, ElementRef, EventEmitter, Input, Output} from '@angular/core';
+import {AfterContentInit, Directive, ElementRef, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
 import {GoogleMapProvider} from "../../providers/google-map/google-map-provider";
 import {MapObject, ServerMapObject} from "../../common/models/map-objects/server-map-object";
 import Autocomplete = google.maps.places.Autocomplete;
@@ -6,9 +6,23 @@ import Autocomplete = google.maps.places.Autocomplete;
 @Directive({
   selector: '[fkPlaceAutoComplete]'
 })
-export class PlaceAutoCompleteComponent implements AfterContentInit {
+export class PlaceAutoCompleteComponent implements AfterContentInit, OnDestroy {
+  private _inputElement: HTMLInputElement;
 
-  @Input() inputElement: HTMLInputElement;
+  @Input() set inputElement(v) {
+    if (v != null){
+      this.validateElementIsHTMLInputElement(v);
+      this._inputElement = v;
+      this.initAutoComplete();
+      this.registerToInputElementEvents();
+    }
+  }
+
+  get inputElement() {
+    return this._inputElement;
+  }
+
+  @Input() useNativeInput: boolean = false;
 
   @Input() map;
 
@@ -26,24 +40,33 @@ export class PlaceAutoCompleteComponent implements AfterContentInit {
   }
 
   async ngAfterContentInit() {
-    try{
-      await this.googleMapProvider.loadAPI();
-      this.inputElement = this.getHtmlInputElement();
-      this.registerToInputElementEvents();
-      this.initAutoComplete();
+    try {
+      if (this.useNativeInput)
+        this.inputElement = this.el.nativeElement;
+      if (this.inputElement != null) {
+        this.registerToInputElementEvents();
+        this.initAutoComplete();
+      }
     }
     catch (e) {
       console.error(e);
     }
   }
 
-  private registerToInputElementEvents() {
-    this.inputElement.onchange = ev => {
-      this.placeSelected.emit(null);
-    }
+  ngOnDestroy(): void {
+    this.inputElement.removeEventListener("change", this.onInputChange.bind(this));
+    this.inputElement.removeEventListener("focus", this.onInputChange.bind(this));
+    this.inputElement.removeEventListener("blur", this.onInputChange.bind(this));
   }
 
-  initAutoComplete() {
+  private registerToInputElementEvents() {
+    this.inputElement.addEventListener("change", this.onInputChange.bind(this));
+    this.inputElement.addEventListener("focus", this.onInputChange.bind(this));
+    this.inputElement.addEventListener("blur", this.onInputChange.bind(this));
+  }
+
+  async initAutoComplete() {
+    await this.googleMapProvider.loadAPI();
     let htmlInput = this.inputElement;
     htmlInput.style.width = "100%";
     this.autoComplete = new google.maps.places.Autocomplete(htmlInput);
@@ -69,6 +92,7 @@ export class PlaceAutoCompleteComponent implements AfterContentInit {
       });
 
       this.userFriendlyAddress = place.formatted_address;
+      this.inputElement.value = this.userFriendlyAddress;
 
       if (!this.map)
         return;
@@ -89,16 +113,21 @@ export class PlaceAutoCompleteComponent implements AfterContentInit {
     });
   }
 
-  private getHtmlInputElement() {
-    if (this.inputElement != null){
-      if (!(this.inputElement instanceof HTMLInputElement))
-        throw new Error("Input element must be type of HTMLInputElement");
-      return this.inputElement;
-    }
+  private validateElementIsHTMLInputElement(el) {
+    if (!(el instanceof HTMLInputElement))
+      throw new Error("Input element must be type of HTMLInputElement");
+  }
 
-    if (!(this.el.nativeElement instanceof HTMLInputElement))
-      throw new Error("Element must be type of HTMLInputElement");
+  private onInputChange(){
+    this.userFriendlyAddress = this.inputElement.value;
+    this.placeSelected.emit(null);
+  }
 
-    return this.el.nativeElement;
+  private onInputFocus(){
+    this.inputElement.value = this.userFriendlyAddress || '';
+  }
+
+  private onInputBlur(){
+    this.inputElement.value = this.userFriendlyAddress || '';
   }
 }

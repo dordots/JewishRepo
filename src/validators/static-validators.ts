@@ -14,21 +14,37 @@ export class StaticValidators {
 
   static ValidDate(dateFormat){
     return (c) => {
-      if (moment(c.value, dateFormat).isValid())
+      if (this.isStringValidDate(c.value, dateFormat))
         return null;
       return {invalidDate: true};
     }
   }
 
   static ValidDateIsAfter(baselineDateCallback: ()=>Date, controlTimeFormat: string) {
+      return (control: AbstractControl) => {
+        let baseline = moment(baselineDateCallback(), controlTimeFormat);
+
+        let endtime = moment(control.value, controlTimeFormat);
+
+        if (!baseline.isValid() && endtime.isValid())
+          return {startTimeInvalid: 'Start time must be valid'};
+
+        if (!endtime.isValid() || endtime.isAfter(baseline,"millisecond"))
+          return null;
+
+        return {dateIsNotAfter: false};
+      };
+  }
+
+  static ValidDateIsBefore(baselineDateCallback: ()=>Date, controlTimeFormat: string) {
     return (control: AbstractControl) => {
-      let baseline = baselineDateCallback();
-      let isEndTimeValid = this.ValidDate(controlTimeFormat)(control) == null;
-
-      if (!isEndTimeValid || moment(control.value, controlTimeFormat).toDate().getTime() > baseline.getTime())
-        return null;
-
-      return {validEndTime: false};
+      if (!this.ValidDateIsAfter(baselineDateCallback, controlTimeFormat)(control))
+        return {dateIsNotBefore: true};
+      return null;
     };
+  }
+
+  private static isStringValidDate(date: string, format: string) {
+    return moment(date, format).isValid()
   }
 }
