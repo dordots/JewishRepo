@@ -6,3 +6,63 @@ input{
   display: flex;
   align-items: center;
 }
+
+.input-icon {
+  padding-left: 8px;
+  color: #4b4b4b;
+}
+
+.phone-item {
+  background-color: #fbfbfb;
+  border-radius: 7px;
+  border: 2px solid #f8f8f8;
+  height: 80%;
+  font-size: 1em;
+  input[type='phone']:focus{
+    text-align:left;
+    &::placeholder{
+
+    }
+  }
+  input[type='phone']::placeholder{
+    color: #bdbdbd;
+  }
+}
+
+.mini-phone-plus-icon {
+  color: #21d672;
+  font-size: 0.5rem;
+  ion-icon{
+    font-size: 0.5em !important;
+    font-weight: bolder;
+    position: absolute;
+    top: 8px;
+  }
+}
+
+.add-times-container {
+  margin-right: 25px;
+  margin-top: 20px;
+  .add-text{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    font-weight: 500;
+    font-size: 1.2em;
+  }
+}
+
+.add-times-fab {
+  @include fab-low-shadow(map_get($colors,orange))
+}
+
+.add-image-fab{
+  @include fab-low-shadow(map_get($colors,strong-cyan))
+}
+
+.footer {
+  background-color: map_get($colors, dark);
+  color: map_get($colors, light);
+  font-weight: bold;
+}

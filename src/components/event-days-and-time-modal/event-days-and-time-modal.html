@@ -1,0 +1,27 @@
+<form [formGroup]="form" (submit)="onFormSubmitted()">
+  <div class="time-value">
+    <label>זמני האירוע</label>
+    <span dir="ltr" float-left>{{formatTimes}}</span>
+  </div>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label stacked>שעת התחלה</ion-label>
+          <ion-datetime formControlName="startsAt" [(ngModel)]="event.startTime"
+                        displayFormat="HH:mm" pickerFormat="HH:mm" placeholder="בחר שעה"></ion-datetime>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label stacked>שעת סיום (אם ידועה)</ion-label>
+          <ion-datetime formControlName="endsAt" [(ngModel)]="event.endTime"
+                        displayFormat="HH:mm" pickerFormat="HH:mm" placeholder="בחר שעה"></ion-datetime>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-label>ימים</ion-label>
+  <fk-day-range formControlName="repeatedDays" [(ngModel)]="event.repeatedDays"></fk-day-range>
+  <button ion-button color="dark" class="submit-button" [disabled]="!form.valid">הוסף זמנים</button>
+</form>

@@ -17,7 +17,7 @@ export class Synagogue implements EventBasedMapObject, ServerModel {
   name: string;
   primaryPrayerNosach: PrayerNosach;
   events: Array<Event> = [];
-  phone: string;
+  phone: string[] = [];
   accessibility: Accessibility[];
   picture: string;
 

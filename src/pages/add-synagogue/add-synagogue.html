@@ -1,40 +1,112 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>הוסף בית כנסת</ion-title>
+<!--<ion-header>-->
+<!--<ion-navbar>-->
+<!--<ion-title>הוסף בית כנסת</ion-title>-->
+<!--</ion-navbar>-->
+<!--</ion-header>-->
+
+<!--<ion-content padding dir="rtl">-->
+<!--<form [formGroup]="synagogueFormGroup" (submit)="submitNewSynagogue()">-->
+<!--<ion-item>-->
+<!--<ion-input formControlName="name" placeholder="שם בית כנסת" [(ngModel)]="synagogue.name"></ion-input>-->
+<!--</ion-item>-->
+
+<!--<fk-prayer-version-options label="נוסח עיקרי " formControlName="primaryNosach"-->
+<!--[(ngModel)]="synagogue.primaryPrayerNosach"></fk-prayer-version-options>-->
+
+<!--<ion-item>-->
+<!--<ion-label>כתובת</ion-label>-->
+<!--<ion-input #ionInput fkPlaceAutoComplete [inputElement]="ionInput._native?.nativeElement"-->
+<!--(placeSelected)="onPlaceSelected($event)" formControlName="location"></ion-input>-->
+<!--</ion-item>-->
+
+<!--<fk-accessibility-options [(ngModel)]="synagogue.accessibility" [ngModelOptions]="{standalone: true}"></fk-accessibility-options>-->
+
+<!--<ion-item>-->
+<!--<ion-row justify-content-center>-->
+<!--<label class="choose-picture-label">בחר תמונה של המקום</label>-->
+<!--<button ion-button margin-right (click)="pickImage()">בחר</button>-->
+<!--</ion-row>-->
+<!--</ion-item>-->
+
+<!--<ion-item>-->
+<!--<ion-input formControlName="phone" [(ngModel)]="synagogue.phone"-->
+<!--placeholder="מספר טלפון שלך (לא חובה)" dir="rtl"></ion-input>-->
+<!--</ion-item>-->
+
+<!--<ion-row justify-content-center margin>-->
+<!--<button ion-button type="submit" [disabled]="!synagogueFormGroup.valid">הוסף</button>-->
+<!--</ion-row>-->
+<!--</form>-->
+<!--</ion-content>-->
+
+<ion-header no-border>
+  <ion-navbar color="white">
+    <ion-title text-center>הוסף בית כנסת</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding dir="rtl">
+<ion-content class="form-background-color" dir="rtl">
   <form [formGroup]="synagogueFormGroup" (submit)="submitNewSynagogue()">
     <ion-item>
-      <ion-input formControlName="name" placeholder="שם בית כנסת" [(ngModel)]="synagogue.name"></ion-input>
+      <ion-input formControlName="name" placeholder="שם המקום" [(ngModel)]="synagogue.name"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input #ionInput fkPlaceAutoComplete [inputElement]="ionInput._native?.nativeElement"
+                 (placeSelected)="onPlaceSelected($event)" formControlName="location" placeholder="כתובת"></ion-input>
+      <ion-label>
+        <ion-icon name="map" class="input-icon"></ion-icon>
+      </ion-label>
     </ion-item>
 
     <fk-prayer-version-options label="נוסח עיקרי " formControlName="primaryNosach"
-                               [(ngModel)]="synagogue.primaryPrayerNosach"></fk-prayer-version-options>
+                               [(ngModel)]="synagogue.primaryPrayerNosach">
+    </fk-prayer-version-options>
 
-    <ion-item>
-      <ion-label>כתובת</ion-label>
-      <ion-input #ionInput fkPlaceAutoComplete [inputElement]="ionInput._native?.nativeElement"
-                 (placeSelected)="onPlaceSelected($event)" formControlName="location"></ion-input>
-    </ion-item>
+    <ion-card>
+      <ion-card-header>אפשרויות מקום</ion-card-header>
+      <ion-card-content>
+        <fk-accessibility-options [(ngModel)]="synagogue.accessibility" [ngModelOptions]="{standalone: true}"></fk-accessibility-options>
+      </ion-card-content>
+    </ion-card>
 
-    <fk-accessibility-options [(ngModel)]="synagogue.accessibility" [ngModelOptions]="{standalone: true}"></fk-accessibility-options>
+    <ion-card>
+      <ion-card-header>דרכי התקשרות</ion-card-header>
+      <ion-card-content>
+        <ion-item class="phone-item">
+          <ion-input type="tel" placeholder="הכנס כאן את מספר הפלאפון"></ion-input>
+          <ion-icon item-right name="call" class="mini-phone-plus-icon">
+            <ion-icon name="add"></ion-icon>
+          </ion-icon>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
 
-    <ion-item>
-      <ion-row justify-content-center>
-        <label class="choose-picture-label">בחר תמונה של המקום</label>
-        <button ion-button margin-right (click)="pickImage()">בחר</button>
+    <ion-grid class="event-times-container">
+      <ion-row class="add-times-container">
+        <button ion-fab color="orange" class="add-times-fab"><ion-icon name="time"></ion-icon></button>
+        <div class="add-text">+ הוספת זמנים</div>
       </ion-row>
-    </ion-item>
+      <ion-row *ngFor="let event of synagogue.events">
+        <ion-card>
+          <ion-card-content>
+            <div>{{event.repeatedDays}}</div>
+            <div><span>{{event.startTime}}</span>-<span>{{event.endTime}}</span></div>
+            <ion-icon name="close-circle"></ion-icon>
+          </ion-card-content>
+        </ion-card>
+      </ion-row>
+    </ion-grid>
 
-    <ion-item>
-      <ion-input formControlName="phone" [(ngModel)]="synagogue.phone"
-                 placeholder="מספר טלפון שלך (לא חובה)" dir="rtl"></ion-input>
-    </ion-item>
+    <ion-grid class="event-times-container">
+      <ion-row class="add-times-container">
+        <button ion-fab color="strong-cyan" class="add-image-fab"><ion-icon name="image"></ion-icon></button>
+        <div class="add-text">+ הוספת תמונה של המקום</div>
+      </ion-row>
+    </ion-grid>
 
-    <ion-row justify-content-center margin>
-      <button ion-button type="submit" [disabled]="!synagogueFormGroup.valid">הוסף</button>
-    </ion-row>
+    <ion-footer padding class="footer">
+      <div text-center>שמור פרטי בית כנסת</div>
+    </ion-footer>
   </form>
 </ion-content>

@@ -1,9 +1,10 @@
 import {Component, ComponentRef} from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {EventBasedMapObject} from "../../common/models/map-objects/server-map-object";
-import {SelectMapObjectComponent} from "../../components/select-map-object/select-map-object";
 import {AbstractAddEventComponent} from "./components/abstract-add-event-component";
 import {ServerModel} from "../../common/models/common/server-model";
+import {AddPrayerComponent} from "./components/add-prayer/add-prayer";
+import {EventBasedMapObjectProvider} from "../../providers/server-providers/event-based-map-object.provider";
 
 export interface AddEventPageNavigationArgs {
   addEventComponentType: any;
@@ -24,10 +25,13 @@ export class AddEventPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
+              private mapObjectProvider: EventBasedMapObjectProvider,
               private modalCtrl: ModalController) {
     let pageParams = this.navParams.data as AddEventPageNavigationArgs;
     this.mapObject = pageParams.mapObject;
-    this.addEventComponentType = pageParams.addEventComponentType;
+
+    // todo: remove the HARD-CODED "AddPrayerComponent" below
+    this.addEventComponentType = pageParams.addEventComponentType || AddPrayerComponent;
     this.errors = [];
   }
 
@@ -36,24 +40,25 @@ export class AddEventPage {
   }
 
   async openSelectMapObject() {
-    const modal = this.modalCtrl.create(SelectMapObjectComponent);
-    modal.onDidDismiss(async (id) => {
-      if (id == null)
-        return;
-
-      this.mapObject = await this.getMapObjectById(id);
-      this.addEventComponent.mapObject = this.mapObject;
-      console.log(this.mapObject);
-    });
-
-    await modal.present();
+    this.mapObject = await this.getMapObjectById("5b5468974f46c65fa709efcb");
+    this.addEventComponent.mapObject = this.mapObject;
+    // const modal = this.modalCtrl.create(SelectMapObjectComponent);
+    // modal.onDidDismiss(async (id) => {
+    //   if (id == null)
+    //     return;
+    //   this.mapObject = await this.getMapObjectById(id);
+    //   this.addEventComponent.mapObject = this.mapObject;
+    //   console.log(this.mapObject);
+    // });
+    //
+    // await modal.present();
   }
 
   getMapObjectById(id: string): Promise<EventBasedMapObject&ServerModel>{
-    return this.addEventComponent.mapObjectProvider.getById(id, this.addEventComponent.mapObjectType);
+    return this.mapObjectProvider.getById(id, this.addEventComponent.mapObjectType);
   }
 
-  onAddEventComponentCreated(compRef: ComponentRef<AbstractAddEventComponent>) {
+  async onAddEventComponentCreated(compRef: ComponentRef<AbstractAddEventComponent>) {
     this.addEventComponent = compRef.instance;
     this.addEventComponent.formSubmitted.subscribe(async (event) => {
       this.errors = [];

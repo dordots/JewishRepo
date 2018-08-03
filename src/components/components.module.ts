@@ -15,6 +15,7 @@ import {LocationPickerComponent} from './location-picker/location-picker';
 import {PlaceAutoCompleteComponent} from '../directives/place-autocomplete/place-autocomplete';
 import {SelectMapObjectComponent} from './select-map-object/select-map-object';
 import {DayRangeComponent} from './day-range/day-range';
+import {EventDaysAndTimeModalComponent} from './event-days-and-time-modal/event-days-and-time-modal';
 
 @NgModule({
 	declarations: [
@@ -31,7 +32,8 @@ import {DayRangeComponent} from './day-range/day-range';
     LocationPickerComponent,
     PlaceAutoCompleteComponent,
     SelectMapObjectComponent,
-    DayRangeComponent
+    DayRangeComponent,
+    EventDaysAndTimeModalComponent
   ],
 	imports: [IonicModule],
   providers: [GoogleMapProvider],
@@ -50,7 +52,8 @@ import {DayRangeComponent} from './day-range/day-range';
     LocationPickerComponent,
     PlaceAutoCompleteComponent,
     SelectMapObjectComponent,
-    DayRangeComponent
+    DayRangeComponent,
+    EventDaysAndTimeModalComponent
   ]
 })
 export class ComponentsModule {}
