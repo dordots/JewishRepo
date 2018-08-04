@@ -1,12 +1,24 @@
-import {AfterContentInit, Directive, ElementRef, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
+import {
+  AfterContentInit,
+  ChangeDetectorRef,
+  Directive,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  Output
+} from '@angular/core';
 import {GoogleMapProvider} from "../../providers/google-map/google-map-provider";
 import {MapObject, ServerMapObject} from "../../common/models/map-objects/server-map-object";
 import Autocomplete = google.maps.places.Autocomplete;
+import PlaceResult = google.maps.places.PlaceResult;
+import {AbstractControl, NG_VALIDATORS, Validator} from "@angular/forms";
+import {StaticValidators} from "../../validators/static-validators";
 
 @Directive({
-  selector: '[fkPlaceAutoComplete]'
+  selector: '[fkPlaceAutoComplete]',
 })
-export class PlaceAutoCompleteComponent implements AfterContentInit, OnDestroy {
+export class PlaceAutoComplete implements AfterContentInit, OnDestroy, Validator {
   private _inputElement: HTMLInputElement;
 
   @Input() set inputElement(v) {
@@ -30,11 +42,12 @@ export class PlaceAutoCompleteComponent implements AfterContentInit, OnDestroy {
 
   @Output() placeSelected: EventEmitter<MapObject>;
 
-  userFriendlyAddress: string;
+  mapObject: MapObject = {} as any;
   autoComplete: Autocomplete;
   marker: google.maps.Marker;
 
-  constructor(private googleMapProvider: GoogleMapProvider, private el: ElementRef) {
+  constructor(private googleMapProvider: GoogleMapProvider,
+              private el: ElementRef) {
     console.log('Hello PlaceAutocompleteComponent directive');
     this.placeSelected = new EventEmitter<ServerMapObject>();
   }
@@ -55,14 +68,18 @@ export class PlaceAutoCompleteComponent implements AfterContentInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.inputElement.removeEventListener("change", this.onInputChange.bind(this));
-    this.inputElement.removeEventListener("focus", this.onInputChange.bind(this));
-    this.inputElement.removeEventListener("blur", this.onInputChange.bind(this));
+    this.inputElement.removeEventListener("focus", this.onInputFocus.bind(this));
+    this.inputElement.removeEventListener("blur", this.onInputBlur.bind(this));
+  }
+
+  validate(c: AbstractControl): { [key: string]: any; } {
+    return StaticValidators.ValidateLocation(()=> this.mapObject);
   }
 
   private registerToInputElementEvents() {
     this.inputElement.addEventListener("change", this.onInputChange.bind(this));
-    this.inputElement.addEventListener("focus", this.onInputChange.bind(this));
-    this.inputElement.addEventListener("blur", this.onInputChange.bind(this));
+    this.inputElement.addEventListener("focus", this.onInputFocus.bind(this));
+    this.inputElement.addEventListener("blur", this.onInputBlur.bind(this));
   }
 
   async initAutoComplete() {
@@ -86,30 +103,13 @@ export class PlaceAutoCompleteComponent implements AfterContentInit, OnDestroy {
         // pressed the Enter key, or the Place Details request failed.
         return;
       }
-      this.placeSelected.emit({
+      this.mapObject = {
         latLng: place.geometry.location.toJSON(),
         userFriendlyAddress: place.formatted_address
-      });
-
-      this.userFriendlyAddress = place.formatted_address;
-      this.inputElement.value = this.userFriendlyAddress;
-
-      if (!this.map)
-        return;
-
-      if (this.marker)
-        this.marker.setMap(null);
-
-      if (this.toMarkerSelectedPlace)
-        this.marker = this.googleMapProvider.createMarkerAt(this.map, place.geometry.location.toJSON());
-
-      // If the place has a geometry, then present it on a map.
-      if (place.geometry.viewport) {
-        this.map.fitBounds(place.geometry.viewport);
-      } else {
-        this.map.setCenter(place.geometry.location);
-        this.map.setZoom(17);  // Why 17? Because it looks good.
-      }
+      };
+      this.emitEvents();
+      this.inputElement.value = this.mapObject.userFriendlyAddress;
+      this.handleMapMarkerAndNavigation(place);
     });
   }
 
@@ -118,16 +118,57 @@ export class PlaceAutoCompleteComponent implements AfterContentInit, OnDestroy {
       throw new Error("Input element must be type of HTMLInputElement");
   }
 
-  private onInputChange(){
-    this.userFriendlyAddress = this.inputElement.value;
-    this.placeSelected.emit(null);
+  private emitEvents(){
+    // this.updateMapObject(mapObject);
+    this.placeSelected.emit(this.mapObject);
   }
 
-  private onInputFocus(){
-    this.inputElement.value = this.userFriendlyAddress || '';
+  private handleMapMarkerAndNavigation(place: PlaceResult){
+    if (!this.map)
+      return;
+
+    if (this.marker)
+      this.marker.setMap(null);
+
+    if (this.toMarkerSelectedPlace)
+      this.marker = this.googleMapProvider.createMarkerAt(this.map, place.geometry.location.toJSON());
+
+    // If the place has a geometry, then present it on a map.
+    if (place.geometry.viewport) {
+      this.map.fitBounds(place.geometry.viewport);
+    } else {
+      this.map.setCenter(place.geometry.location);
+      this.map.setZoom(17);  // Why 17? Because it looks good.
+    }
   }
 
-  private onInputBlur(){
-    this.inputElement.value = this.userFriendlyAddress || '';
+  private onInputChange(ev){
+    // this.userFriendlyAddress = this.inputElement.value;
+    this.resetMapObject();
+    // if (this.mapObject.userFriendlyAddress != null || this.mapObject.latLng != null){
+      // this.updateMapObject(mapObject);
+    // }
+    this.placeSelected.emit(this.mapObject);
   }
+
+  private onInputFocus(ev){
+    this.inputElement.value = this.mapObject.userFriendlyAddress || '';
+  }
+
+  private onInputBlur(ev: Event){
+    this.inputElement.value = this.mapObject.userFriendlyAddress || '';
+  }
+
+  resetMapObject(){
+    this.mapObject.latLng = null;
+    this.mapObject.userFriendlyAddress = null;
+  }
+
+  // private updateMapObject(mapObject: MapObject){
+  //   if (this.mapObject == null)
+  //     return;
+  //
+  //   this.mapObject.latLng = mapObject.latLng;
+  //   this.mapObject.userFriendlyAddress = mapObject.userFriendlyAddress;
+  // }
 }

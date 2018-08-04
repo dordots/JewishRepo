@@ -1,9 +1,9 @@
 import {NgModule} from '@angular/core';
-import {PlaceAutoCompleteComponent} from "./place-autocomplete/place-autocomplete";
+import {PlaceAutoComplete} from "./place-autocomplete/place-autocomplete";
 
 @NgModule({
-	declarations: [PlaceAutoCompleteComponent],
+	declarations: [PlaceAutoComplete],
 	imports: [],
-	exports: [PlaceAutoCompleteComponent]
+	exports: [PlaceAutoComplete]
 })
 export class DirectivesModule {}

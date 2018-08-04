@@ -15,6 +15,7 @@ import {EventBasedMapObjectProvider} from '../providers/server-providers/event-b
 import {HttpClientModule} from "@angular/common/http";
 import {AppAssetsProvider} from '../providers/app-assets/app-assets';
 import {EventDaysAndTimeModalComponent} from "../components/event-days-and-time-modal/event-days-and-time-modal";
+import {PlaceAutoComplete} from "../directives/place-autocomplete/place-autocomplete";
 
 @NgModule({
   declarations: [

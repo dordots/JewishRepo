@@ -2,6 +2,8 @@ import {Component} from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {LocationPickerComponent} from "../../components/location-picker/location-picker";
+import {SearchEvent} from "../../common/models/event/search-event";
+import {StaticValidators} from "../../validators/static-validators";
 
 @IonicPage()
 @Component({
@@ -10,27 +12,28 @@ import {LocationPickerComponent} from "../../components/location-picker/location
 })
 export class SearchEventPage {
 
-  // basicEventQuery: BasicEventQuery;
+  searchEvent: SearchEvent;
   eventFormGroup: FormGroup;
-  // searchableEvents: Array<SearchableEvent>;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private modalCtrl: ModalController,
               public formBuilder: FormBuilder) {
-    // this.basicEventQuery = {} as any;
-    // this.searchableEvents = SearchableEvents;
-    this.initEventFormGroup();
+    this.eventFormGroup = this.createForm();
+    this.searchEvent = new SearchEvent();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SearchEventPage');
   }
 
-  private initEventFormGroup() {
-    this.eventFormGroup = this.formBuilder.group({
+  private createForm() {
+    return this.formBuilder.group({
       eventType: ['', [Validators.required]],
-      location: ['', [Validators.required]]
+      location: ['', [Validators.required]],
+      startsAt: ['', [StaticValidators.ValidDate('HH:mm'),
+                      StaticValidators.ValidDateIsBefore(()=>this.searchEvent.endTime,"HH:mm")]],
+      endsAt: ['', [StaticValidators.ValidDateIsAfter(()=>this.searchEvent.startTime,"HH:mm")]],
     });
   }
 

@@ -11,9 +11,9 @@
     </ion-item>
 
     <ion-item>
-      <ion-input formControlName="location" placeholder="כתובת" clearInput
-                 #ionInput fkPlaceAutoComplete [inputElement]="ionInput._native?.nativeElement"
-                 (placeSelected)="onPlaceSelected($event)" ></ion-input>
+      <ion-input placeholder="כתובת" clearInput formControlName="location" ngModel
+                 fkPlaceAutoComplete (placeSelected)="onPlaceSelected($event)"
+                 #ionInput [inputElement]="ionInput._native?.nativeElement"></ion-input>
       <ion-label>
         <ion-icon name="map" class="input-icon"></ion-icon>
       </ion-label>
@@ -90,7 +90,7 @@
     </ion-row>
   </form>
 </ion-content>
-
 <ion-footer padding class="footer" [ngClass]="{'footer-disabled': !synagogueFormGroup.valid}" text-center>
+  <button (click)="printErrors()">errors</button>
   <button class="transparent save-synagogue-button">שמור פרטי בית כנסת</button>
 </ion-footer>
