@@ -5,15 +5,17 @@
 </ion-header>
 
 <ion-content class="form-background-color" dir="rtl">
-  <form [formGroup]="synagogueFormGroup" (submit)="submitNewSynagogue()">
+  <form [formGroup]="formGroup" (submit)="submitNewSynagogue()">
     <ion-item dir="ltr">
-      <ion-input formControlName="name" placeholder="שם המקום" [(ngModel)]="synagogue.name" clearInput></ion-input>
+      <ion-input formControlName="name" [(ngModel)]="synagogue.name"
+                 placeholder="שם המקום" clearInput dir="rtl"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-input placeholder="כתובת" clearInput formControlName="location" ngModel
-                 fkPlaceAutoComplete (placeSelected)="onPlaceSelected($event)"
-                 #ionInput [inputElement]="ionInput._native?.nativeElement"></ion-input>
+      <ion-input #ionInput fkPlaceAutoComplete [(ngModel)]="synagogue"
+                 [formControl]="formGroup.get('location')"
+                 [inputElement]="ionInput._native?.nativeElement"
+                 clearInput placeholder="בחר כתובת" dir="rtl"></ion-input>
       <ion-label>
         <ion-icon name="map" class="input-icon"></ion-icon>
       </ion-label>
@@ -38,7 +40,7 @@
           <ion-input type="tel" [(ngModel)]="phoneNumber" formControlName="phone"
                      placeholder="הכנס כאן את מספר הפלאפון" text-left></ion-input>
 
-          <button [disabled]="!synagogueFormGroup.get('phone').valid || phoneNumber==''||phoneNumber==null"
+          <button [disabled]="!formGroup.get('phone').valid || phoneNumber==''||phoneNumber==null"
                   class="mini-phone-plus-button" item-right (click)="addPhoneNumber()">
             <ion-icon name="call" class="mini-phone-plus-icon" >
               <ion-icon name="add"></ion-icon>
@@ -90,7 +92,6 @@
     </ion-row>
   </form>
 </ion-content>
-<ion-footer padding class="footer" [ngClass]="{'footer-disabled': !synagogueFormGroup.valid}" text-center>
-  <button (click)="printErrors()">errors</button>
+<ion-footer padding class="footer" [ngClass]="{'footer-disabled': !formGroup.valid}" text-center>
   <button class="transparent save-synagogue-button">שמור פרטי בית כנסת</button>
 </ion-footer>

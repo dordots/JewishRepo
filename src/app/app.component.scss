@@ -17,11 +17,11 @@
 
 .alert-wrapper {
   direction: rtl;
-  .alert-radio-icon {
+  .alert-radio-icon, .alert-checkbox-icon {
     left: 0;
     right: 13px;
   }
-  .alert-button-group{
+  .alert-button-group, .alert-checkbox-group{
     justify-content: space-between;
   }
 }
@@ -32,4 +32,24 @@
 
 .form-background-color {
   background-color: map_get($colors, cream)
+}
+
+.footer {
+  background-color: map_get($colors, dark);
+}
+
+.footer-disabled {
+  background-color: transparentize(map_get($colors, dark), 0.65);
+}
+
+ion-input[dir=rtl][clearInput]{
+  button{
+    &.text-input-clear-icon {
+      left: 0;
+      right: inherit;
+    }
+  }
+  input{
+    padding-right: 0 !important;
+  }
 }

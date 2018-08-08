@@ -1,28 +1,29 @@
 import {
-  AfterContentInit,
-  ChangeDetectorRef,
+  AfterContentInit, ChangeDetectorRef,
   Directive,
   ElementRef,
   EventEmitter,
   Input,
   OnDestroy,
-  Output
+  Output, SkipSelf
 } from '@angular/core';
 import {GoogleMapProvider} from "../../providers/google-map/google-map-provider";
 import {MapObject, ServerMapObject} from "../../common/models/map-objects/server-map-object";
 import Autocomplete = google.maps.places.Autocomplete;
 import PlaceResult = google.maps.places.PlaceResult;
-import {AbstractControl, NG_VALIDATORS, Validator} from "@angular/forms";
-import {StaticValidators} from "../../validators/static-validators";
+import {FormControl, NgControl,} from "@angular/forms";
+import {AbstractValueAccessor, MakeProvider} from "../../common/component-helpers/abstract-value-accessor";
 
 @Directive({
   selector: '[fkPlaceAutoComplete]',
+  providers: [NgControl as any, MakeProvider(PlaceAutoComplete)]
 })
-export class PlaceAutoComplete implements AfterContentInit, OnDestroy, Validator {
+export class PlaceAutoComplete extends AbstractValueAccessor implements AfterContentInit, OnDestroy {
   private _inputElement: HTMLInputElement;
+  private previousSelectedMapObject: MapObject;
 
   @Input() set inputElement(v) {
-    if (v != null){
+    if (v != null) {
       this.validateElementIsHTMLInputElement(v);
       this._inputElement = v;
       this.initAutoComplete();
@@ -38,16 +39,19 @@ export class PlaceAutoComplete implements AfterContentInit, OnDestroy, Validator
 
   @Input() map;
 
+  @Input() formControl: FormControl;
+
   @Input() toMarkerSelectedPlace: boolean = false;
 
   @Output() placeSelected: EventEmitter<MapObject>;
 
-  mapObject: MapObject = {} as any;
   autoComplete: Autocomplete;
   marker: google.maps.Marker;
 
   constructor(private googleMapProvider: GoogleMapProvider,
-              private el: ElementRef) {
+              private el: ElementRef,
+              @SkipSelf() private changeDetectRef: ChangeDetectorRef) {
+    super();
     console.log('Hello PlaceAutocompleteComponent directive');
     this.placeSelected = new EventEmitter<ServerMapObject>();
   }
@@ -67,17 +71,16 @@ export class PlaceAutoComplete implements AfterContentInit, OnDestroy, Validator
   }
 
   ngOnDestroy(): void {
-    this.inputElement.removeEventListener("change", this.onInputChange.bind(this));
     this.inputElement.removeEventListener("focus", this.onInputFocus.bind(this));
     this.inputElement.removeEventListener("blur", this.onInputBlur.bind(this));
   }
 
-  validate(c: AbstractControl): { [key: string]: any; } {
-    return StaticValidators.ValidateLocation(()=> this.mapObject);
+  private validateElementIsHTMLInputElement(el) {
+    if (!(el instanceof HTMLInputElement))
+      throw new Error("Input element must be type of HTMLInputElement");
   }
 
   private registerToInputElementEvents() {
-    this.inputElement.addEventListener("change", this.onInputChange.bind(this));
     this.inputElement.addEventListener("focus", this.onInputFocus.bind(this));
     this.inputElement.addEventListener("blur", this.onInputBlur.bind(this));
   }
@@ -103,27 +106,33 @@ export class PlaceAutoComplete implements AfterContentInit, OnDestroy, Validator
         // pressed the Enter key, or the Place Details request failed.
         return;
       }
-      this.mapObject = {
-        latLng: place.geometry.location.toJSON(),
-        userFriendlyAddress: place.formatted_address
+
+      this.previousSelectedMapObject = {
+        latLng: this.value.latLng,
+        userFriendlyAddress: this.value.userFriendlyAddress
       };
+
+      this.updateNgModel(place);
+      this.updateFormControl();
+
+
       this.emitEvents();
-      this.inputElement.value = this.mapObject.userFriendlyAddress;
       this.handleMapMarkerAndNavigation(place);
     });
   }
 
-  private validateElementIsHTMLInputElement(el) {
-    if (!(el instanceof HTMLInputElement))
-      throw new Error("Input element must be type of HTMLInputElement");
+  private updateNgModel(place: PlaceResult) {
+    if (this.value == null)
+      return;
+    this.value.userFriendlyAddress = this.inputElement.value;
+    this.value.latLng = place.geometry.location.toJSON();
   }
 
-  private emitEvents(){
-    // this.updateMapObject(mapObject);
-    this.placeSelected.emit(this.mapObject);
+  private emitEvents() {
+    this.placeSelected.emit(this.value);
   }
 
-  private handleMapMarkerAndNavigation(place: PlaceResult){
+  private handleMapMarkerAndNavigation(place: PlaceResult) {
     if (!this.map)
       return;
 
@@ -142,33 +151,28 @@ export class PlaceAutoComplete implements AfterContentInit, OnDestroy, Validator
     }
   }
 
-  private onInputChange(ev){
-    // this.userFriendlyAddress = this.inputElement.value;
-    this.resetMapObject();
-    // if (this.mapObject.userFriendlyAddress != null || this.mapObject.latLng != null){
-      // this.updateMapObject(mapObject);
-    // }
-    this.placeSelected.emit(this.mapObject);
+  /**
+   * Used for set the input value to the `userFriendlyAddress` because it always is being reset.
+   */
+  private onInputFocus() {
+    if (this.inputElement.value != '')
+      this.inputElement.value = this.value.userFriendlyAddress || '';
   }
 
-  private onInputFocus(ev){
-    this.inputElement.value = this.mapObject.userFriendlyAddress || '';
+  /**
+   * Used for set the input value to the `userFriendlyAddress` because it always is being reset.
+   */
+  private onInputBlur() {
+    if (this.value.userFriendlyAddress == null)
+      this.inputElement.value = '';
+    else
+      this.inputElement.value = this.value.userFriendlyAddress;
   }
 
-  private onInputBlur(ev: Event){
-    this.inputElement.value = this.mapObject.userFriendlyAddress || '';
+  private updateFormControl() {
+    if (this.formControl) {
+      this.formControl.updateValueAndValidity({onlySelf: false, emitEvent: true});
+      this.changeDetectRef.detectChanges();
+    }
   }
-
-  resetMapObject(){
-    this.mapObject.latLng = null;
-    this.mapObject.userFriendlyAddress = null;
-  }
-
-  // private updateMapObject(mapObject: MapObject){
-  //   if (this.mapObject == null)
-  //     return;
-  //
-  //   this.mapObject.latLng = mapObject.latLng;
-  //   this.mapObject.userFriendlyAddress = mapObject.userFriendlyAddress;
-  // }
 }

@@ -48,28 +48,7 @@ ion-icon[name=call]{
   @include fab-low-shadow(map_get($colors,strong-cyan))
 }
 
-.footer {
-  background-color: map_get($colors, dark);
-}
-
-.footer-disabled {
-  background-color: transparentize(map_get($colors, dark), 0.5);
-}
-
 .save-synagogue-button {
   color: map_get($colors, light);
   font-weight: bold;
-}
-
-.text-input-clear-icon {
-  left: 0;
-}
-
-.input-md[clearInput] {
-  .text-input {
-    padding-right: 0;
-  }
-  .text-input-clear-icon{
-    right: inherit;
-  }
 }

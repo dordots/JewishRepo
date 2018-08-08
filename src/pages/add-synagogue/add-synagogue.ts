@@ -10,8 +10,6 @@ import {Event, FormatDaysArray, FormatTimeRange} from "../../common/models/event
 import {DatePipe} from "@angular/common";
 import {PrintFormValidationErrors} from "../../common/models/common/utils";
 import {StaticValidators} from "../../validators/static-validators";
-// import {StaticValidators} from "../../validators/static-validators";
-// import {PlaceAutoComplete} from "../../directives/place-autocomplete/place-autocomplete";
 
 @IonicPage()
 @Component({
@@ -22,7 +20,7 @@ import {StaticValidators} from "../../validators/static-validators";
 export class AddSynagoguePage {
 
   phoneNumber: string;
-  synagogueFormGroup: FormGroup;
+  formGroup: FormGroup;
   synagogue: Synagogue;
 
   constructor(public navCtrl: NavController,
@@ -33,7 +31,7 @@ export class AddSynagoguePage {
               private datePipe: DatePipe,
               private modalCtrl: ModalController) {
     this.synagogue = new Synagogue();
-    this.synagogueFormGroup = this.createSynagogueValidator();
+    this.formGroup = this.createSynagogueValidator();
   }
 
   ionViewDidLoad() {
@@ -44,32 +42,14 @@ export class AddSynagoguePage {
     let group = new FormGroup({
       name: new FormControl(this.synagogue.name, [Validators.required]),
       primaryNosach: new FormControl(this.synagogue.primaryPrayerNosach, {validators: [Validators.required], updateOn: 'change'}),
-      location: new FormControl(this.synagogue, {validators: StaticValidators.ValidateLocation(()=>this.synagogue), updateOn: "blur"}),
+      location: new FormControl(this.synagogue, [StaticValidators.ValidateLocation(()=>this.synagogue)]),
       phone: new FormControl(this.synagogue.phone, [Validators.pattern(/^\d{2,3}-?\d{7}$/)])
-    }, {updateOn: "blur"});
+    });
     return group;
   }
 
   async submitNewSynagogue(){
     await this.mapObjectProvider.create(this.synagogue);
-  }
-
-  // onPlaceSelected(mapObject: ServerMapObject){
-  //   if (mapObject == null || mapObject.userFriendlyAddress == null || mapObject.latLng == null){
-  //     this.synagogue.latLng = null;
-  //     this.synagogue.userFriendlyAddress = null;
-  //     this.synagogueFormGroup.controls['location'].setErrors({'incorrect': true});
-  //   } else {
-  //     this.synagogue.latLng = mapObject.latLng;
-  //     this.synagogue.userFriendlyAddress = mapObject.userFriendlyAddress;
-  //     this.synagogueFormGroup.get('location').setErrors(null);
-  //   }
-  //   this.cd.detectChanges();
-  // }
-
-  onPlaceSelected(mapObject: MapObject){
-    this.synagogue.latLng = mapObject.latLng;
-    this.synagogue.userFriendlyAddress = mapObject.userFriendlyAddress;
   }
 
   async pickImage() {
@@ -118,7 +98,7 @@ export class AddSynagoguePage {
   }
 
   printErrors() {
-    PrintFormValidationErrors(this.synagogueFormGroup);
+    PrintFormValidationErrors(this.formGroup);
     console.log("---");
   }
 }

@@ -1,4 +1,4 @@
-<ion-row>
+<ion-row padding>
   <ion-col *ngFor="let option of getOptionsList()" text-center>
     <ion-label>{{option.translation}}</ion-label>
     <ion-checkbox [checked]="isOptionChecked(option.opt)"

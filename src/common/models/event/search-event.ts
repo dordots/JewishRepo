@@ -1,15 +1,20 @@
-import LatLngLiteral = google.maps.LatLngLiteral;
 import {CreateSynagogueOptions, SynagogueOptions} from "../common/enums/synagogue-option";
+import {MapObject} from "../map-objects/server-map-object";
 
 export class SearchEvent {
+  name: string;
   radiusRange: number;
-  locationLatLng: LatLngLiteral;
-  userFriendlyAddress: string;
+  mapObject: MapObject;
   startTime: Date;
   endTime: Date;
+  daysRange: number[];
   synagogueOptions: SynagogueOptions;
+  prayerNosach: string[];
 
   constructor(){
+    this.daysRange = [];
+    this.prayerNosach = [];
+    this.mapObject = {latLng: null, userFriendlyAddress: null};
     this.synagogueOptions = CreateSynagogueOptions();
   }
 }

@@ -48,8 +48,6 @@ export class StaticValidators {
   static ValidateLocation(mapObejctCallback: ()=> MapObject){
     return (c) => {
       let mapObject = mapObejctCallback();
-      console.log("validate location...");
-      console.log(mapObject);
       if (mapObject == null || mapObject.userFriendlyAddress == null || mapObject.latLng == null){
         return {invalidMapObject: true};
       }
