@@ -1,0 +1,41 @@
+page-synagogue-details{
+  ion-icon[name=menu]{
+    color: white;
+  }
+
+  .synagogue-details-ion-header{
+    height: 40%;
+    img {
+      position: absolute;
+      top: 0;
+      z-index: -1;
+      height: 100%;
+      width: 100%;
+    }
+    ion-navbar{
+      .toolbar-background{
+        color: white;
+        background: transparent;
+      }
+      button{
+        color: white;
+      }
+    }
+  }
+
+  .last-updated-at{
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+  }
+
+  .relative-distance {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    font-size: 0.55em;
+    .distance-text {
+      padding-right: 4px;
+    }
+  }
+}

@@ -1,8 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {Nav} from "ionic-angular";
 import {AddSynagoguePage} from "../../pages/add-synagogue/add-synagogue";
-import {AddEventPageNavigationArgs} from "../../pages/add-event/add-event";
-import {AddPrayerComponent} from "../../pages/add-event/components/add-prayer/add-prayer";
 
 declare type PagesDictionary = { [componentName: string]: { title: string, componentName: string, args?: any } }
 
@@ -21,9 +19,7 @@ export class ApplicationMenuComponent {
     console.log('Hello ApplicationMenuComponent Component');
     this.pages = {};
     this.pages.AddSynagoguePage = {title: "הוספת בית כנסת", componentName: "AddSynagoguePage"};
-    this.pages.AddEventPage = {title: "הוספת מניין", componentName: "AddEventPage", args: {
-        addEventComponentType: AddPrayerComponent
-      } as AddEventPageNavigationArgs};
+    this.pages.SynagogueDetails = {title: "פרטי בית כנסת", componentName: "SynagogueDetailsPage"};
   }
 
   getPagesTitle() {
