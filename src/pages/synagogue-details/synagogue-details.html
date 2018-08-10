@@ -11,7 +11,31 @@
   </div>
 </ion-header>
 
-
-<ion-content padding>
-
+<ion-content padding *ngIf="synagogue" dir="rtl">
+  <h1>{{synagogue.name}}</h1>
+  <ion-row justify-content-between>
+    <div class="userFriendlyAddress">{{synagogue.userFriendlyAddress}}</div>
+    <span>זמני תפילה קרובה</span>
+  </ion-row>
+  <hr>
+  <ion-grid>
+    <ion-row><h4>מספר טלפון</h4></ion-row>
+    <ion-row>
+      <ion-col col-2 ion-row align-items-center><ion-icon name="call"></ion-icon></ion-col>
+      <ion-col col-7 ion-row align-items-center><div class="phone-number-to-call">{{synagogue.phone[0]}}</div></ion-col>
+      <ion-col col-3 ion-row align-items-center end><button class="call-now-button">התקשר עכשיו</button></ion-col>
+    </ion-row>
+  </ion-grid>
+  <hr>
+  <ion-grid>
+    <ion-row><h4>זמני תפילה</h4></ion-row>
+    <ion-row *ngFor="let event of synagogue.events">
+      <ion-col col-2>{{event.title}}:</ion-col>
+      <ion-col col-5 text-center>{{event.formatDaysArray()}}</ion-col>
+      <ion-col col-5 text-left dir="ltr"><div class="event-time-range">{{formatTimeRange(event)}}</div></ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-fab bottom margin-right>
+    <button ion-fab color="dark"><ion-icon name="create"></ion-icon></button>
+  </ion-fab>
 </ion-content>

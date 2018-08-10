@@ -12,6 +12,9 @@ import LatLngLiteral = google.maps.LatLngLiteral;
 
 @Injectable()
 export class EventBasedMapObjectProvider extends AbstractServerProvider{
+
+  static mockedId = "5b5468974f46c65fa709efcb";
+
   constructor(private http: HttpClient, appConfig: AppConfigProvider) {
     super(appConfig);
     console.log('Hello EventBasedMapObjectProvider Provider');

@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Event, FormatTimeRange} from "../../common/models/event/event";
+import {Event} from "../../common/models/event/event";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {StaticValidators} from "../../validators/static-validators";
 import {DatePipe} from "@angular/common";
@@ -46,7 +46,7 @@ export class EventDaysAndTimeModalComponent {
     this.viewCtrl.dismiss();
   }
 
-  get formatTimeRange(){
-    return FormatTimeRange(this.datePipe, this.event.startTime, this.event.endTime);
+  formatTimeRange(event: Event){
+    return event.formatTimeRange(this.datePipe);
   }
 }

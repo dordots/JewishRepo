@@ -1,16 +1,13 @@
 import {Event} from "./event";
 import {PrayerNosach} from "../common/enums/prayer-nosach";
+import {PrayerTypes} from "../common/enums/prayer-types";
 
-export class PrayerEvent implements Event {
+export class PrayerEvent extends Event {
 
-  title: string;
   nosach: PrayerNosach;
-  startTime: Date;
-  endTime: Date;
-  repeatedDays: number[];
-  types: PrayerEvent;
+  types: PrayerTypes;
 
   constructor(){
-    this.repeatedDays = [];
+    super();
   }
 }

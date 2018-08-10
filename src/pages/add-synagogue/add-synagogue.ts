@@ -6,7 +6,7 @@ import {MapObject, ServerMapObject} from "../../common/models/map-objects/server
 import {ImagePicker, ImagePickerOptions, OutputType} from "@ionic-native/image-picker";
 import {EventBasedMapObjectProvider} from "../../providers/server-providers/event-based-map-object.provider";
 import {EventDaysAndTimeModalComponent} from "../../components/event-days-and-time-modal/event-days-and-time-modal";
-import {Event, FormatDaysArray, FormatTimeRange} from "../../common/models/event/event";
+import {Event} from "../../common/models/event/event";
 import {DatePipe} from "@angular/common";
 import {PrintFormValidationErrors} from "../../common/models/common/utils";
 import {StaticValidators} from "../../validators/static-validators";
@@ -86,11 +86,11 @@ export class AddSynagoguePage {
   }
 
   formatTimeRange(event: Event){
-    return FormatTimeRange(this.datePipe, event.startTime, event.endTime);
+    return event.formatTimeRange(this.datePipe);
   }
 
   formatDays(event: Event){
-    return FormatDaysArray(event.repeatedDays);
+    return event.formatDaysArray();
   }
 
   removeEvent(event) {

@@ -1,13 +1,13 @@
 import {Event} from "../event/event";
 import {PrayerNosach} from "../common/enums/prayer-nosach";
 import {ServerModel} from "../common/server-model";
-import {pick} from "lodash";
 import {generateObjectId} from "../common/utils";
-import {merge} from "lodash-es";
+import {merge, pick} from "lodash-es";
 import {EventBasedMapObject} from "./server-map-object";
 import {MapObjectTypes} from "../common/enums/map-object-types";
 import {CreateSynagogueOptions, SynagogueOptions} from "../common/enums/synagogue-option";
 import LatLngLiteral = google.maps.LatLngLiteral;
+import {PrayerEvent} from "../event/prayer-event";
 
 export class Synagogue implements EventBasedMapObject, ServerModel {
   _id: string;
@@ -23,8 +23,14 @@ export class Synagogue implements EventBasedMapObject, ServerModel {
 
   fromServerModel(serverModel: any): Synagogue{
     let model = new Synagogue();
-    merge(model, pick(serverModel, ['_id', 'name','primaryPrayerNosach','latlng', 'userFriendlyAddress','events','phone','picture']));
-    model.synagogueOptions = serverModel.externals.synagogueOptions;
+    let requiredFieldsFromServerModel = pick(serverModel, ['_id', 'name','primaryPrayerNosach','latlng', 'userFriendlyAddress','phone','picture']);
+    merge(model, requiredFieldsFromServerModel);
+    model.synagogueOptions = serverModel.externals;
+    model.events = serverModel.events.map(ev => {
+      let evModel = new PrayerEvent();
+      evModel.fromServerModel(ev);
+      return evModel;
+    });
     return model;
   }
 

@@ -1,3 +1,11 @@
 @mixin fab-low-shadow($color) {
   box-shadow: transparentize($color, 0.5) 1px 7px 17px;
 }
+
+@mixin circle-icon(){
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
