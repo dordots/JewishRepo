@@ -1,14 +1,14 @@
-<div id="menu-container">
+<div id="application-menu" [attr.currentPage]="currentPage">
   <button ion-button menuToggle clear color="dark">
     <ion-icon name="menu" item-start></ion-icon>
   </button>
+  <ion-menu *ngIf="applicationContentNav" [content]="applicationContentNav" side="right" persistent="true">
+    <ion-content>
+      <ion-list>
+        <ion-item *ngFor="let page of getPagesTitle()">
+          <button class="application-menu-item-button" ion-item menuClose (click)="changePage(page)">{{page.title}}</button>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
 </div>
-<ion-menu *ngIf="applicationContentNav" [content]="applicationContentNav" side="right" persistent="true">
-  <ion-content>
-    <ion-list>
-      <ion-item *ngFor="let page of getPagesTitle()">
-        <button class="application-menu-item" ion-item menuClose (click)="changePage(page)">{{page.title}}</button>
-      </ion-item>
-    </ion-list>
-  </ion-content>
-</ion-menu>

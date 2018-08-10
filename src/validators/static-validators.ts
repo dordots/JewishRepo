@@ -1,5 +1,6 @@
 import {AbstractControl} from "@angular/forms";
 import moment = require("moment");
+import {MapObject} from "../common/models/map-objects/server-map-object";
 
 export class StaticValidators {
   static ArrayLengthInRange(min: number, maxExclusive = (min+1)){
@@ -42,6 +43,16 @@ export class StaticValidators {
         return {dateIsNotBefore: true};
       return null;
     };
+  }
+
+  static ValidateLocation(mapObejctCallback: ()=> MapObject){
+    return (c) => {
+      let mapObject = mapObejctCallback();
+      if (mapObject == null || mapObject.userFriendlyAddress == null || mapObject.latLng == null){
+        return {invalidMapObject: true};
+      }
+      return null;
+    }
   }
 
   private static isStringValidDate(date: string, format: string) {

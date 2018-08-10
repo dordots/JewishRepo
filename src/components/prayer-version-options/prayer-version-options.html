@@ -1,6 +1,6 @@
 <ion-item dir="rtl">
   <ion-label stacked *ngIf="label">{{label}}</ion-label>
-  <ion-select class="version-select" [(ngModel)]="value" (ionChange)="onSelectionChanged($event)"
+  <ion-select class="version-select" [(ngModel)]="value"
               [placeholder]="placeholder"
               [multiple]="allowMultiple"
               #selectComponent>

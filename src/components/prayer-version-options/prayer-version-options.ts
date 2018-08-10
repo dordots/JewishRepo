@@ -27,21 +27,17 @@ export class PrayerVersionOptionsComponent extends AbstractValueAccessor{
   @Input()
   versions: string[];
 
-  selectedVersion: string | string[];
-
   constructor() {
     super();
     console.log('Hello PrayerVersionOptionsComponent Component');
-
     this.versions = Object.keys(PrayerNosach).map(key => PrayerNosach[key]);
   }
 
   ngAfterViewInit(){
     this.selectComponent.okText = "בחר";
     this.selectComponent.cancelText = "בטל";
-  }
-
-  onSelectionChanged(selection){
-    this.selectedVersion = selection;
+    this.selectComponent.selectOptions = {
+     title: this.title
+    };
   }
 }

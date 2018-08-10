@@ -1,16 +1,29 @@
-import {AfterContentInit, Directive, ElementRef, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
+import {
+  AfterContentInit, ChangeDetectorRef,
+  Directive,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  Output, SkipSelf
+} from '@angular/core';
 import {GoogleMapProvider} from "../../providers/google-map/google-map-provider";
 import {MapObject, ServerMapObject} from "../../common/models/map-objects/server-map-object";
 import Autocomplete = google.maps.places.Autocomplete;
+import PlaceResult = google.maps.places.PlaceResult;
+import {FormControl, NgControl,} from "@angular/forms";
+import {AbstractValueAccessor, MakeProvider} from "../../common/component-helpers/abstract-value-accessor";
 
 @Directive({
-  selector: '[fkPlaceAutoComplete]'
+  selector: '[fkPlaceAutoComplete]',
+  providers: [NgControl as any, MakeProvider(PlaceAutoComplete)]
 })
-export class PlaceAutoCompleteComponent implements AfterContentInit, OnDestroy {
+export class PlaceAutoComplete extends AbstractValueAccessor implements AfterContentInit, OnDestroy {
   private _inputElement: HTMLInputElement;
+  private previousSelectedMapObject: MapObject;
 
   @Input() set inputElement(v) {
-    if (v != null){
+    if (v != null) {
       this.validateElementIsHTMLInputElement(v);
       this._inputElement = v;
       this.initAutoComplete();
@@ -26,15 +39,19 @@ export class PlaceAutoCompleteComponent implements AfterContentInit, OnDestroy {
 
   @Input() map;
 
+  @Input() formControl: FormControl;
+
   @Input() toMarkerSelectedPlace: boolean = false;
 
   @Output() placeSelected: EventEmitter<MapObject>;
 
-  userFriendlyAddress: string;
   autoComplete: Autocomplete;
   marker: google.maps.Marker;
 
-  constructor(private googleMapProvider: GoogleMapProvider, private el: ElementRef) {
+  constructor(private googleMapProvider: GoogleMapProvider,
+              private el: ElementRef,
+              @SkipSelf() private changeDetectRef: ChangeDetectorRef) {
+    super();
     console.log('Hello PlaceAutocompleteComponent directive');
     this.placeSelected = new EventEmitter<ServerMapObject>();
   }
@@ -54,15 +71,18 @@ export class PlaceAutoCompleteComponent implements AfterContentInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.inputElement.removeEventListener("change", this.onInputChange.bind(this));
-    this.inputElement.removeEventListener("focus", this.onInputChange.bind(this));
-    this.inputElement.removeEventListener("blur", this.onInputChange.bind(this));
+    this.inputElement.removeEventListener("focus", this.onInputFocus.bind(this));
+    this.inputElement.removeEventListener("blur", this.onInputBlur.bind(this));
+  }
+
+  private validateElementIsHTMLInputElement(el) {
+    if (!(el instanceof HTMLInputElement))
+      throw new Error("Input element must be type of HTMLInputElement");
   }
 
   private registerToInputElementEvents() {
-    this.inputElement.addEventListener("change", this.onInputChange.bind(this));
-    this.inputElement.addEventListener("focus", this.onInputChange.bind(this));
-    this.inputElement.addEventListener("blur", this.onInputChange.bind(this));
+    this.inputElement.addEventListener("focus", this.onInputFocus.bind(this));
+    this.inputElement.addEventListener("blur", this.onInputBlur.bind(this));
   }
 
   async initAutoComplete() {
@@ -86,48 +106,73 @@ export class PlaceAutoCompleteComponent implements AfterContentInit, OnDestroy {
         // pressed the Enter key, or the Place Details request failed.
         return;
       }
-      this.placeSelected.emit({
-        latLng: place.geometry.location.toJSON(),
-        userFriendlyAddress: place.formatted_address
-      });
 
-      this.userFriendlyAddress = place.formatted_address;
-      this.inputElement.value = this.userFriendlyAddress;
+      this.previousSelectedMapObject = {
+        latLng: this.value.latLng,
+        userFriendlyAddress: this.value.userFriendlyAddress
+      };
 
-      if (!this.map)
-        return;
+      this.updateNgModel(place);
+      this.updateFormControl();
 
-      if (this.marker)
-        this.marker.setMap(null);
 
-      if (this.toMarkerSelectedPlace)
-        this.marker = this.googleMapProvider.createMarkerAt(this.map, place.geometry.location.toJSON());
-
-      // If the place has a geometry, then present it on a map.
-      if (place.geometry.viewport) {
-        this.map.fitBounds(place.geometry.viewport);
-      } else {
-        this.map.setCenter(place.geometry.location);
-        this.map.setZoom(17);  // Why 17? Because it looks good.
-      }
+      this.emitEvents();
+      this.handleMapMarkerAndNavigation(place);
     });
   }
 
-  private validateElementIsHTMLInputElement(el) {
-    if (!(el instanceof HTMLInputElement))
-      throw new Error("Input element must be type of HTMLInputElement");
+  private updateNgModel(place: PlaceResult) {
+    if (this.value == null)
+      return;
+    this.value.userFriendlyAddress = this.inputElement.value;
+    this.value.latLng = place.geometry.location.toJSON();
   }
 
-  private onInputChange(){
-    this.userFriendlyAddress = this.inputElement.value;
-    this.placeSelected.emit(null);
+  private emitEvents() {
+    this.placeSelected.emit(this.value);
   }
 
-  private onInputFocus(){
-    this.inputElement.value = this.userFriendlyAddress || '';
+  private handleMapMarkerAndNavigation(place: PlaceResult) {
+    if (!this.map)
+      return;
+
+    if (this.marker)
+      this.marker.setMap(null);
+
+    if (this.toMarkerSelectedPlace)
+      this.marker = this.googleMapProvider.createMarkerAt(this.map, place.geometry.location.toJSON());
+
+    // If the place has a geometry, then present it on a map.
+    if (place.geometry.viewport) {
+      this.map.fitBounds(place.geometry.viewport);
+    } else {
+      this.map.setCenter(place.geometry.location);
+      this.map.setZoom(17);  // Why 17? Because it looks good.
+    }
   }
 
-  private onInputBlur(){
-    this.inputElement.value = this.userFriendlyAddress || '';
+  /**
+   * Used for set the input value to the `userFriendlyAddress` because it always is being reset.
+   */
+  private onInputFocus() {
+    if (this.inputElement.value != '')
+      this.inputElement.value = this.value.userFriendlyAddress || '';
+  }
+
+  /**
+   * Used for set the input value to the `userFriendlyAddress` because it always is being reset.
+   */
+  private onInputBlur() {
+    if (this.value.userFriendlyAddress == null)
+      this.inputElement.value = '';
+    else
+      this.inputElement.value = this.value.userFriendlyAddress;
+  }
+
+  private updateFormControl() {
+    if (this.formControl) {
+      this.formControl.updateValueAndValidity({onlySelf: false, emitEvent: true});
+      this.changeDetectRef.detectChanges();
+    }
   }
 }

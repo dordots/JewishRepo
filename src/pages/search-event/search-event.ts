@@ -1,7 +1,11 @@
 import {Component} from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {LocationPickerComponent} from "../../components/location-picker/location-picker";
+import {SearchEvent} from "../../common/models/event/search-event";
+import {StaticValidators} from "../../validators/static-validators";
+import {PrintFormValidationErrors} from "../../common/models/common/utils";
+import {MapObject} from "../../common/models/map-objects/server-map-object";
 
 @IonicPage()
 @Component({
@@ -10,50 +14,56 @@ import {LocationPickerComponent} from "../../components/location-picker/location
 })
 export class SearchEventPage {
 
-  // basicEventQuery: BasicEventQuery;
-  eventFormGroup: FormGroup;
-  // searchableEvents: Array<SearchableEvent>;
+  searchEvent: SearchEvent;
+  formGroup: FormGroup;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private modalCtrl: ModalController,
-              public formBuilder: FormBuilder) {
-    // this.basicEventQuery = {} as any;
-    // this.searchableEvents = SearchableEvents;
-    this.initEventFormGroup();
+              private modalCtrl: ModalController) {
+    this.searchEvent = new SearchEvent();
+    this.formGroup = this.createForm();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SearchEventPage');
   }
 
-  private initEventFormGroup() {
-    this.eventFormGroup = this.formBuilder.group({
-      eventType: ['', [Validators.required]],
-      location: ['', [Validators.required]]
-    });
+  private createForm() {
+    let group = new FormGroup({
+      name: new FormControl(''),
+      prayerNosach: new FormControl('',[Validators.required]),
+      location: new FormControl('', [
+        StaticValidators.ValidateLocation(() => this.searchEvent.mapObject)
+      ]),
+      startsAt: new FormControl('', [
+        StaticValidators.ValidDate('HH:mm'),
+        StaticValidators.ValidDateIsBefore(() => this.searchEvent.endTime, "HH:mm")
+      ]),
+      endsAt: new FormControl([
+        StaticValidators.ValidDateIsAfter(() => this.searchEvent.startTime, "HH:mm")
+      ]),
+      daysRange: new FormControl('', [Validators.minLength(1), Validators.maxLength(7)])
+    }, {updateOn: "blur"});
+    return group;
   }
 
   openLocationPicker() {
-    let coordsPickerModal = this.modalCtrl.create(LocationPickerComponent, {}, {
-      enterAnimation: 'modal-md-slide-in'
-    });
-
-    coordsPickerModal.onDidDismiss((latLng) => {
-      if (latLng) {
-        this.eventFormGroup.controls["location"].setValue(latLng);
-        console.log(latLng);
-      }
-    });
-    coordsPickerModal.present().then(value => {
-      console.log("end");
-    });
+    // let coordsPickerModal = this.modalCtrl.create(LocationPickerComponent, {}, {
+    //   enterAnimation: 'modal-md-slide-in'
+    // });
+    //
+    // coordsPickerModal.onDidDismiss((latLng) => {
+    //   if (latLng) {
+    //     this.formGroup.controls["location"].setValue(latLng);
+    //     console.log(latLng);
+    //   }
+    // });
+    // coordsPickerModal.present().then(value => {
+    //   console.log("end");
+    // });
   }
 
-  // private initPlaceAutocompleteOptions() {
-  //   this.placeAutocompleteOptions = {
-  //     types: ['address'],
-  //     componentRestrictions: {country: 'IL'}
-  //   } as any;
-  // }
+  printFormErrors() {
+    PrintFormValidationErrors(this.formGroup);
+  }
 }

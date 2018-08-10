@@ -1,13 +1,18 @@
 import {forwardRef} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {isEqual} from "lodash-es";
+import {isArray} from "ionic-angular/util/util";
 
 export abstract class AbstractValueAccessor implements ControlValueAccessor {
   protected _value: any = '';
   get value(): any { return this._value; };
   set value(v: any) {
     if (!isEqual(v, this._value)) {
-      this._value = v;
+      if (isArray(v))
+        v.forEach(val => this._value.push(val));
+      else
+        this._value = v;
+
       this.onChange(v);
     }
   }
