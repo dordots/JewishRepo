@@ -4,8 +4,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 @IonicPage()
 @Component({
   selector: 'page-synagogue-details',
-  templateUrl: 'synagogue-details.html',
-  styleUrls: ['synagogue-details.scss']
+  templateUrl: 'synagogue-details.html'
 })
 export class SynagogueDetailsPage {
 

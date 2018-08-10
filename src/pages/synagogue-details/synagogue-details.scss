@@ -1,8 +1,10 @@
-page-synagogue-details{
+#application-menu[currentPage=SynagogueDetailsPage] {
   ion-icon[name=menu]{
     color: white;
   }
+}
 
+page-synagogue-details{
   .synagogue-details-ion-header{
     height: 40%;
     img {
