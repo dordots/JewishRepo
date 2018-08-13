@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {ErrorHandler, NgModule} from '@angular/core';
+import {APP_INITIALIZER, ErrorHandler, NgModule} from '@angular/core';
 import {IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {StatusBar} from '@ionic-native/status-bar';
@@ -15,7 +15,13 @@ import {EventBasedMapObjectProvider} from '../providers/server-providers/event-b
 import {HttpClientModule} from "@angular/common/http";
 import {AppAssetsProvider} from '../providers/app-assets/app-assets';
 import {EventDaysAndTimeModalComponent} from "../components/event-days-and-time-modal/event-days-and-time-modal";
-import {PlaceAutoComplete} from "../directives/place-autocomplete/place-autocomplete";
+import {GoogleMapProvider} from "../providers/google-map/google-map-provider";
+
+function googleMapProviderFactory(provider: GoogleMapProvider){
+  return () => {
+    provider.loadAPI().then(()=> Promise.resolve()).catch(()=>Promise.resolve());
+  }
+}
 
 @NgModule({
   declarations: [
@@ -44,6 +50,8 @@ import {PlaceAutoComplete} from "../directives/place-autocomplete/place-autocomp
     AppConfigProvider,
     EventBasedMapObjectProvider,
     AppAssetsProvider,
+    GoogleMapProvider,
+    {provide: APP_INITIALIZER, useFactory: googleMapProviderFactory, deps: [GoogleMapProvider], multi: true},
   ]
 })
 export class AppModule {}

@@ -4,6 +4,7 @@ import {GoogleMapProvider} from "../../providers/google-map/google-map-provider"
 import {GoogleMapComponent} from "../google-map/google-map";
 import Map = google.maps.Map;
 import Marker = google.maps.Marker;
+import {MapObject} from "../../common/models/map-objects/server-map-object";
 
 @Component({
   selector: 'fk-location-picker',
@@ -13,10 +14,12 @@ export class LocationPickerComponent {
   @ViewChild('mapComponent') mapComponent: GoogleMapComponent;
 
   marker: Marker;
+  mapObject: MapObject;
 
   constructor(private viewCtrl: ViewController,
               private mapProvider: GoogleMapProvider) {
     console.log('Hello LocationPickerComponent Component');
+    this.mapObject = {latLng: null, userFriendlyAddress: null};
   }
 
   ngAfterViewInit(){
@@ -39,6 +42,8 @@ export class LocationPickerComponent {
         this.marker.setMap(null);
 
       this.marker = this.mapProvider.createMarkerAt(map, args.latLng);
+      Array.from(document.getElementsByClassName('pac-container'))
+        .forEach(el => (el as HTMLElement).style.display = "none");
     });
   }
 

@@ -1,12 +1,48 @@
-.place-autocomplete-text-input-container {
-  justify-content: center;
-  display: flex;
-  position: fixed;
-  width: 100%;
-  margin: auto;
-  z-index: 99;
-}
+fk-location-picker {
+  #search-container{
+    max-height: 10% !important;
+    min-height: 10% !important;
+    height: 10%;
+  }
+  #map-container{
+    max-height: 80%;
+    min-height: 80%;
+    height: 80%;
+  }
+  .dark-footer{
+    //min-height: 10%;
+    //max-height: 10%;
+    height: 10%;
+  }
 
-.place-autocomplete-text-input {
-  width: 70%;
+  .dark-footer {
+    button{
+      $button-color: color($colors, primary);
+      width: 50%;
+      background-color: $button-color;
+      font-size: 1.2em;
+      font-weight: bold;
+      &:hover{
+        background-color: darken($button-color, 1.8);
+      }
+    }
+  }
+
+  .ok-button {
+
+  }
+
+  .cancel-button {
+
+  }
+
+
+  //.c {
+  //  height: 95%;
+  //  max-height: 95%;
+  //  #map-container{
+  //    height: 100%;
+  //  }
+  //}
+
 }

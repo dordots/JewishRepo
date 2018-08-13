@@ -10,6 +10,8 @@ import {Event} from "../../common/models/event/event";
 import {DatePipe} from "@angular/common";
 import {PrintFormValidationErrors} from "../../common/models/common/utils";
 import {StaticValidators} from "../../validators/static-validators";
+import {SelectMapObjectComponent} from "../../components/select-map-object/select-map-object";
+import {LocationPickerComponent} from "../../components/location-picker/location-picker";
 
 @IonicPage()
 @Component({
@@ -20,18 +22,17 @@ import {StaticValidators} from "../../validators/static-validators";
 export class AddSynagoguePage {
 
   phoneNumber: string;
-  formGroup: FormGroup;
+  form: FormGroup;
   synagogue: Synagogue;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private formBuilder: FormBuilder,
               private imagePicker: ImagePicker,
               private mapObjectProvider: EventBasedMapObjectProvider,
               private datePipe: DatePipe,
               private modalCtrl: ModalController) {
     this.synagogue = new Synagogue();
-    this.formGroup = this.createSynagogueValidator();
+    this.form = this.createSynagogueValidator();
   }
 
   ionViewDidLoad() {
@@ -85,12 +86,20 @@ export class AddSynagoguePage {
     this.synagogue.phone.splice(index, 1);
   }
 
-  formatTimeRange(event: Event){
-    return event.formatTimeRange(this.datePipe);
+  openMapLocationPicker(){
+    const modal = this.modalCtrl.create(LocationPickerComponent);
+    modal.onDidDismiss((data: MapObject) => {
+      if (data == null)
+        return;
+      this.synagogue.userFriendlyAddress = data.userFriendlyAddress;
+      this.synagogue.latLng = data.latLng;
+      this.form.get('location').updateValueAndValidity();
+    });
+    modal.present();
   }
 
-  formatDays(event: Event){
-    return event.formatDaysArray();
+  formatTimeRange(event: Event){
+    return event.formatTimeRange(this.datePipe);
   }
 
   removeEvent(event) {
@@ -98,7 +107,7 @@ export class AddSynagoguePage {
   }
 
   printErrors() {
-    PrintFormValidationErrors(this.formGroup);
+    PrintFormValidationErrors(this.form);
     console.log("---");
   }
 }

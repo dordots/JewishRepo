@@ -11,8 +11,6 @@ import MarkerOptions = google.maps.MarkerOptions;
 import Marker = google.maps.Marker;
 import LatLngLiteral = google.maps.LatLngLiteral;
 
-// import Size = google.maps.Size;
-
 @Injectable()
 export class GoogleMapProvider {
   public isApiLoaded: boolean;
@@ -37,23 +35,20 @@ export class GoogleMapProvider {
     }));
   }
 
-  get mapOptions(): MapOptions {
+  get defaultMapOptions(): MapOptions {
     return {
-      center: {
-        lat: 43.0741,
-        lng: -89.38098
-      },
+      center: new google.maps.LatLng(31.799048, 34.65136849999999),
       zoom: 18,
       tilt: 30
     }
   }
 
-  async createMap(mapDivElement: HTMLDivElement): Promise<Map> {
+  async createMap(mapDivElement: HTMLDivElement, mapOptions?: MapOptions): Promise<Map> {
     if (!this.isApiLoaded) {
       await this.loadAPI();
       this.isApiLoaded = true;
     }
-    return new google.maps.Map(mapDivElement, this.mapOptions);
+    return new google.maps.Map(mapDivElement, mapOptions || this.defaultMapOptions);
   }
 
   async getCurrentPosition() {
