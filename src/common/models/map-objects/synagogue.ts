@@ -20,10 +20,11 @@ export class Synagogue implements EventBasedMapObject, ServerModel {
   phone: string[] = [];
   synagogueOptions: SynagogueOptions = CreateSynagogueOptions();
   picture: string;
+  comments: string;
 
   fromServerModel(serverModel: any): Synagogue{
     let model = new Synagogue();
-    let requiredFieldsFromServerModel = pick(serverModel, ['_id', 'name','primaryPrayerNosach','latlng', 'userFriendlyAddress','phone','picture']);
+    let requiredFieldsFromServerModel = pick(serverModel, ['_id', 'name','primaryPrayerNosach','latlng', 'userFriendlyAddress','phone','picture', 'comments']);
     merge(model, requiredFieldsFromServerModel);
     model.synagogueOptions = serverModel.externals;
     model.events = serverModel.events.map(ev => {
@@ -44,6 +45,7 @@ export class Synagogue implements EventBasedMapObject, ServerModel {
       phone: this.phone,
       image: this.picture,
       events: this.events,
+      comments: this.comments,
       externals: {
         accessibility: this.synagogueOptions
       }

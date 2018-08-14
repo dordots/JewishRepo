@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component} from '@angular/core';
+import {ChangeDetectorRef, Component, ViewChild} from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Synagogue} from "../../common/models/map-objects/synagogue";
@@ -21,6 +21,8 @@ import {LocationPickerComponent} from "../../components/location-picker/location
 })
 export class AddSynagoguePage {
 
+  @ViewChild('ionInput') locationInput;
+
   phoneNumber: string;
   form: FormGroup;
   synagogue: Synagogue;
@@ -42,6 +44,7 @@ export class AddSynagoguePage {
   createSynagogueValidator(){
     let group = new FormGroup({
       name: new FormControl(this.synagogue.name, [Validators.required]),
+      comments: new FormControl('', []),
       primaryNosach: new FormControl(this.synagogue.primaryPrayerNosach, {validators: [Validators.required], updateOn: 'change'}),
       location: new FormControl(this.synagogue, [StaticValidators.ValidateLocation(()=>this.synagogue)]),
       phone: new FormControl(this.synagogue.phone, [Validators.pattern(/^\d{2,3}-?\d{7}$/)])
@@ -89,10 +92,16 @@ export class AddSynagoguePage {
   openMapLocationPicker(){
     const modal = this.modalCtrl.create(LocationPickerComponent);
     modal.onDidDismiss((data: MapObject) => {
-      if (data == null)
-        return;
-      this.synagogue.userFriendlyAddress = data.userFriendlyAddress;
-      this.synagogue.latLng = data.latLng;
+      if (data == null){
+        this.synagogue.userFriendlyAddress = null;
+        this.synagogue.latLng = null;
+      }
+      else{
+        this.synagogue.userFriendlyAddress = data.userFriendlyAddress;
+        this.synagogue.latLng = data.latLng;
+        this.locationInput._native.nativeElement.value = this.synagogue.userFriendlyAddress;
+      }
+
       this.form.get('location').updateValueAndValidity();
     });
     modal.present();

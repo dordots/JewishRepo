@@ -10,6 +10,7 @@ import Map = google.maps.Map;
 import MarkerOptions = google.maps.MarkerOptions;
 import Marker = google.maps.Marker;
 import LatLngLiteral = google.maps.LatLngLiteral;
+import GeocoderResult = google.maps.GeocoderResult;
 
 @Injectable()
 export class GoogleMapProvider {
@@ -72,5 +73,18 @@ export class GoogleMapProvider {
       },
     })));
     return markerParams.map(params => this.createMarkerAt(map, params.latLng, params.options));
+  }
+
+  getPlaceDetails(location: LatLngLiteral): Promise<GeocoderResult>{
+    let geocoder = new google.maps.Geocoder();
+    return new Promise<GeocoderResult>((resolve, reject) => {
+      geocoder.geocode({location: location}, (results, status1) => {
+        if (results && results.length > 0) {
+          resolve(results[0]);
+        } else {
+          reject('Cannot determine address at this location');
+        }
+      });
+    });
   }
 }

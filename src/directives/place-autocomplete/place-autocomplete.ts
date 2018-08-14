@@ -155,7 +155,6 @@ export class PlaceAutoComplete extends AbstractValueAccessor implements AfterCon
    * Used for set the input value to the `userFriendlyAddress` because it always is being reset.
    */
   private onInputFocus() {
-    if (this.inputElement.value != '')
       this.inputElement.value = this.value.userFriendlyAddress || '';
   }
 
