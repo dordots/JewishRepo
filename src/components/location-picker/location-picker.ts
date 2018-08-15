@@ -13,6 +13,7 @@ import LatLngLiteral = google.maps.LatLngLiteral;
 })
 export class LocationPickerComponent {
   @ViewChild('mapComponent') mapComponent: GoogleMapComponent;
+  @ViewChild('ionInput') locationInput;
 
   marker: Marker;
   mapObject: MapObject;
@@ -50,8 +51,7 @@ export class LocationPickerComponent {
 
       this.mapObject.userFriendlyAddress = userFriendlyAddress;
       this.mapObject.latLng = latLng;
-
-      this.logCurrentLocation();
+      this.locationInput._native.nativeElement.value = userFriendlyAddress;
 
       this.disappearAutocompleteList();
     });
@@ -62,10 +62,6 @@ export class LocationPickerComponent {
       this.marker.setMap(null);
 
     this.marker = this.mapProvider.createMarkerAt(this.mapComponent.map, newPosition);
-  }
-
-  private logCurrentLocation() {
-    console.log(this.mapObject);
   }
 
   private disappearAutocompleteList() {

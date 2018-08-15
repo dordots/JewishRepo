@@ -39,7 +39,7 @@ export class StaticValidators {
 
   static ValidDateIsBefore(baselineDateCallback: ()=>Date, controlTimeFormat: string) {
     return (control: AbstractControl) => {
-      if (!this.ValidDateIsAfter(baselineDateCallback, controlTimeFormat)(control))
+      if (this.ValidDateIsAfter(baselineDateCallback, controlTimeFormat)(control) != null)
         return {dateIsNotBefore: true};
       return null;
     };

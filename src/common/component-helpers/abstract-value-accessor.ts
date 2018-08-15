@@ -4,7 +4,7 @@ import {isEqual} from "lodash-es";
 import {isArray} from "ionic-angular/util/util";
 
 export abstract class AbstractValueAccessor implements ControlValueAccessor {
-  protected _value: any = '';
+  protected _value: any = null;
   get value(): any { return this._value; };
   set value(v: any) {
     if (!isEqual(v, this._value)) {

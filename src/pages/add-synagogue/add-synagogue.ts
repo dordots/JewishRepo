@@ -1,17 +1,13 @@
-import {ChangeDetectorRef, Component, ViewChild} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Synagogue} from "../../common/models/map-objects/synagogue";
-import {MapObject, ServerMapObject} from "../../common/models/map-objects/server-map-object";
 import {ImagePicker, ImagePickerOptions, OutputType} from "@ionic-native/image-picker";
 import {EventBasedMapObjectProvider} from "../../providers/server-providers/event-based-map-object.provider";
 import {EventDaysAndTimeModalComponent} from "../../components/event-days-and-time-modal/event-days-and-time-modal";
 import {Event} from "../../common/models/event/event";
 import {DatePipe} from "@angular/common";
-import {PrintFormValidationErrors} from "../../common/models/common/utils";
 import {StaticValidators} from "../../validators/static-validators";
-import {SelectMapObjectComponent} from "../../components/select-map-object/select-map-object";
-import {LocationPickerComponent} from "../../components/location-picker/location-picker";
 
 @IonicPage()
 @Component({
@@ -89,22 +85,9 @@ export class AddSynagoguePage {
     this.synagogue.phone.splice(index, 1);
   }
 
-  openMapLocationPicker(){
-    const modal = this.modalCtrl.create(LocationPickerComponent);
-    modal.onDidDismiss((data: MapObject) => {
-      if (data == null){
-        this.synagogue.userFriendlyAddress = null;
-        this.synagogue.latLng = null;
-      }
-      else{
-        this.synagogue.userFriendlyAddress = data.userFriendlyAddress;
-        this.synagogue.latLng = data.latLng;
-        this.locationInput._native.nativeElement.value = this.synagogue.userFriendlyAddress;
-      }
-
-      this.form.get('location').updateValueAndValidity();
-    });
-    modal.present();
+  onModalClosed(){
+    this.locationInput._native.nativeElement.value = this.synagogue.userFriendlyAddress;
+    this.form.get('location').updateValueAndValidity();
   }
 
   formatTimeRange(event: Event){
@@ -113,10 +96,5 @@ export class AddSynagoguePage {
 
   removeEvent(event) {
     this.synagogue.events.splice(this.synagogue.events.findIndex(ev => ev == event), 1);
-  }
-
-  printErrors() {
-    PrintFormValidationErrors(this.form);
-    console.log("---");
   }
 }

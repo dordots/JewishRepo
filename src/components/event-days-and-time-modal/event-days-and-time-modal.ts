@@ -5,6 +5,7 @@ import {StaticValidators} from "../../validators/static-validators";
 import {DatePipe} from "@angular/common";
 import {ViewController} from "ionic-angular";
 import moment = require("moment");
+import {PrayerEvent} from "../../common/models/event/prayer-event";
 
 @Component({
   selector: 'fk-event-days-and-time-modal',
@@ -20,7 +21,7 @@ export class EventDaysAndTimeModalComponent {
               private datePipe: DatePipe,
               private viewCtrl: ViewController) {
     console.log('Hello EventDaysAndTimeModalComponent Component');
-    this.event = {} as any;
+    this.event = new PrayerEvent();
     this.event.title = 'תפילה';
     this.event.repeatedDays = [];
     this.form = this.buildForm();
@@ -39,7 +40,6 @@ export class EventDaysAndTimeModalComponent {
     this.event.startTime = moment(this.event.startTime, "HH:mm").toDate();
     this.event.endTime = this.event.endTime && moment(this.event.endTime, "HH:mm").toDate();
     this.viewCtrl.dismiss(this.event);
-    console.log(this.event);
   }
 
   dismiss(){

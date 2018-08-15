@@ -1,4 +1,4 @@
-<ion-row justify-content-between>
+<ion-row justify-content-between *ngIf="value">
   <div class="day" *ngFor="let day of daysList;let i=index"
        (click)="onDayClicked(i+1)" [ngClass]="{'selected-day': isDaySelected(i+1)}">{{day.name}}</div>
 </ion-row>

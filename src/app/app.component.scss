@@ -71,3 +71,11 @@ ion-input[dir=rtl][clearInput]{
 .relative-distance {
   color: white;
 }
+
+ion-modal {
+  ion-backdrop {
+    visibility: visible;
+    opacity: 0.4 !important;
+    z-index: 0;
+  }
+}
