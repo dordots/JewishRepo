@@ -13,9 +13,9 @@ import {PrayerVersionOptionsComponent} from './prayer-version-options/prayer-ver
 import {LocationPickerComponent} from './location-picker/location-picker';
 import {SelectMapObjectComponent} from './select-map-object/select-map-object';
 import {DayRangeComponent} from './day-range/day-range';
-import {EventDaysAndTimeModalComponent} from './event-days-and-time-modal/event-days-and-time-modal';
 import {SynagogueOptionsComponent} from "./synagogue-options/synagogue-options";
 import {DirectivesModule} from "../directives/directives.module";
+import {AddEventModalComponent} from "./add-event-modal/add-event-modal";
 
 @NgModule({
 	declarations: [
@@ -32,7 +32,7 @@ import {DirectivesModule} from "../directives/directives.module";
     LocationPickerComponent,
     SelectMapObjectComponent,
     DayRangeComponent,
-    EventDaysAndTimeModalComponent,
+    AddEventModalComponent,
   ],
 	imports: [IonicModule, DirectivesModule],
   providers: [GoogleMapProvider],
@@ -51,7 +51,7 @@ import {DirectivesModule} from "../directives/directives.module";
     LocationPickerComponent,
     SelectMapObjectComponent,
     DayRangeComponent,
-    EventDaysAndTimeModalComponent
+    AddEventModalComponent
   ]
 })
 export class ComponentsModule {}

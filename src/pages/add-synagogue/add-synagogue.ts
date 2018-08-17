@@ -4,10 +4,10 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Synagogue} from "../../common/models/map-objects/synagogue";
 import {ImagePicker, ImagePickerOptions, OutputType} from "@ionic-native/image-picker";
 import {EventBasedMapObjectProvider} from "../../providers/server-providers/event-based-map-object.provider";
-import {EventDaysAndTimeModalComponent} from "../../components/event-days-and-time-modal/event-days-and-time-modal";
 import {Event} from "../../common/models/event/event";
 import {DatePipe} from "@angular/common";
 import {StaticValidators} from "../../validators/static-validators";
+import {AddEventModalComponent} from "../../components/add-event-modal/add-event-modal";
 
 @IonicPage()
 @Component({
@@ -63,7 +63,7 @@ export class AddSynagoguePage {
   }
 
   openAddTimesModal() {
-    const modal = this.modalCtrl.create(EventDaysAndTimeModalComponent,null, {
+    const modal = this.modalCtrl.create(AddEventModalComponent,null, {
       enableBackdropDismiss: true,
       showBackdrop: true,
     });

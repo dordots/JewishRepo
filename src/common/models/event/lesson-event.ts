@@ -10,6 +10,11 @@ export class LessonEvent extends Event {
     this.type = EventTypes.Lesson;
   }
 
+  fromServerModel(model: any){
+    super.fromServerModel(model);
+    this.title = model.title;
+  }
+
   getEventName(): string {
     return this.title;
   }

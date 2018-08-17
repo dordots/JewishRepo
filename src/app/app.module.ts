@@ -14,8 +14,8 @@ import {ImagePicker} from "@ionic-native/image-picker";
 import {EventBasedMapObjectProvider} from '../providers/server-providers/event-based-map-object.provider';
 import {HttpClientModule} from "@angular/common/http";
 import {AppAssetsProvider} from '../providers/app-assets/app-assets';
-import {EventDaysAndTimeModalComponent} from "../components/event-days-and-time-modal/event-days-and-time-modal";
 import {GoogleMapProvider} from "../providers/google-map/google-map-provider";
+import {AddEventModalComponent} from "../components/add-event-modal/add-event-modal";
 
 function googleMapProviderFactory(provider: GoogleMapProvider){
   return () => {
@@ -39,7 +39,7 @@ function googleMapProviderFactory(provider: GoogleMapProvider){
     MyApp,
     HomePage,
     LocationPickerComponent,
-    EventDaysAndTimeModalComponent
+    AddEventModalComponent
   ],
   providers: [
     StatusBar,

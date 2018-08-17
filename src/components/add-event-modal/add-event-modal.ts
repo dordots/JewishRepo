@@ -13,10 +13,10 @@ import {PrayerTypes} from "../../common/models/common/enums/prayer-types";
 
 @Component({
   selector: 'fk-event-days-and-time-modal',
-  templateUrl: 'event-days-and-time-modal.html',
+  templateUrl: 'add-event-modal.html',
   providers: [DatePipe]
 })
-export class EventDaysAndTimeModalComponent {
+export class AddEventModalComponent {
 
   event: Event;
   form: FormGroup;
