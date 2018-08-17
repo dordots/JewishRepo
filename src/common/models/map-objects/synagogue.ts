@@ -53,6 +53,7 @@ export class Synagogue implements EventBasedMapObject, ServerModel {
   }
 
   isEventExist(event: Event) {
-    return this.events.find(ev => ev.title == event.title) != null;
+    // return this.events.find(ev => ev.title == event.title) != null;
+    return false;
   }
 }

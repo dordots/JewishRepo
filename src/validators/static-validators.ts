@@ -24,16 +24,11 @@ export class StaticValidators {
   static ValidDateIsAfter(baselineDateCallback: ()=>Date, controlTimeFormat: string) {
       return (control: AbstractControl) => {
         let baseline = moment(baselineDateCallback(), controlTimeFormat);
-
-        let endtime = moment(control.value, controlTimeFormat);
-
-        if (!baseline.isValid() && endtime.isValid())
-          return {startTimeInvalid: 'Start time must be valid'};
-
-        if (!endtime.isValid() || endtime.isAfter(baseline,"millisecond"))
+        let target = moment(control.value, controlTimeFormat);
+        if (!baseline.isValid() && target.isValid())
           return null;
-
-        return {dateIsNotAfter: false};
+        if (baseline.isValid() && target.isValid())
+          return target.isAfter(baseline) ? null : {dateIsNotAfter: true};
       };
   }
 

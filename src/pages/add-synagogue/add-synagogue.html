@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content class="form-background-color" dir="rtl">
-  <form [formGroup]="form" (submit)="submitNewSynagogue()">
+  <form [formGroup]="form" >
     <ion-item>
       <ion-input formControlName="name" [(ngModel)]="synagogue.name"
                  placeholder="שם הבית כנסת" clearInput dir="rtl"></ion-input>
@@ -78,6 +78,9 @@
           <ion-card-content>
             <ion-row justify-content-between>
               <div>
+                <span>{{event.getEventName()}}</span>
+              </div>
+              <div>
                 <span>בימים </span>
                 <span>{{event.formatDaysArray()}}</span>
               </div>
@@ -110,5 +113,5 @@
   </form>
 </ion-content>
 <ion-footer padding class="dark-footer" [ngClass]="{'footer-disabled': !form.valid}" text-center>
-  <button class="transparent save-synagogue-button">שמור פרטי בית כנסת</button>
+  <button class="transparent save-synagogue-button" (click)="submitNewSynagogue()" [disabled]="!form.valid">שמור פרטי בית כנסת</button>
 </ion-footer>

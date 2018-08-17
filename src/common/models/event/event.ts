@@ -2,9 +2,10 @@ import {DatePipe} from "@angular/common";
 import {ServerModel} from "../common/server-model";
 import {merge} from "lodash-es";
 import moment = require("moment");
+import {EventTypes} from "../common/enums/event-types";
 
 export abstract class Event implements ServerModel{
-  title: string;
+  type: EventTypes;
   startTime: Date;
   endTime: Date;
   repeatedDays: number[];
@@ -12,6 +13,8 @@ export abstract class Event implements ServerModel{
   protected constructor() {
     this.repeatedDays = [];
   }
+
+  abstract getEventName(): string;
 
   public formatTimeRange(datePipe: DatePipe){
     let formatted = '';
