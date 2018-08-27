@@ -32,9 +32,10 @@ export class SearchEventPage {
       startsAt: new FormControl('', [
         StaticValidators.ValidDateIsBefore(() => this.searchEvent.endTime, "HH:mm")
       ]),
-      endsAt: new FormControl([
+      endsAt: new FormControl('', [
         StaticValidators.ValidDateIsAfter(() => this.searchEvent.startTime, "HH:mm")
       ]),
+      location: new FormControl('', [StaticValidators.ValidateLocation(()=>this.searchEvent.mapObject, false)])
     }, {updateOn: "blur"});
     return group;
   }

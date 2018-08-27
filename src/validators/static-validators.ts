@@ -40,10 +40,10 @@ export class StaticValidators {
     };
   }
 
-  static ValidateLocation(mapObejctCallback: ()=> MapObject){
+  static ValidateLocation(mapObejctCallback: ()=> MapObject, required=true){
     return (c) => {
       let mapObject = mapObejctCallback();
-      if (mapObject == null || mapObject.userFriendlyAddress == null || mapObject.latLng == null){
+      if (mapObject == null || mapObject.userFriendlyAddress == null || mapObject.latLng == null && required){
         return {invalidMapObject: true};
       }
       return null;

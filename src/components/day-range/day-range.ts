@@ -20,8 +20,7 @@ export class DayRangeComponent extends AbstractValueAccessor {
     super();
     console.log('Hello DayRangeComponent Component');
     this.text = 'Hello World';
-    this.daysList = range(this.minDay, this.maxDay + 1, 1)
-      .map(d => ({name: String.fromCharCode(0x05D0 + d - 1), id: d}));
+    this.daysList = ['א','ב','ג','ד','ה','ו','ש',].map((d,i) => ({name: d, id: i+1}));
     this.value = [];
   }
 
