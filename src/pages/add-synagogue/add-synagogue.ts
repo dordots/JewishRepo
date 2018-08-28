@@ -91,7 +91,7 @@ export class AddSynagoguePage {
   }
 
   formatTimeRange(event: Event){
-    return event.formatTimeRange(this.datePipe);
+    return event.formatTimeRange();
   }
 
   removeEvent(event) {

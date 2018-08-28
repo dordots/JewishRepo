@@ -9,7 +9,7 @@ import {PrayerEvent} from "../../common/models/event/prayer-event";
 import {EventTypes} from "../../common/models/common/enums/event-types";
 import {PrintFormValidationErrors} from "../../common/models/common/utils";
 import {LessonEvent} from "../../common/models/event/lesson-event";
-import {PrayerTypes} from "../../common/models/common/enums/prayer-types";
+import {PrayerType} from "../../common/models/common/enums/prayer-type";
 
 @Component({
   selector: 'fk-event-days-and-time-modal',
@@ -48,7 +48,7 @@ export class AddEventModalComponent {
   }
 
   formatTimeRange(event: Event){
-    return event.formatTimeRange(this.datePipe);
+    return event.formatTimeRange();
   }
 
   getEventTypes(){
@@ -56,7 +56,7 @@ export class AddEventModalComponent {
   }
 
   getPrayerTypes(){
-    return Object.keys(PrayerTypes).map(k => PrayerTypes[k]);
+    return Object.keys(PrayerType).map(k => PrayerType[k]);
   }
 
   getErrors(){

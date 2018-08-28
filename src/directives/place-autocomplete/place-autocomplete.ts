@@ -8,7 +8,7 @@ import {
   Output, SkipSelf
 } from '@angular/core';
 import {GoogleMapProvider} from "../../providers/google-map/google-map-provider";
-import {MapObject, ServerMapObject} from "../../common/models/map-objects/server-map-object";
+import {MapObject} from "../../common/models/map-objects/map-objects";
 import Autocomplete = google.maps.places.Autocomplete;
 import PlaceResult = google.maps.places.PlaceResult;
 import {FormControl, NgControl,} from "@angular/forms";
@@ -53,7 +53,7 @@ export class PlaceAutoComplete extends AbstractValueAccessor implements AfterCon
               @SkipSelf() private changeDetectRef: ChangeDetectorRef) {
     super();
     console.log('Hello PlaceAutocompleteComponent directive');
-    this.placeSelected = new EventEmitter<ServerMapObject>();
+    this.placeSelected = new EventEmitter<MapObject>();
   }
 
   async ngAfterContentInit() {

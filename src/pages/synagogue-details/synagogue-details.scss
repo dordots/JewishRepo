@@ -5,6 +5,11 @@
 }
 
 page-synagogue-details{
+  ion-content{
+    .scroll-content{
+      padding-bottom: $fab-size !important;
+    }
+  }
   .synagogue-details-ion-header{
     position: relative;
     height: 40%;
@@ -26,9 +31,10 @@ page-synagogue-details{
     }
     .last-updated-at{
       position: absolute;
-      font-size: 0.65em;
+      font-size: 0.73em;
       bottom: 15px;
       left: 15px;
+      padding-bottom: 5px;
     }
 
     .relative-distance {
@@ -36,7 +42,8 @@ page-synagogue-details{
       bottom: 10px;
       right: 10px;
       font-size: 0.55em;
-      background-color: rgba(7, 9, 11, 0.51);
+      background-color: rgba(0,0,0,0.4);
+      color: white;
       padding-right: 8px;
       padding-left: 15px;
       padding-top: 8px;

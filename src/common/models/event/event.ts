@@ -1,6 +1,5 @@
-import {DatePipe} from "@angular/common";
 import {ServerModel} from "../common/server-model";
-import {merge} from "lodash-es";
+import {assign, isEqual, merge} from "lodash-es";
 import moment = require("moment");
 import {EventTypes} from "../common/enums/event-types";
 
@@ -9,6 +8,7 @@ export abstract class Event implements ServerModel{
   startTime: Date;
   endTime: Date;
   repeatedDays: number[];
+  verifiedRecentlyAt: Date;
 
   protected constructor() {
     this.repeatedDays = [];
@@ -16,12 +16,19 @@ export abstract class Event implements ServerModel{
 
   abstract getEventName(): string;
 
-  public formatTimeRange(datePipe: DatePipe){
+  equals(other: Event): boolean {
+    return this.type == other.type &&
+      this.startTime.getTime() == other.startTime.getTime() &&
+      (this.endTime != null && other.endTime != null && this.endTime.getTime() == other.endTime.getTime()) &&
+      isEqual(this.repeatedDays, other.repeatedDays);
+  }
+
+  public formatTimeRange(format="hh:mm"){
     let formatted = '';
     if (this.isValidDate(this.startTime))
-      formatted = datePipe.transform(this.startTime, 'shortTime');
+      formatted = moment(this.startTime).format(format);
     if (this.isValidDate(this.endTime))
-      formatted += ` - ${datePipe.transform(this.endTime, 'shortTime')}`;
+      formatted += ` - ${moment(this.endTime).format(format)}`;
     return formatted;
   }
 
@@ -49,14 +56,18 @@ export abstract class Event implements ServerModel{
 
   fromServerModel(serverModel: any) {
     merge(this, serverModel);
-    this.startTime = moment(this.startTime, 'HH:mm').toDate();
-    if (this.endTime)
-      this.endTime = moment(this.startTime, 'HH:mm').toDate();
+    this.getDateMembers().forEach(m => this[m] = moment(serverModel[m]).toDate());
   }
 
   toServerModel(): any {
-    return this;
+    let model = assign({}, this) as any;
+    this.getDateMembers().forEach(m => model[m] = this[m].getTime());
+    return model;
   }
+
+  protected getDateMembers(): string[]{
+    return ['startTime','endTime', 'verifiedRecentlyAt']
+  };
 
   private isValidDate(d){
     return d instanceof Date && !isNaN(d as any);

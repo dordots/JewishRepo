@@ -3,8 +3,6 @@ import {GoogleMapComponent} from './google-map/google-map';
 import {GoogleMapProvider} from "../providers/google-map/google-map-provider";
 import {HomeToolbarComponent} from './home-toolbar/home-toolbar';
 import {IonicModule} from "ionic-angular";
-import {EventsListComponent} from './events-list/events-list';
-import {EventCardComponent} from './event-card/event-card';
 import {LocateButtonComponent} from './locate-button/locate-button';
 import {SearchEventButtonComponent} from './search-event-button/search-event-button';
 import {HomeFabsComponent} from './home-fabs/home-fabs';
@@ -16,13 +14,15 @@ import {DayRangeComponent} from './day-range/day-range';
 import {SynagogueOptionsComponent} from "./synagogue-options/synagogue-options";
 import {DirectivesModule} from "../directives/directives.module";
 import {AddEventModalComponent} from "./add-event-modal/add-event-modal";
+import {MapObjectsListComponent} from "./map-objects-list/map-objects-list.component";
+import {MapObjectCardComponent} from "./map-object-card/map-object-card";
 
 @NgModule({
 	declarations: [
 	  GoogleMapComponent,
     HomeToolbarComponent,
-    EventsListComponent,
-    EventCardComponent,
+    MapObjectsListComponent,
+    MapObjectCardComponent,
     LocateButtonComponent,
     SearchEventButtonComponent,
     HomeFabsComponent,
@@ -40,8 +40,8 @@ import {AddEventModalComponent} from "./add-event-modal/add-event-modal";
 	exports: [
 	  GoogleMapComponent,
     HomeToolbarComponent,
-    EventsListComponent,
-    EventCardComponent,
+    MapObjectsListComponent,
+    MapObjectCardComponent,
     LocateButtonComponent,
     SearchEventButtonComponent,
     HomeFabsComponent,

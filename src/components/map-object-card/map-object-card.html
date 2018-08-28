@@ -1,0 +1,26 @@
+<ion-card dir="rtl" (click)="goToPageDetails()">
+  <div class="box-shadow">
+    <img src="https://picsum.photos/400/120">
+
+    <ion-grid>
+      <ion-row justify-content-between>
+        <div class="relative-distance"><span dir="ltr">{{getRelativeDistance()}} m <ion-icon name="md-locate"></ion-icon></span>
+        </div>
+        <div class="last-updated-at">
+          עודכן לאחרונה
+          <br>
+          {{getLastVerified()}}
+        </div>
+      </ion-row>
+    </ion-grid>
+    <div class="map-object-name"><h1>{{mapObject.type}}</h1></div>
+    <ion-row justify-content-between padding-bottom>
+      <small class="map-object-friendly-address" justify-content-center align-items-center>{{mapObject.userFriendlyAddress}}</small>
+      <small class="event-times" dir="ltr" text-center>
+        {{getSoonestEvent()?.getEventName()}}
+        <br>
+        {{getSoonestEvent()?.formatTimeRange()}}
+      </small>
+    </ion-row>
+  </div>
+</ion-card>

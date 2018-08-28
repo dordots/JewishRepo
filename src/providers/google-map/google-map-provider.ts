@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Geolocation} from "@ionic-native/geolocation";
 import {merge} from "lodash";
 import {AppAssetsProvider} from "../app-assets/app-assets";
-import {ServerMapObject} from "../../common/models/map-objects/server-map-object";
+import {ApplicationMapObject} from "../../common/models/map-objects/map-objects";
 import {Subject} from "rxjs/Subject";
 import GoogleMapsLoader = require("google-maps");
 import MapOptions = google.maps.MapOptions;
@@ -61,7 +61,7 @@ export class GoogleMapProvider {
     return new google.maps.Marker(markerOptions);
   }
 
-  async drawMapObjects(map: Map, mapObjects: ServerMapObject[]): Promise<Marker[]> {
+  async drawMapObjects(map: Map, mapObjects: ApplicationMapObject[]): Promise<Marker[]> {
     let markerParams = await Promise.all(mapObjects.map(async obj => ({
       map: map,
       latLng: obj.latLng,

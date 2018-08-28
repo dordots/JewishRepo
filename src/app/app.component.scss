@@ -62,14 +62,9 @@ ion-input[dir=rtl][clearInput]{
   background-color: $last-update-at-button-color;
   color: white;
   display: inline-block;
-  padding: 5px;
+  padding: 5px 7px 0px 7px;
   border-radius: 3px;
   text-align: center;
-  font-size: 0.6em;
-}
-
-.relative-distance {
-  color: white;
 }
 
 ion-modal {

@@ -1,5 +1,5 @@
 import {CreateSynagogueOptions, SynagogueOptions} from "../common/enums/synagogue-option";
-import {MapObject} from "../map-objects/server-map-object";
+import {MapObject} from "../map-objects/map-objects";
 
 export class SearchEvent {
   name: string;

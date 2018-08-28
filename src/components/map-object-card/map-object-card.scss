@@ -1,0 +1,69 @@
+fk-map-object-card {
+  $text-start-padding: 15px;
+
+  ion-card{
+    position: relative;
+    z-index: 1;
+  }
+
+  .box-shadow{
+    box-shadow: inset 0 0 10em rgba(0,0,0,0.6) !important;
+  }
+
+  img {
+    position: absolute;
+    top: 0;
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+  }
+
+  .map-object-name {
+    display: inline-block;
+    margin-top: 20px;
+    margin-right: $text-start-padding;
+    margin-top-bottom: 10px;
+    padding: 10px 0 10px 0;
+    h1{
+      font-size: 2rem;
+      color: white;
+      font-weight: bold;
+    }
+  }
+
+  .relative-distance{
+    background-color: rgba(0,0,0,0.3);
+    padding: 7px 7px 5px 7px;
+    border-radius: 3px;
+    margin-top: 10px;
+    margin-right: 10px;
+    color: white;
+    font-weight: bold;
+    ion-icon{
+      margin-left: 3px;
+    }
+  }
+
+  .last-updated-at{
+    font-size: 0.74em;
+    font-weight: 400;
+    padding-right: 7px;
+    padding-left: 7px;
+  }
+
+  .map-object-friendly-address {
+    display: flex;
+    align-items: center;
+    padding-right: $text-start-padding;
+    color: white;
+  }
+
+  .event-times {
+    padding-left: $text-start-padding;
+    //color: #a29e9d;
+    color: rgb(0, 255, 255);
+    color: white;
+    font-weight: bolder;
+    mix-blend-mode: lighten;
+  }
+}

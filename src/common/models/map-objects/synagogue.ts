@@ -3,11 +3,11 @@ import {PrayerNosach} from "../common/enums/prayer-nosach";
 import {ServerModel} from "../common/server-model";
 import {generateObjectId} from "../common/utils";
 import {merge, pick} from "lodash-es";
-import {EventBasedMapObject} from "./server-map-object";
 import {MapObjectTypes} from "../common/enums/map-object-types";
 import {CreateSynagogueOptions, SynagogueOptions} from "../common/enums/synagogue-option";
 import LatLngLiteral = google.maps.LatLngLiteral;
 import {PrayerEvent} from "../event/prayer-event";
+import {EventBasedMapObject} from "./map-objects";
 
 export class Synagogue implements EventBasedMapObject, ServerModel {
   _id: string;

@@ -5,7 +5,7 @@ import {AbstractServerProvider} from "./abstract-server-provider";
 import {catchError, retry} from "rxjs/operators";
 import "rxjs/add/operator/map";
 import {ServerModel} from "../../common/models/common/server-model";
-import {EventBasedMapObject, ServerMapObject} from "../../common/models/map-objects/server-map-object";
+import {ApplicationMapObject, EventBasedMapObject, MapObject} from "../../common/models/map-objects/map-objects";
 import {MockedMapObjects} from "../../../mocks/rendered-data/mocked-map-objects";
 import {Observable} from "rxjs/Observable";
 import LatLngLiteral = google.maps.LatLngLiteral;
@@ -45,7 +45,7 @@ export class EventBasedMapObjectProvider extends AbstractServerProvider{
                     .toPromise();
   }
 
-  getAllInRadius(latLng: LatLngLiteral, radius: number): Observable<ServerMapObject[]> {
+  getAllInRadius(latLng: LatLngLiteral, radius: number): Observable<ApplicationMapObject[]> {
     return Observable.of(MockedMapObjects);
   }
 }

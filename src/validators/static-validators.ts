@@ -1,6 +1,6 @@
 import {AbstractControl} from "@angular/forms";
 import moment = require("moment");
-import {MapObject} from "../common/models/map-objects/server-map-object";
+import {MapObject} from "../common/models/map-objects/map-objects";
 
 export class StaticValidators {
   static ArrayLengthInRange(min: number, maxExclusive = (min+1)){
