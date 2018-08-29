@@ -29,7 +29,7 @@ export class AddSynagoguePage {
               private mapObjectProvider: EventBasedMapObjectProvider,
               private datePipe: DatePipe,
               private modalCtrl: ModalController) {
-    this.synagogue = new Synagogue();
+    this.synagogue = this.navParams.get('synagogue') as Synagogue || new Synagogue();
     this.form = this.createSynagogueValidator();
   }
 

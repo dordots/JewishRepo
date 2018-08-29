@@ -9,6 +9,7 @@ import {EventTypes} from "../../common/models/common/enums/event-types";
 import {EventBasedMapObject} from "../../common/models/map-objects/map-objects";
 import {LessonEvent} from "../../common/models/event/lesson-event";
 import {PrayerEvent} from "../../common/models/event/prayer-event";
+import {AddSynagoguePage} from "../add-synagogue/add-synagogue";
 
 @IonicPage()
 @Component({
@@ -54,5 +55,9 @@ export class SynagogueDetailsPage {
 
   private getLessons(){
     return this.synagogue.events.filter(e => e.type == EventTypes.Lesson);
+  }
+
+  goToEditPage() {
+    this.navCtrl.push('AddSynagoguePage',{synagogue: this.synagogue});
   }
 }

@@ -28,6 +28,8 @@ export class PlaceAutoComplete extends AbstractValueAccessor implements AfterCon
       this._inputElement = v;
       this.initAutoComplete();
       this.registerToInputElementEvents();
+      if (this.value != null)
+        this.onInputFocus();
     }
   }
 
@@ -60,10 +62,10 @@ export class PlaceAutoComplete extends AbstractValueAccessor implements AfterCon
     try {
       if (this.useNativeInput)
         this.inputElement = this.el.nativeElement;
-      if (this.inputElement != null) {
-        this.registerToInputElementEvents();
-        this.initAutoComplete();
-      }
+      // if (this.inputElement != null) {
+      //   this.registerToInputElementEvents();
+      //   this.initAutoComplete();
+      // }
     }
     catch (e) {
       console.error(e);
