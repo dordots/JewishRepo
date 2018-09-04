@@ -8,6 +8,7 @@ import {Event} from "../../common/models/event/event";
 import {DatePipe} from "@angular/common";
 import {StaticValidators} from "../../validators/static-validators";
 import {AddEventModalComponent} from "../../components/add-event-modal/add-event-modal";
+import {EventTypes} from "../../common/models/common/enums/event-types";
 
 @IonicPage()
 @Component({
@@ -22,6 +23,8 @@ export class AddSynagoguePage {
   phoneNumber: string;
   form: FormGroup;
   synagogue: Synagogue;
+  eventsToShow: string;
+  eventsDictionary: {[type: string]: Event[]};
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -30,6 +33,7 @@ export class AddSynagoguePage {
               private datePipe: DatePipe,
               private modalCtrl: ModalController) {
     this.synagogue = this.navParams.get('synagogue') as Synagogue || new Synagogue();
+    this.createEventsDictionary();
     this.form = this.createSynagogueValidator();
   }
 
@@ -43,7 +47,7 @@ export class AddSynagoguePage {
       comments: new FormControl('', []),
       primaryNosach: new FormControl(this.synagogue.primaryPrayerNosach, {validators: [Validators.required], updateOn: 'change'}),
       location: new FormControl(this.synagogue, [StaticValidators.ValidateLocation(()=>this.synagogue)]),
-      phone: new FormControl(this.synagogue.phone, [Validators.pattern(/^\d{2,3}-?\d{7}$/)])
+      phone: new FormControl('', [Validators.pattern(/^\d{2,3}-?\d{7}$/)])
     });
     return group;
   }
@@ -96,5 +100,24 @@ export class AddSynagoguePage {
 
   removeEvent(event) {
     this.synagogue.events.splice(this.synagogue.events.findIndex(ev => ev == event), 1);
+  }
+
+  createEventsDictionary(){
+    this.eventsDictionary = {};
+    Object.keys(EventTypes).map(et => EventTypes[et])
+      .forEach(et => this.eventsDictionary[et] = this.synagogue.events.filter(ev => {
+        return ev.type == et;
+      }));
+  }
+
+  getEventTypes(){
+    return Object.keys(this.eventsDictionary);
+  }
+
+  f(eventsToShow){
+    if(this.eventsToShow && this.eventsToShow == eventsToShow)
+      this.eventsToShow = null;
+    else
+      this.eventsToShow = eventsToShow;
   }
 }

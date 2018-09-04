@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content class="form-background-color" dir="rtl">
-  <form [formGroup]="form" >
+  <form [formGroup]="form">
     <ion-item>
       <ion-input formControlName="name" [(ngModel)]="synagogue.name"
                  placeholder="שם הבית כנסת" clearInput dir="rtl"></ion-input>
@@ -73,27 +73,40 @@
         </button>
         <div class="bold">+ הוספת זמנים</div>
       </ion-row>
-      <ion-row *ngFor="let event of synagogue.events">
-        <ion-card>
-          <ion-card-content>
-            <ion-row justify-content-between>
-              <div>
-                <span>{{event.getEventName()}}</span>
-              </div>
-              <div>
-                <span>בימים </span>
-                <span>{{event.formatDaysArray()}}</span>
-              </div>
-              <div dir="ltr">
-                <span>{{formatTimeRange(event)}}</span>
-              </div>
-              <button class="transparent" (click)="removeEvent(event)">
-                <ion-icon name="close-circle"></ion-icon>
-              </button>
+      <ion-grid>
+        <ion-row *ngFor="let eventType of getEventTypes()" class="event-type-collapse-container"
+                 (click)="f(eventType)">
+          <ion-row class="event-type-collapse">{{eventType}}</ion-row>
+          <ion-row class="event-type-collapse">
+            <ion-icon name="arrow-dropdown"></ion-icon>
+          </ion-row>
+          <ng-container *ngIf="eventsToShow == eventType" >
+            <ion-row *ngFor="let event of eventsDictionary[eventsToShow]">
+              <ion-card>
+                <ion-card-content>
+                  <ion-row justify-content-between>
+                    <ion-col>
+                      <span>{{event.getEventName()}}</span>
+                    </ion-col>
+                    <ion-col>
+                      <span>בימים </span>
+                      <span>{{event.formatDaysArray()}}</span>
+                    </ion-col>
+                    <ion-col dir="ltr">
+                      <span>{{formatTimeRange(event)}}</span>
+                    </ion-col>
+                    <button class="transparent" (click)="removeEvent(event)">
+                      <ion-icon name="close-circle"></ion-icon>
+                    </button>
+                  </ion-row>
+                </ion-card-content>
+              </ion-card>
             </ion-row>
-          </ion-card-content>
-        </ion-card>
-      </ion-row>
+          </ng-container>
+          <div *ngIf="eventsToShow == eventType && eventsDictionary[eventsToShow].length == 0">אין {{eventType}} להצגה</div>
+        </ion-row>
+      </ion-grid>
+
     </ion-grid>
 
     <ion-row align-items-center margin>
@@ -113,5 +126,7 @@
   </form>
 </ion-content>
 <ion-footer padding class="dark-footer" [ngClass]="{'footer-disabled': !form.valid}" text-center>
-  <button class="transparent save-synagogue-button" (click)="submitNewSynagogue()" [disabled]="!form.valid">שמור פרטי בית כנסת</button>
+  <button class="transparent save-synagogue-button" (click)="submitNewSynagogue()" [disabled]="!form.valid">שמור פרטי
+    בית כנסת
+  </button>
 </ion-footer>

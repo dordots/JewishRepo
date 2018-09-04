@@ -40,7 +40,7 @@ export class GoogleMapProvider {
     return {
       center: new google.maps.LatLng(31.799048, 34.65136849999999),
       zoom: 18,
-      tilt: 30
+      tilt: 3
     }
   }
 
