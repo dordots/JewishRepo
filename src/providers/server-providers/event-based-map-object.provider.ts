@@ -5,13 +5,16 @@ import {AbstractServerProvider} from "./abstract-server-provider";
 import {catchError, retry} from "rxjs/operators";
 import "rxjs/add/operator/map";
 import {ServerModel} from "../../common/models/common/server-model";
-import {EventBasedMapObject, ServerMapObject} from "../../common/models/map-objects/server-map-object";
+import {ApplicationMapObject, EventBasedMapObject, MapObject} from "../../common/models/map-objects/map-objects";
 import {MockedMapObjects} from "../../../mocks/rendered-data/mocked-map-objects";
 import {Observable} from "rxjs/Observable";
 import LatLngLiteral = google.maps.LatLngLiteral;
 
 @Injectable()
 export class EventBasedMapObjectProvider extends AbstractServerProvider{
+
+  static mockedId = "5b5468974f46c65fa709efcb";
+
   constructor(private http: HttpClient, appConfig: AppConfigProvider) {
     super(appConfig);
     console.log('Hello EventBasedMapObjectProvider Provider');
@@ -42,7 +45,7 @@ export class EventBasedMapObjectProvider extends AbstractServerProvider{
                     .toPromise();
   }
 
-  getAllInRadius(latLng: LatLngLiteral, radius: number): Observable<ServerMapObject[]> {
+  getAllInRadius(latLng: LatLngLiteral, radius: number): Observable<ApplicationMapObject[]> {
     return Observable.of(MockedMapObjects);
   }
 }

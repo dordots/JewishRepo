@@ -1,6 +1,6 @@
 import {AbstractControl} from "@angular/forms";
 import moment = require("moment");
-import {MapObject} from "../common/models/map-objects/server-map-object";
+import {MapObject} from "../common/models/map-objects/map-objects";
 
 export class StaticValidators {
   static ArrayLengthInRange(min: number, maxExclusive = (min+1)){
@@ -24,31 +24,26 @@ export class StaticValidators {
   static ValidDateIsAfter(baselineDateCallback: ()=>Date, controlTimeFormat: string) {
       return (control: AbstractControl) => {
         let baseline = moment(baselineDateCallback(), controlTimeFormat);
-
-        let endtime = moment(control.value, controlTimeFormat);
-
-        if (!baseline.isValid() && endtime.isValid())
-          return {startTimeInvalid: 'Start time must be valid'};
-
-        if (!endtime.isValid() || endtime.isAfter(baseline,"millisecond"))
+        let target = moment(control.value, controlTimeFormat);
+        if (!baseline.isValid() && target.isValid())
           return null;
-
-        return {dateIsNotAfter: false};
+        if (baseline.isValid() && target.isValid())
+          return target.isAfter(baseline) ? null : {dateIsNotAfter: true};
       };
   }
 
   static ValidDateIsBefore(baselineDateCallback: ()=>Date, controlTimeFormat: string) {
     return (control: AbstractControl) => {
-      if (!this.ValidDateIsAfter(baselineDateCallback, controlTimeFormat)(control))
+      if (this.ValidDateIsAfter(baselineDateCallback, controlTimeFormat)(control) != null)
         return {dateIsNotBefore: true};
       return null;
     };
   }
 
-  static ValidateLocation(mapObejctCallback: ()=> MapObject){
+  static ValidateLocation(mapObejctCallback: ()=> MapObject, required=true){
     return (c) => {
       let mapObject = mapObejctCallback();
-      if (mapObject == null || mapObject.userFriendlyAddress == null || mapObject.latLng == null){
+      if (mapObject == null || mapObject.userFriendlyAddress == null || mapObject.latLng == null && required){
         return {invalidMapObject: true};
       }
       return null;

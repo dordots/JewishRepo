@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import {HomeToolbarSegments} from "../../components/home-toolbar/home-toolbar";
+import {MapObject} from "../../common/models/map-objects/map-objects";
 
 @Component({
   selector: 'page-home',
@@ -9,6 +10,7 @@ import {HomeToolbarSegments} from "../../components/home-toolbar/home-toolbar";
 export class HomePage {
 
   private activeSegment: HomeToolbarSegments;
+  private nearMapObjects: MapObject;
 
   constructor(public navCtrl: NavController) {
 

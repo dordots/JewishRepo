@@ -3,8 +3,6 @@ import {GoogleMapComponent} from './google-map/google-map';
 import {GoogleMapProvider} from "../providers/google-map/google-map-provider";
 import {HomeToolbarComponent} from './home-toolbar/home-toolbar';
 import {IonicModule} from "ionic-angular";
-import {EventsListComponent} from './events-list/events-list';
-import {EventCardComponent} from './event-card/event-card';
 import {LocateButtonComponent} from './locate-button/locate-button';
 import {SearchEventButtonComponent} from './search-event-button/search-event-button';
 import {HomeFabsComponent} from './home-fabs/home-fabs';
@@ -13,16 +11,18 @@ import {PrayerVersionOptionsComponent} from './prayer-version-options/prayer-ver
 import {LocationPickerComponent} from './location-picker/location-picker';
 import {SelectMapObjectComponent} from './select-map-object/select-map-object';
 import {DayRangeComponent} from './day-range/day-range';
-import {EventDaysAndTimeModalComponent} from './event-days-and-time-modal/event-days-and-time-modal';
 import {SynagogueOptionsComponent} from "./synagogue-options/synagogue-options";
 import {DirectivesModule} from "../directives/directives.module";
+import {AddEventModalComponent} from "./add-event-modal/add-event-modal";
+import {MapObjectsListComponent} from "./map-objects-list/map-objects-list.component";
+import {MapObjectCardComponent} from "./map-object-card/map-object-card";
 
 @NgModule({
 	declarations: [
 	  GoogleMapComponent,
     HomeToolbarComponent,
-    EventsListComponent,
-    EventCardComponent,
+    MapObjectsListComponent,
+    MapObjectCardComponent,
     LocateButtonComponent,
     SearchEventButtonComponent,
     HomeFabsComponent,
@@ -32,7 +32,7 @@ import {DirectivesModule} from "../directives/directives.module";
     LocationPickerComponent,
     SelectMapObjectComponent,
     DayRangeComponent,
-    EventDaysAndTimeModalComponent,
+    AddEventModalComponent,
   ],
 	imports: [IonicModule, DirectivesModule],
   providers: [GoogleMapProvider],
@@ -40,8 +40,8 @@ import {DirectivesModule} from "../directives/directives.module";
 	exports: [
 	  GoogleMapComponent,
     HomeToolbarComponent,
-    EventsListComponent,
-    EventCardComponent,
+    MapObjectsListComponent,
+    MapObjectCardComponent,
     LocateButtonComponent,
     SearchEventButtonComponent,
     HomeFabsComponent,
@@ -51,7 +51,7 @@ import {DirectivesModule} from "../directives/directives.module";
     LocationPickerComponent,
     SelectMapObjectComponent,
     DayRangeComponent,
-    EventDaysAndTimeModalComponent
+    AddEventModalComponent
   ]
 })
 export class ComponentsModule {}

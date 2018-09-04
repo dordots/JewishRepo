@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Geolocation} from "@ionic-native/geolocation";
 import {merge} from "lodash";
 import {AppAssetsProvider} from "../app-assets/app-assets";
-import {ServerMapObject} from "../../common/models/map-objects/server-map-object";
+import {ApplicationMapObject} from "../../common/models/map-objects/map-objects";
 import {Subject} from "rxjs/Subject";
 import GoogleMapsLoader = require("google-maps");
 import MapOptions = google.maps.MapOptions;
@@ -10,8 +10,7 @@ import Map = google.maps.Map;
 import MarkerOptions = google.maps.MarkerOptions;
 import Marker = google.maps.Marker;
 import LatLngLiteral = google.maps.LatLngLiteral;
-
-// import Size = google.maps.Size;
+import GeocoderResult = google.maps.GeocoderResult;
 
 @Injectable()
 export class GoogleMapProvider {
@@ -37,23 +36,20 @@ export class GoogleMapProvider {
     }));
   }
 
-  get mapOptions(): MapOptions {
+  get defaultMapOptions(): MapOptions {
     return {
-      center: {
-        lat: 43.0741,
-        lng: -89.38098
-      },
+      center: new google.maps.LatLng(31.799048, 34.65136849999999),
       zoom: 18,
-      tilt: 30
+      tilt: 30,
     }
   }
 
-  async createMap(mapDivElement: HTMLDivElement): Promise<Map> {
+  async createMap(mapDivElement: HTMLDivElement, mapOptions?: MapOptions): Promise<Map> {
     if (!this.isApiLoaded) {
       await this.loadAPI();
       this.isApiLoaded = true;
     }
-    return new google.maps.Map(mapDivElement, this.mapOptions);
+    return new google.maps.Map(mapDivElement, mapOptions || this.defaultMapOptions);
   }
 
   async getCurrentPosition() {
@@ -65,7 +61,7 @@ export class GoogleMapProvider {
     return new google.maps.Marker(markerOptions);
   }
 
-  async drawMapObjects(map: Map, mapObjects: ServerMapObject[]): Promise<Marker[]> {
+  async drawMapObjects(map: Map, mapObjects: ApplicationMapObject[]): Promise<Marker[]> {
     let markerParams = await Promise.all(mapObjects.map(async obj => ({
       map: map,
       latLng: obj.latLng,
@@ -77,5 +73,18 @@ export class GoogleMapProvider {
       },
     })));
     return markerParams.map(params => this.createMarkerAt(map, params.latLng, params.options));
+  }
+
+  getPlaceDetails(location: LatLngLiteral): Promise<GeocoderResult>{
+    let geocoder = new google.maps.Geocoder();
+    return new Promise<GeocoderResult>((resolve, reject) => {
+      geocoder.geocode({location: location}, (results, status1) => {
+        if (results && results.length > 0) {
+          resolve(results[0]);
+        } else {
+          reject('Cannot determine address at this location');
+        }
+      });
+    });
   }
 }

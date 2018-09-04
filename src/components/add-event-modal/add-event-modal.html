@@ -1,0 +1,74 @@
+<div id="modal-container">
+  <ion-card dir="rtl" class="card">
+    <form [formGroup]="form">
+
+      <ion-card-header>
+
+        <ion-row justify-content-between dir="ltr">
+          <button class="transparent" (click)="dismiss()"><h1>x</h1></button>
+          <div class="time-value">
+            <label>הוספת אירוע</label>
+          </div>
+        </ion-row>
+
+        <ion-row>
+          <ion-item>
+            <ion-label stacked>סוג האירוע</ion-label>
+            <ion-select [(ngModel)]="event.type" formControlName="eventType"
+                        (ionChange)="onEventTypeSelected($event)"
+                        okText="בחר" cancelText="בטל" placeholder="בחר אירוע">
+              <ion-option *ngFor="let option of eventTypes" [value]="option">{{option}}</ion-option>
+            </ion-select>
+          </ion-item>
+        </ion-row>
+
+      </ion-card-header>
+
+      <ion-card-content id="modal-card-content" *ngIf="event.type">
+
+        <ion-row *ngIf="event.type" [ngSwitch]="event.type">
+          <ion-item *ngSwitchCase="'תפילה'">
+            <ion-label stacked>בחר תפילה</ion-label>
+            <ion-select [(ngModel)]="event.prayerType"
+                        formControlName="prayerType" okText="בחר" cancelText="בטל" placeholder="בחר תפילה">
+              <ion-option *ngFor="let prayerType of getPrayerTypes()">{{prayerType}}</ion-option>
+            </ion-select>
+          </ion-item>
+          <ion-item *ngSwitchCase="'שיעור'">
+            <ion-label stacked>הזן נושא שיעור</ion-label>
+            <ion-input [(ngModel)]="event.title" placeholder="לדוגמה: דף יומי" formControlName="lessonTitle" ></ion-input>
+          </ion-item>
+        </ion-row>
+
+        <ion-grid>
+          <ion-row>
+
+            <ion-col>
+              <ion-item>
+                <ion-label stacked>שעת התחלה</ion-label>
+                <ion-datetime formControlName="startsAt" [(ngModel)]="event.startTime"
+                              displayFormat="HH:mm" pickerFormat="HH:mm" placeholder="בחר שעה"></ion-datetime>
+              </ion-item>
+            </ion-col>
+
+            <ion-col>
+              <ion-item>
+                <ion-label stacked>שעת סיום (אם ידועה)</ion-label>
+                <ion-datetime formControlName="endsAt" [(ngModel)]="event.endTime"
+                              displayFormat="HH:mm" pickerFormat="HH:mm" placeholder="בחר שעה"></ion-datetime>
+              </ion-item>
+            </ion-col>
+
+          </ion-row>
+        </ion-grid>
+
+        <ion-label>ימים</ion-label>
+        <fk-day-range formControlName="repeatedDays" [(ngModel)]="event.repeatedDays"></fk-day-range>
+        <ion-row class="submit-button-container">
+          <button ion-button type="button" (click)="onFormSubmitted()"
+                  color="dark" class="submit-button" [disabled]="!form.valid">+ הוסף זמנים</button>
+        </ion-row>
+      </ion-card-content>
+    </form>
+  </ion-card>
+</div>

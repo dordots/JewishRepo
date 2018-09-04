@@ -1,4 +1,4 @@
-input{
+input {
   text-align: right;
 }
 
@@ -8,18 +8,18 @@ input{
   border: 2px solid #f8f8f8;
   height: 80%;
   font-size: 1em;
-  input[type='phone']:focus{
-    text-align:left;
-    &::placeholder{
+  input[type='phone']:focus {
+    text-align: left;
+    &::placeholder {
 
     }
   }
-  input[type='phone']::placeholder{
+  input[type='phone']::placeholder {
     color: #bdbdbd;
   }
 }
 
-ion-icon[name=call]{
+ion-icon[name=call] {
   color: #21d672;
 }
 
@@ -27,28 +27,49 @@ ion-icon[name=call]{
   width: 30px;
   height: 30px;
   background-color: transparent;
-  ion-icon[name=call]{
+  ion-icon[name=call] {
     font-size: 20px !important;
     position: relative;
-    ion-icon[name=add]{
+    ion-icon[name=add] {
       font-size: 15px !important;
       font-weight: bolder;
       position: absolute;
-      top:-5px;
+      top: -5px;
       left: 9px;
     }
   }
 }
 
 .add-times-fab {
-  @include fab-low-shadow(map_get($colors,orange))
+  @include fab-low-shadow(map_get($colors, orange))
 }
 
-.add-image-fab{
-  @include fab-low-shadow(map_get($colors,strong-cyan))
+.add-image-fab {
+  @include fab-low-shadow(map_get($colors, strong-cyan))
 }
 
 .save-synagogue-button {
   color: map_get($colors, light);
   font-weight: bold;
+}
+
+.comments {
+  border: 1px solid #E0E0E0;
+  border-radius: 5px;
+  width: 90%;
+  background-color: white;
+}
+
+.event-type-collapse-container{
+  flex-direction: column;
+  text-align: center;
+  margin: 10px;
+  background-color: transparentize(map_get($colors, sky), 0.5);
+  border-radius: 3px;
+  padding-top: 10px;
+  padding-bottom: 5px;
+}
+
+.event-type-collapse{
+  justify-content: center;
 }

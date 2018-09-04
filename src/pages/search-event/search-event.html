@@ -8,17 +8,20 @@
 <ion-content>
   <form [formGroup]="formGroup" dir="rtl">
     <ion-item>
-      <ion-input [(ngModel)]="searchEvent.name" formControlName="name"
+      <ion-input [(ngModel)]="searchEvent.name" [ngModelOptions]="{standalone: true}"
                  placeholder="חפש לפי שם בית כנסת..." clearInput dir="rtl"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label stacked>כתובת</ion-label>
       <ion-input #ionInput fkPlaceAutoComplete [(ngModel)]="searchEvent.mapObject"
-                 [formControl]="formGroup.get('location')"
+                 [ngModelOptions]="{standalone: true}"
                  [inputElement]="ionInput._native?.nativeElement"
                  clearInput placeholder="חפש ביחס לכתובת" dir="rtl"></ion-input>
-      <button ion-button item-end clear small (click)="openLocationPicker()">בחר מיקום</button>
+
+      <a item-end margin-left fkLocationPickerModal
+         [(ngModel)]="searchEvent.mapObject" [ngModelOptions]="{standalone: true}"
+         (modalClosed)="onModalClosed($event)">מפה</a>
     </ion-item>
 
     <ion-card margin-top>
@@ -53,34 +56,30 @@
 
       <ion-item>
         <ion-label fixed>נוסח תפילה</ion-label>
-        <fk-prayer-version-options formControlName="prayerNosach" [(ngModel)]="searchEvent.prayerNosach"
+        <fk-prayer-version-options [(ngModel)]="searchEvent.prayerNosach" [ngModelOptions]="{standalone: true}"
                                    [allowMultiple]="true" title="בחר נוסח תפילה"
                                    placeholder="בחר נוסח תפילה" item-content></fk-prayer-version-options>
       </ion-item>
     </ion-card>
 
     <ion-card margin-top>
-
-      <div>
-        <ion-label stacked>אפשרויות</ion-label>
-        <fk-synagogue-options [(ngModel)]="searchEvent.synagogueOptions"
-                              [ngModelOptions]="{standalone: true}" class="form-background-color"></fk-synagogue-options>
-      </div>
+      <fk-synagogue-options [(ngModel)]="searchEvent.synagogueOptions"
+                            [ngModelOptions]="{standalone: true}" class="form-background-color"></fk-synagogue-options>
 
       <div margin>
-        <ion-label stacked margin-bottom>ימים</ion-label>
-        <fk-day-range formControlName="daysRange" [(ngModel)]="searchEvent.daysRange"></fk-day-range>
+        <div text-center margin-bottom>באילו ימים?</div>
+        <fk-day-range [(ngModel)]="searchEvent.daysRange" [ngModelOptions]="{standalone: true}"></fk-day-range>
       </div>
     </ion-card>
   </form>
+
 </ion-content>
 
-<ion-footer padding class="footer" [ngClass]="{'footer-disabled': !formGroup.valid}" text-center>
+<ion-footer padding class="dark-footer" [ngClass]="{'footer-disabled': !formGroup.valid}" text-center>
   <button class="transparent save-synagogue-button" dir="rtl">
     <span>חפש מניינים</span>
     <ion-icon name="search"></ion-icon>
   </button>
-  <button ion-button (click)="printFormErrors()">erros</button>
 </ion-footer>
 
 

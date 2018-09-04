@@ -1,16 +1,28 @@
 import {Event} from "./event";
 import {PrayerNosach} from "../common/enums/prayer-nosach";
+import {PrayerType} from "../common/enums/prayer-type";
+import {EventTypes} from "../common/enums/event-types";
 
-export class PrayerEvent implements Event {
+export class PrayerEvent extends Event {
 
-  title: string;
-  nosach: PrayerNosach;
-  startTime: Date;
-  endTime: Date;
-  repeatedDays: number[];
-  types: PrayerEvent;
+  constructor(public prayerType?: PrayerType, public nosach?: PrayerNosach){
+    super();
+    this.type = EventTypes.Prayer;
+  }
 
-  constructor(){
-    this.repeatedDays = [];
+  fromServerModel(model: any){
+    super.fromServerModel(model);
+    this.nosach = model.nosach;
+    this.prayerType = model.types;
+  }
+
+  getEventName(): string {
+    return "תפילת " + this.prayerType;
+  }
+
+  equals(other: Event): boolean {
+    if (!(other instanceof PrayerEvent) || other == null)
+      return false;
+    return super.equals(other) && this.prayerType == other.prayerType && this.nosach == other.nosach;
   }
 }

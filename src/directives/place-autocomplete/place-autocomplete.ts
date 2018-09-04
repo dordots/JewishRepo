@@ -8,7 +8,7 @@ import {
   Output, SkipSelf
 } from '@angular/core';
 import {GoogleMapProvider} from "../../providers/google-map/google-map-provider";
-import {MapObject, ServerMapObject} from "../../common/models/map-objects/server-map-object";
+import {MapObject} from "../../common/models/map-objects/map-objects";
 import Autocomplete = google.maps.places.Autocomplete;
 import PlaceResult = google.maps.places.PlaceResult;
 import {FormControl, NgControl,} from "@angular/forms";
@@ -28,6 +28,8 @@ export class PlaceAutoComplete extends AbstractValueAccessor implements AfterCon
       this._inputElement = v;
       this.initAutoComplete();
       this.registerToInputElementEvents();
+      if (this.value != null)
+        this.onInputFocus();
     }
   }
 
@@ -53,17 +55,17 @@ export class PlaceAutoComplete extends AbstractValueAccessor implements AfterCon
               @SkipSelf() private changeDetectRef: ChangeDetectorRef) {
     super();
     console.log('Hello PlaceAutocompleteComponent directive');
-    this.placeSelected = new EventEmitter<ServerMapObject>();
+    this.placeSelected = new EventEmitter<MapObject>();
   }
 
   async ngAfterContentInit() {
     try {
       if (this.useNativeInput)
         this.inputElement = this.el.nativeElement;
-      if (this.inputElement != null) {
-        this.registerToInputElementEvents();
-        this.initAutoComplete();
-      }
+      // if (this.inputElement != null) {
+      //   this.registerToInputElementEvents();
+      //   this.initAutoComplete();
+      // }
     }
     catch (e) {
       console.error(e);
@@ -155,7 +157,6 @@ export class PlaceAutoComplete extends AbstractValueAccessor implements AfterCon
    * Used for set the input value to the `userFriendlyAddress` because it always is being reset.
    */
   private onInputFocus() {
-    if (this.inputElement.value != '')
       this.inputElement.value = this.value.userFriendlyAddress || '';
   }
 

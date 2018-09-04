@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {MapObject, ServerMapObject} from "../../common/models/map-objects/server-map-object";
+import {ApplicationMapObject, MapObject} from "../../common/models/map-objects/map-objects";
 import {ViewController} from "ionic-angular";
 import {GoogleMapProvider} from "../../providers/google-map/google-map-provider";
 import {GoogleMapComponent} from "../google-map/google-map";
@@ -46,7 +46,7 @@ export class SelectMapObjectComponent {
     }));
   }
 
-  getMapObjectFromLatLng(mapObjects: ServerMapObject[], latLng: LatLngLiteral){
+  getMapObjectFromLatLng(mapObjects: ApplicationMapObject[], latLng: LatLngLiteral){
     return mapObjects.find(marker => isEqual(marker.latLng, latLng))._id;
   }
 

@@ -1,6 +1,7 @@
-import {AfterViewInit, Component, EventEmitter, Output} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, Output} from '@angular/core';
 import {GoogleMapProvider} from "../../providers/google-map/google-map-provider";
 import Map = google.maps.Map;
+import MapOptions = google.maps.MapOptions;
 
 @Component({
   selector: 'fk-google-map',
@@ -11,6 +12,8 @@ export class GoogleMapComponent implements AfterViewInit {
 
   public readonly id: string;
   public map: Map;
+
+  @Input() mapOptions: MapOptions;
 
   @Output()
   onMapCreated: EventEmitter<Map>;
@@ -24,7 +27,7 @@ export class GoogleMapComponent implements AfterViewInit {
 
   async ngAfterViewInit(){
     let mapElement = document.getElementById(this.id) as HTMLDivElement;
-    this.map = await this.mapProvider.createMap(mapElement);
+    this.map = await this.mapProvider.createMap(mapElement, this.mapOptions);
     this.onMapCreated.emit(this.map);
   }
 }

@@ -4,9 +4,9 @@ import {isEqual} from "lodash-es";
 import {isArray} from "ionic-angular/util/util";
 
 export abstract class AbstractValueAccessor implements ControlValueAccessor {
-  protected _value: any = '';
-  get value(): any { return this._value; };
-  set value(v: any) {
+  protected _value: any = null;
+  public get value(): any { return this._value; };
+  public set value(v: any) {
     if (!isEqual(v, this._value)) {
       if (isArray(v))
         v.forEach(val => this._value.push(val));

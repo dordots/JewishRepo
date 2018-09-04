@@ -30,11 +30,15 @@
   background-color: transparent;
 }
 
+.x2 {
+   font-size: 2em;
+}
+
 .form-background-color {
   background-color: map_get($colors, cream)
 }
 
-.footer {
+.dark-footer {
   background-color: map_get($colors, dark);
 }
 
@@ -58,12 +62,15 @@ ion-input[dir=rtl][clearInput]{
   background-color: $last-update-at-button-color;
   color: white;
   display: inline-block;
-  padding: 5px;
+  padding: 5px 7px 0px 7px;
   border-radius: 3px;
   text-align: center;
-  font-size: 0.6em;
 }
 
-.relative-distance {
-  color: white;
+ion-modal {
+  ion-backdrop {
+    visibility: visible;
+    opacity: 0.4 !important;
+    z-index: 0;
+  }
 }

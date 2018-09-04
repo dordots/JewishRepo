@@ -1,15 +1,14 @@
-import {ChangeDetectorRef, Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Synagogue} from "../../common/models/map-objects/synagogue";
-import {MapObject, ServerMapObject} from "../../common/models/map-objects/server-map-object";
 import {ImagePicker, ImagePickerOptions, OutputType} from "@ionic-native/image-picker";
 import {EventBasedMapObjectProvider} from "../../providers/server-providers/event-based-map-object.provider";
-import {EventDaysAndTimeModalComponent} from "../../components/event-days-and-time-modal/event-days-and-time-modal";
-import {Event, FormatDaysArray, FormatTimeRange} from "../../common/models/event/event";
+import {Event} from "../../common/models/event/event";
 import {DatePipe} from "@angular/common";
-import {PrintFormValidationErrors} from "../../common/models/common/utils";
 import {StaticValidators} from "../../validators/static-validators";
+import {AddEventModalComponent} from "../../components/add-event-modal/add-event-modal";
+import {EventTypes} from "../../common/models/common/enums/event-types";
 
 @IonicPage()
 @Component({
@@ -19,19 +18,23 @@ import {StaticValidators} from "../../validators/static-validators";
 })
 export class AddSynagoguePage {
 
+  @ViewChild('ionInput') locationInput;
+
   phoneNumber: string;
-  formGroup: FormGroup;
+  form: FormGroup;
   synagogue: Synagogue;
+  eventsToShow: string;
+  eventsDictionary: {[type: string]: Event[]};
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private formBuilder: FormBuilder,
               private imagePicker: ImagePicker,
               private mapObjectProvider: EventBasedMapObjectProvider,
               private datePipe: DatePipe,
               private modalCtrl: ModalController) {
-    this.synagogue = new Synagogue();
-    this.formGroup = this.createSynagogueValidator();
+    this.synagogue = this.navParams.get('synagogue') as Synagogue || new Synagogue();
+    this.createEventsDictionary();
+    this.form = this.createSynagogueValidator();
   }
 
   ionViewDidLoad() {
@@ -41,9 +44,10 @@ export class AddSynagoguePage {
   createSynagogueValidator(){
     let group = new FormGroup({
       name: new FormControl(this.synagogue.name, [Validators.required]),
+      comments: new FormControl('', []),
       primaryNosach: new FormControl(this.synagogue.primaryPrayerNosach, {validators: [Validators.required], updateOn: 'change'}),
       location: new FormControl(this.synagogue, [StaticValidators.ValidateLocation(()=>this.synagogue)]),
-      phone: new FormControl(this.synagogue.phone, [Validators.pattern(/^\d{2,3}-?\d{7}$/)])
+      phone: new FormControl('', [Validators.pattern(/^\d{2,3}-?\d{7}$/)])
     });
     return group;
   }
@@ -63,7 +67,7 @@ export class AddSynagoguePage {
   }
 
   openAddTimesModal() {
-    const modal = this.modalCtrl.create(EventDaysAndTimeModalComponent,null, {
+    const modal = this.modalCtrl.create(AddEventModalComponent,null, {
       enableBackdropDismiss: true,
       showBackdrop: true,
     });
@@ -85,20 +89,35 @@ export class AddSynagoguePage {
     this.synagogue.phone.splice(index, 1);
   }
 
-  formatTimeRange(event: Event){
-    return FormatTimeRange(this.datePipe, event.startTime, event.endTime);
+  onModalClosed(){
+    this.locationInput._native.nativeElement.value = this.synagogue.userFriendlyAddress;
+    this.form.get('location').updateValueAndValidity();
   }
 
-  formatDays(event: Event){
-    return FormatDaysArray(event.repeatedDays);
+  formatTimeRange(event: Event){
+    return event.formatTimeRange();
   }
 
   removeEvent(event) {
     this.synagogue.events.splice(this.synagogue.events.findIndex(ev => ev == event), 1);
   }
 
-  printErrors() {
-    PrintFormValidationErrors(this.formGroup);
-    console.log("---");
+  createEventsDictionary(){
+    this.eventsDictionary = {};
+    Object.keys(EventTypes).map(et => EventTypes[et])
+      .forEach(et => this.eventsDictionary[et] = this.synagogue.events.filter(ev => {
+        return ev.type == et;
+      }));
+  }
+
+  getEventTypes(){
+    return Object.keys(this.eventsDictionary);
+  }
+
+  f(eventsToShow){
+    if(this.eventsToShow && this.eventsToShow == eventsToShow)
+      this.eventsToShow = null;
+    else
+      this.eventsToShow = eventsToShow;
   }
 }

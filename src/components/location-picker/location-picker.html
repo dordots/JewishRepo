@@ -1,13 +1,26 @@
 <ion-content>
-  <div class="place-autocomplete-text-input-container">
-    <ion-searchbar class="place-autocomplete-text-input" #ionSearchbar fkPlaceAutoComplete [inputElement]="ionSearchbar._searchbarInput?.nativeElement"
-                   [map]="mapComponent.map"></ion-searchbar>
+  <ion-item id="search-container" dir="rtl">
+    <button item-start class="transparent" (click)="onDismiss()">
+      <ion-icon name="arrow-forward" class="x2"></ion-icon>
+    </button>
+    <ion-input #ionInput fkPlaceAutoComplete [map]="mapComponent.map"
+               [(ngModel)]="mapObject"
+               [inputElement]="ionInput._native?.nativeElement"
+               (placeSelected)="onAutocompleteSelect($event)"
+               clearInput placeholder="בחר כתובת" dir="rtl"></ion-input>
+    <button item-end class="transparent">
+      <ion-icon name="search"></ion-icon>
+    </button>
+  </ion-item>
+
+  <div id="map-container">
+    <fk-google-map #mapComponent></fk-google-map>
   </div>
-  <fk-google-map #mapComponent></fk-google-map>
+
+  <ion-row class="dark-footer">
+      <button class="cancel-button" (click)="onDismiss()">ביטול</button>
+      <button class="ok-button" (click)="onSubmit()">אישור</button>
+  </ion-row>
+
 </ion-content>
-<ion-footer>
-  <ion-buttons text-center>
-    <button ion-button (click)="onDismiss()">ביטול</button>
-    <button ion-button (click)="onSubmit()">אישור</button>
-  </ion-buttons>
-</ion-footer>
+
