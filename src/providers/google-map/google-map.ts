@@ -60,20 +60,6 @@ export class GoogleMap {
         console.log(err);
       });
 
-    // this.locationTrackingSubscription = Observable.interval(options.timeout)
-    //   .subscribe(() => fromPromise(this.geolocation.getCurrentPosition(options))
-    //     .filter((p) => p.coords !== undefined).take(1).subscribe((pos) => {
-    //       this.changeCircleAndMarkerCenter(pos);
-    //     }, (err) => {
-    //       console.log('In watch mode: ');
-    //       console.log(err);
-    //     }));
-    // this.locationTrackingSubscription = this.geolocation.watchPosition(options)
-    //   .filter((p) => p.coords !== undefined).subscribe((pos) => {
-    //       this.changeCircleAndMarkerCenter(pos);
-    //   }, (err)=>{
-    //     console.log('In watch mode: ' + err);
-    //   });
   }
 
   createMarkerAt(latLng: google.maps.LatLngLiteral, options: Partial<google.maps.MarkerOptions> = {}) {
