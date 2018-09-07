@@ -38,17 +38,20 @@ fk-map-object-card {
     margin-top: 10px;
     margin-right: 10px;
     color: white;
-    font-weight: bold;
+    font-size: 0.74em;
     ion-icon{
       margin-left: 3px;
     }
   }
 
   .last-updated-at{
+    margin-top: 10px;
+    margin-left: 10px;
     font-size: 0.74em;
     font-weight: 400;
     padding-right: 7px;
     padding-left: 7px;
+    max-height: 2.2em;
   }
 
   .map-object-friendly-address {
