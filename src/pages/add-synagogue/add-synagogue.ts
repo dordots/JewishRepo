@@ -98,7 +98,9 @@ export class AddSynagoguePage {
     return event.formatTimeRange();
   }
 
-  removeEvent(event) {
+  removeEvent(event: Event) {
+    let index = this.eventsDictionary[event.type].findIndex(ev => ev == ev);
+    this.eventsDictionary[event.type].splice(index, 1);
     this.synagogue.events.splice(this.synagogue.events.findIndex(ev => ev == event), 1);
   }
 
@@ -114,7 +116,7 @@ export class AddSynagoguePage {
     return Object.keys(this.eventsDictionary);
   }
 
-  f(eventsToShow){
+  toggleCollapse(eventsToShow){
     if(this.eventsToShow && this.eventsToShow == eventsToShow)
       this.eventsToShow = null;
     else

@@ -74,12 +74,13 @@
         <div class="bold">+ הוספת זמנים</div>
       </ion-row>
       <ion-grid>
-        <ion-row *ngFor="let eventType of getEventTypes()" class="event-type-collapse-container"
-                 (click)="f(eventType)">
-          <ion-row class="event-type-collapse">{{eventType}}</ion-row>
-          <ion-row class="event-type-collapse">
-            <ion-icon name="arrow-dropdown"></ion-icon>
-          </ion-row>
+        <ion-row *ngFor="let eventType of getEventTypes()" class="event-type-collapse-container">
+          <div (click)="toggleCollapse(eventType)">
+            <ion-row class="event-type-collapse">{{eventType}}</ion-row>
+            <ion-row class="event-type-collapse">
+              <ion-icon name="arrow-dropdown"></ion-icon>
+            </ion-row>
+          </div>
           <ng-container *ngIf="eventsToShow == eventType" >
             <ion-row *ngFor="let event of eventsDictionary[eventsToShow]">
               <ion-card>
