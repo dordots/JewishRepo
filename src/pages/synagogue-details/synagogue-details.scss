@@ -97,4 +97,12 @@ page-synagogue-details{
   .comments{
     color: map_get($colors, grey);
   }
+
+  h4{
+    font-weight: bold;
+  }
+
+  button[ion-fab]{
+    @include fab-low-shadow(map_get($colors,dark))
+  }
 }

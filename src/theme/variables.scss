@@ -23,8 +23,6 @@ $app-direction: ltr;
 // http://ionicframework.com/docs/theming/overriding-ionic-variables/
 
 
-$last-update-at-button-color: #3bd4fe;
-
 // Named Color Variables
 // --------------------------------------------------
 // Named colors makes it easy to reuse colors on various components.
@@ -34,7 +32,7 @@ $last-update-at-button-color: #3bd4fe;
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:     #488aff,
+  primary:     #3bd4fe,
   secondary:   #1BD584,
   danger:      #f53d3d,
   light:       #f4f4f4,

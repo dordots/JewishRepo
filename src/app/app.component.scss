@@ -59,7 +59,7 @@ ion-input[dir=rtl][clearInput]{
 }
 
 .last-updated-at {
-  background-color: $last-update-at-button-color;
+  background-color: map_get($colors, primary);
   color: white;
   display: inline-block;
   padding: 5px 7px 0px 7px;
