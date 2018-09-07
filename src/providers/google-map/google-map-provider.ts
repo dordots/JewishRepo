@@ -1,26 +1,21 @@
 import {Injectable} from '@angular/core';
 import {Geolocation} from "@ionic-native/geolocation";
-import {merge} from "lodash";
 import {AppAssetsProvider} from "../app-assets/app-assets";
 import {ApplicationMapObject} from "../../common/models/map-objects/map-objects";
-import {Subject} from "rxjs/Subject";
 import GoogleMapsLoader = require("google-maps");
 import MapOptions = google.maps.MapOptions;
-import Map = google.maps.Map;
-import MarkerOptions = google.maps.MarkerOptions;
-import Marker = google.maps.Marker;
 import LatLngLiteral = google.maps.LatLngLiteral;
 import GeocoderResult = google.maps.GeocoderResult;
+import "rxjs/add/operator/filter";
+import {GoogleMap} from "./google-map";
 
 @Injectable()
 export class GoogleMapProvider {
   public isApiLoaded: boolean;
-  public apiLoaded$: Subject<void>;
 
-  constructor(private geolocation: Geolocation,
+  constructor(public readonly geolocation: Geolocation,
               private appAssets: AppAssetsProvider) {
     console.log('Hello GoogleMapProvider Provider');
-    this.apiLoaded$ = new Subject<void>();
   }
 
   loadAPI(): Promise<void> {
@@ -31,51 +26,48 @@ export class GoogleMapProvider {
     GoogleMapsLoader.REGION = 'IL';
     GoogleMapsLoader.LIBRARIES = ['places'];
     return new Promise<void>(resolve => GoogleMapsLoader.load(() => {
-      this.apiLoaded$.next();
       resolve();
     }));
   }
 
   get defaultMapOptions(): MapOptions {
     return {
-      center: new google.maps.LatLng(31.799048, 34.65136849999999),
       zoom: 18,
       tilt: 30,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
     }
   }
 
-  async createMap(mapDivElement: HTMLDivElement, mapOptions?: MapOptions): Promise<Map> {
+  async createMap(mapDivElement: HTMLDivElement, mapOptions?: MapOptions): Promise<GoogleMap> {
     if (!this.isApiLoaded) {
       await this.loadAPI();
       this.isApiLoaded = true;
     }
-    return new google.maps.Map(mapDivElement, mapOptions || this.defaultMapOptions);
+    const currentLocation = await this.geolocation.getCurrentPosition({timeout: 20000, enableHighAccuracy: true});
+    mapOptions = mapOptions || this.defaultMapOptions;
+    mapOptions.center = {
+      lat: currentLocation.coords.latitude,
+      lng: currentLocation.coords.longitude
+    };
+    let map = new GoogleMap(new google.maps.Map(mapDivElement, mapOptions || this.defaultMapOptions), this.geolocation);
+    return map;
   }
 
-  async getCurrentPosition() {
-    return await this.geolocation.getCurrentPosition();
-  }
-
-  createMarkerAt(map: Map, latLng: LatLngLiteral, options: Partial<MarkerOptions> = {}) {
-    let markerOptions = merge({position: latLng, map: map}, options);
-    return new google.maps.Marker(markerOptions);
-  }
-
-  async drawMapObjects(map: Map, mapObjects: ApplicationMapObject[]): Promise<Marker[]> {
+  async drawMapObjects(map: GoogleMap, mapObjects: ApplicationMapObject[]): Promise<google.maps.Marker[]> {
     let markerParams = await Promise.all(mapObjects.map(async obj => ({
       map: map,
       latLng: obj.latLng,
       options: {
         icon: {
           url: await this.appAssets.getIconPath(obj.type),
-          scaledSize: new google.maps.Size(30,30)
+          scaledSize: new google.maps.Size(30, 30)
         } as google.maps.Icon
       },
     })));
-    return markerParams.map(params => this.createMarkerAt(map, params.latLng, params.options));
+    return markerParams.map(params => map.createMarkerAt(params.latLng, params.options));
   }
 
-  getPlaceDetails(location: LatLngLiteral): Promise<GeocoderResult>{
+  getPlaceDetails(location: LatLngLiteral): Promise<GeocoderResult> {
     let geocoder = new google.maps.Geocoder();
     return new Promise<GeocoderResult>((resolve, reject) => {
       geocoder.geocode({location: location}, (results, status1) => {
