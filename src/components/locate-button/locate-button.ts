@@ -2,6 +2,7 @@
 
 import {Component, Input} from '@angular/core';
 import {GoogleMapProvider} from "../../providers/google-map/google-map-provider";
+import {GoogleMap} from "../../providers/google-map/google-map";
 
 @Component({
   selector: 'fk-locate-button',
@@ -10,7 +11,7 @@ import {GoogleMapProvider} from "../../providers/google-map/google-map-provider"
 export class LocateButtonComponent {
 
   @Input()
-  map: any;
+  map: GoogleMap;
 
   constructor(private mapProvider: GoogleMapProvider) {
     console.log('Hello LocateButtonComponent Component');
@@ -18,8 +19,13 @@ export class LocateButtonComponent {
 
   async onButtonClicked() {
     try{
-      let position = await this.mapProvider.getCurrentPosition();
-      this.map.panTo({
+      let position = this.map.lastKnownPosition || await this.map.geolocation.getCurrentPosition({timeout: 3000, enableHighAccuracy: true});
+      // let position = window.navigator.geolocation.getCurrentPosition((v)=>{
+      //   console.log(v);
+      // }, (err)=>{
+      //   console.log(err);
+      // }, {timeout: 5000, enableHighAccuracy: true});
+      this.map.map.panTo({
         lat: position.coords.latitude,
         lng: position.coords.longitude
       })

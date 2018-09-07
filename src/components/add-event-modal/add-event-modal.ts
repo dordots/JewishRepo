@@ -80,4 +80,8 @@ export class AddEventModalComponent {
     this.form.addControl('endsAt', new FormControl('', [StaticValidators.ValidDateIsAfter(()=>this.event.startTime,"HH:mm")]));
     this.form.addControl('repeatedDays', new FormControl('',[StaticValidators.ArrayLengthInRange(1,8)]));
   }
+
+  ngOnDestroy(){
+    Object.keys(this).forEach(k => delete this[k]);
+  }
 }

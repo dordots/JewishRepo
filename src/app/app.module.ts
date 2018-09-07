@@ -14,14 +14,9 @@ import {ImagePicker} from "@ionic-native/image-picker";
 import {EventBasedMapObjectProvider} from '../providers/server-providers/event-based-map-object.provider';
 import {HttpClientModule} from "@angular/common/http";
 import {AppAssetsProvider} from '../providers/app-assets/app-assets';
-import {GoogleMapProvider} from "../providers/google-map/google-map-provider";
 import {AddEventModalComponent} from "../components/add-event-modal/add-event-modal";
-
-function googleMapProviderFactory(provider: GoogleMapProvider){
-  return () => {
-    provider.loadAPI().then(()=> Promise.resolve()).catch(()=>Promise.resolve());
-  }
-}
+import {initializeGoogleMaps, initializeUserGeoposition} from "./app-initializers";
+import {GoogleMapProvider} from "../providers/google-map/google-map-provider";
 
 @NgModule({
   declarations: [
@@ -32,7 +27,7 @@ function googleMapProviderFactory(provider: GoogleMapProvider){
     BrowserModule,
     HttpClientModule,
     ComponentsModule,
-    IonicModule.forRoot(MyApp,{scrollPadding: false}),
+    IonicModule.forRoot(MyApp, {scrollPadding: false}),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -50,8 +45,10 @@ function googleMapProviderFactory(provider: GoogleMapProvider){
     AppConfigProvider,
     EventBasedMapObjectProvider,
     AppAssetsProvider,
+    {provide: APP_INITIALIZER, useFactory: initializeGoogleMaps, multi: true},
     GoogleMapProvider,
-    {provide: APP_INITIALIZER, useFactory: googleMapProviderFactory, deps: [GoogleMapProvider], multi: true},
+    {provide: APP_INITIALIZER, useFactory: initializeUserGeoposition, deps: [GoogleMapProvider], multi: true},
   ]
 })
-export class AppModule {}
+export class AppModule {
+}

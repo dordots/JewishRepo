@@ -35,7 +35,7 @@ import {MapObjectCardComponent} from "./map-object-card/map-object-card";
     AddEventModalComponent,
   ],
 	imports: [IonicModule, DirectivesModule],
-  providers: [GoogleMapProvider],
+  providers: [],
   entryComponents: [SelectMapObjectComponent],
 	exports: [
 	  GoogleMapComponent,

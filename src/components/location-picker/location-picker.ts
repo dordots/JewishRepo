@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, OnDestroy, ViewChild} from '@angular/core';
 import {ViewController} from "ionic-angular";
 import {GoogleMapProvider} from "../../providers/google-map/google-map-provider";
 import {GoogleMapComponent} from "../google-map/google-map";
@@ -9,9 +9,9 @@ import LatLngLiteral = google.maps.LatLngLiteral;
 
 @Component({
   selector: 'fk-location-picker',
-  templateUrl: 'location-picker.html'
+  templateUrl: 'location-picker.html',
 })
-export class LocationPickerComponent {
+export class LocationPickerComponent implements OnDestroy{
   @ViewChild('mapComponent') mapComponent: GoogleMapComponent;
   @ViewChild('ionInput') locationInput;
 
@@ -26,7 +26,7 @@ export class LocationPickerComponent {
 
   ngAfterViewInit() {
     this.mapComponent.onMapCreated.subscribe(args => {
-      this.initOnLocationPressed(this.mapComponent.map);
+      this.initOnLocationPressed(this.mapComponent.map.map);
     });
   }
 
@@ -35,7 +35,7 @@ export class LocationPickerComponent {
   }
 
   private async onDismiss() {
-    this.viewCtrl.dismiss()
+    this.viewCtrl.dismiss();
   }
 
   private onSubmit() {
@@ -61,7 +61,7 @@ export class LocationPickerComponent {
     if (this.marker)
       this.marker.setMap(null);
 
-    this.marker = this.mapProvider.createMarkerAt(this.mapComponent.map, newPosition);
+    this.marker = this.mapComponent.map.createMarkerAt(newPosition);
   }
 
   private disappearAutocompleteList() {
@@ -69,4 +69,7 @@ export class LocationPickerComponent {
       .forEach(el => (el as HTMLElement).style.display = "none");
   }
 
+  ngOnDestroy(){
+    Object.keys(this).forEach(k => delete this[k]);
+  }
 }
