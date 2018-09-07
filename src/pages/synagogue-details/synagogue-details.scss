@@ -93,4 +93,8 @@ page-synagogue-details{
       font-weight: bolder;
     }
   }
+
+  .comments{
+    color: map_get($colors, grey);
+  }
 }
