@@ -8,12 +8,14 @@ import "rxjs/add/operator/mergeMap";
 import "rxjs/add/operator/take";
 
 export class GoogleMap {
-  public map: google.maps.Map;
   private markers: google.maps.Marker[];
   private circles: google.maps.Circle[];
   private locationMarker: google.maps.Marker;
   private locationCircle: google.maps.Circle;
   private locationTrackingSubscription: Subscription;
+
+  public map: google.maps.Map;
+  public lastKnownPosition: Geoposition;
 
   constructor(map: google.maps.Map, public readonly geolocation: Geolocation) {
     this.map = map;
@@ -49,14 +51,23 @@ export class GoogleMap {
     if (this.locationTrackingSubscription != null && !this.locationTrackingSubscription.closed)
       return;
 
-    this.locationTrackingSubscription = Observable.interval(options.timeout)
-      .subscribe(()=>fromPromise(this.geolocation.getCurrentPosition(options))
-                          .filter((p) => p.coords !== undefined).take(1).subscribe((pos) => {
+    this.locationTrackingSubscription = this.geolocation.watchPosition(options)
+      .filter((p) => p.coords !== undefined).subscribe((pos) => {
+        this.lastKnownPosition = pos;
         this.changeCircleAndMarkerCenter(pos);
-      }, (err)=>{
+      }, (err) => {
         console.log('In watch mode: ');
         console.log(err);
-      }));
+      });
+
+    // this.locationTrackingSubscription = Observable.interval(options.timeout)
+    //   .subscribe(() => fromPromise(this.geolocation.getCurrentPosition(options))
+    //     .filter((p) => p.coords !== undefined).take(1).subscribe((pos) => {
+    //       this.changeCircleAndMarkerCenter(pos);
+    //     }, (err) => {
+    //       console.log('In watch mode: ');
+    //       console.log(err);
+    //     }));
     // this.locationTrackingSubscription = this.geolocation.watchPosition(options)
     //   .filter((p) => p.coords !== undefined).subscribe((pos) => {
     //       this.changeCircleAndMarkerCenter(pos);
