@@ -2,6 +2,10 @@
   <ion-navbar>
     <ion-title>Ionic Blank</ion-title>
   </ion-navbar>
+  <ion-item class="search-bar" dir="rtl">
+    <ion-input placeholder="חיפוש..." text-right dir="rtl"></ion-input>
+    <ion-label item-start margin-left><ion-icon name="search"></ion-icon></ion-label>
+  </ion-item>
   <fk-home-toolbar (activeSegmentEvent)="updateActiveSegment($event)" [activeSegment]="activeSegment"></fk-home-toolbar>
 </ion-header>
 
