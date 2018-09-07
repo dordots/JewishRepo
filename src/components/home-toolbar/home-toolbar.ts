@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, EventEmitter, Output} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, Output} from '@angular/core';
 
 export type HomeToolbarSegments = 'map' | 'list';
 
@@ -7,6 +7,8 @@ export type HomeToolbarSegments = 'map' | 'list';
   templateUrl: 'home-toolbar.html'
 })
 export class HomeToolbarComponent implements AfterViewInit{
+
+  @Input() activeSegment: string;
 
   @Output()
   activeSegmentEvent: EventEmitter<HomeToolbarSegments>;
