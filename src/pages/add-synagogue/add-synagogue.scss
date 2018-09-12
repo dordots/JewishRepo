@@ -65,7 +65,7 @@ page-add-synagogue{
     flex-direction: column;
     text-align: center;
     margin: 10px;
-    background-color: transparentize(map_get($colors, sky), 0.5);
+    background-color: transparentize(map_get($colors, primary), 0.5);
     border-radius: 3px;
     padding-top: 10px;
     padding-bottom: 5px;

@@ -20,11 +20,6 @@ export class LocateButtonComponent {
   async onButtonClicked() {
     try{
       let position = this.map.lastKnownPosition || await this.map.geolocation.getCurrentPosition({timeout: 3000, enableHighAccuracy: true});
-      // let position = window.navigator.geolocation.getCurrentPosition((v)=>{
-      //   console.log(v);
-      // }, (err)=>{
-      //   console.log(err);
-      // }, {timeout: 5000, enableHighAccuracy: true});
       this.map.map.panTo({
         lat: position.coords.latitude,
         lng: position.coords.longitude

@@ -14,6 +14,23 @@
 }
 
 page-home{
+  ion-header{
+    background-color: map_get($colors, white);
+    .toolbar-background{
+      background-color: map_get($colors, white);
+    }
+    #page-title{
+      width: 90%;
+      text-align: center;
+    }
+
+    #options-button{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
   .search-bar{
     background-color: #f9f9f9;
     width: 90%;

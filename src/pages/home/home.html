@@ -1,6 +1,11 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Ionic Blank</ion-title>
+    <ion-title>
+      <ion-row>
+        <ion-icon id="options-button" name="options"></ion-icon>
+        <h3 id="page-title">Ionic Blank</h3>
+      </ion-row>
+    </ion-title>
   </ion-navbar>
   <ion-item class="search-bar" dir="rtl">
     <ion-input placeholder="חיפוש..." text-right dir="rtl"></ion-input>
@@ -15,7 +20,7 @@
 
   <div id="fabs-container">
     <div id="fabs">
-      <fk-search-event-button class="fab-size"></fk-search-event-button>
+      <!--<fk-search-event-button class="fab-size"></fk-search-event-button>-->
       <fk-locate-button class="fab-size"
                         [map]="mapComponent.map"
                         *ngIf="activeSegment == 'map'"></fk-locate-button>

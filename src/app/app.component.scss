@@ -38,12 +38,18 @@
   background-color: map_get($colors, cream)
 }
 
-.dark-footer {
-  background-color: map_get($colors, dark);
+.form-section-title{
+  color: map_get($colors, primary);
+  font-weight: 700;
+  font-size: 1.2em;
+}
+
+footer{
+  background-color: map_get($colors, primary);
 }
 
 .footer-disabled {
-  background-color: transparentize(map_get($colors, dark), 0.65);
+  background-color: transparentize(map_get($colors, primary), 0.5);
 }
 
 ion-input[dir=rtl][clearInput]{

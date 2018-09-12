@@ -3,6 +3,7 @@ fk-home-toolbar {
     padding-bottom: 0 !important;
     padding-right: 0 !important;
     padding-left: 0 !important;
+    background-color: map_get($colors, white) !important;
   }
   .segment-button{
     max-width: 100% !important;
@@ -13,6 +14,7 @@ fk-home-toolbar {
     line-height: 5rem !important;
     color: map_get($colors, dark) !important;
     font-weight: bold !important;
+    background-color: map_get($colors, white) !important;
   }
   .segment-activated{
     border-bottom-color: map_get($colors, dark) !important;
