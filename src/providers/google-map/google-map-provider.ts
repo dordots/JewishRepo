@@ -48,7 +48,7 @@ export class GoogleMapProvider {
       this.isApiLoaded = true;
     }
 
-    const currentLocation = await fromPromise(this.locationTracking.getCurrentLocation({timeout: 6000, enableHighAccuracy: true})).retry(5).toPromise();
+    const currentLocation = await fromPromise(this.locationTracking.getCurrentLocation({timeout: 12000, enableHighAccuracy: true})).retry(5).toPromise();
     mapOptions = mapOptions || this.defaultMapOptions;
     mapOptions.center = {
       lat: currentLocation.coords.latitude,
