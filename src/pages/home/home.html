@@ -4,6 +4,7 @@
       Ionic Blank
     </ion-title>
     <button id="options-button"><ion-icon name="options"></ion-icon></button>
+    <button id="add-synagogue-button" (click)="goToAddSynagoguePage()"><ion-icon name="add"></ion-icon></button>
   </ion-navbar>
   <ion-item class="search-bar" dir="rtl">
     <ion-input placeholder="חיפוש..." text-right dir="rtl" (ionFocus)="goToSearchPage()"></ion-input>
@@ -15,9 +16,4 @@
 <ion-content>
   <fk-google-map #mapComponent [hidden]="activeSegment!=='map'"></fk-google-map>
   <fk-map-objects-list [hidden]="activeSegment!=='list'"></fk-map-objects-list>
-
-  <div id="fabs-container">
-    <div id="fabs">
-    </div>
-  </div>
 </ion-content>

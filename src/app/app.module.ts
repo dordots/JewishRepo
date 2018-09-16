@@ -21,6 +21,8 @@ import {SynagogueDetailsPage} from "../pages/synagogue-details/synagogue-details
 import {SynagogueDetailsPageModule} from "../pages/synagogue-details/synagogue-details.module";
 import {SearchEventPageModule} from "../pages/search-event/search-event.module";
 import { LocationTrackingProvider } from '../providers/location-tracking/location-tracking';
+import {AddSynagoguePageModule} from "../pages/add-synagogue/add-synagogue.module";
+import {AddSynagoguePage} from "../pages/add-synagogue/add-synagogue";
 
 @NgModule({
   declarations: [
@@ -32,6 +34,7 @@ import { LocationTrackingProvider } from '../providers/location-tracking/locatio
     HttpClientModule,
     ComponentsModule,
     SynagogueDetailsPageModule,
+    AddSynagoguePageModule,
     SearchEventPageModule,
     IonicModule.forRoot(MyApp, {scrollPadding: false}),
   ],
@@ -40,6 +43,7 @@ import { LocationTrackingProvider } from '../providers/location-tracking/locatio
     MyApp,
     HomePage,
     SynagogueDetailsPage,
+    AddSynagoguePage,
     LocationPickerComponent,
     AddEventModalComponent
   ],

@@ -3,6 +3,7 @@ import { NavController } from 'ionic-angular';
 import {HomeToolbarSegments} from "../../components/home-toolbar/home-toolbar";
 import {MapObject} from "../../common/models/map-objects/map-objects";
 import {SearchEventPage} from "../search-event/search-event";
+import {AddSynagoguePage} from "../add-synagogue/add-synagogue";
 
 @Component({
   selector: 'page-home',
@@ -23,5 +24,9 @@ export class HomePage {
 
   goToSearchPage() {
     this.navCtrl.push(SearchEventPage)
+  }
+
+  goToAddSynagoguePage() {
+    this.navCtrl.push(AddSynagoguePage)
   }
 }

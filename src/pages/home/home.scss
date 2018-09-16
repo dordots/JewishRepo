@@ -15,7 +15,19 @@ page-home{
       align-items: center;
       ion-icon{
         font-size: 2em;
-        font-weight: bold;
+      }
+    }
+    #add-synagogue-button{
+      background-color: transparent;
+      margin-right: 10px;
+      margin-top: 10px;
+      position: absolute;
+      top: calc(6%);
+      right: 0;
+      justify-content: center;
+      align-items: center;
+      ion-icon{
+        font-size: 2em;
       }
     }
   }
@@ -35,20 +47,5 @@ page-home{
     .item-inner{
       border-bottom: none !important;
     }
-  }
-
-  #fabs-container {
-    position: fixed;
-    bottom: 0;
-  }
-
-  #fabs {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .fab-size {
-    width: $fab-size;
-    height: $fab-size;
   }
 }
