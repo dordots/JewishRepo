@@ -33,19 +33,21 @@ export class GoogleMapComponent implements AfterViewInit, OnDestroy{
   async ngAfterViewInit(){
     let mapElement = document.getElementById(this.canvasElementId) as HTMLDivElement;
     this.map = await this.mapProvider.createMap(mapElement, this.mapOptions);
-    this.map.enableLocationTracking({enableHighAccuracy: true, timeout: 3000});
+    this.map.enableLocationTracking();
     this.onMapCreated.emit(this.map);
     this.fetchAllMapObjectsAround();
   }
 
   ngOnDestroy(): void {
+    if (!this.map)
+      return;
     this.map.disableLocationTracking();
     this.map.dispose();
     this.map = null;
   }
 
   private fetchAllMapObjectsAround(){
-    this.mapObjectProvider.getAllInRadius(this.map.lastKnownLatLng,10).subscribe(res => {
+    this.mapObjectProvider.getAllInRadius(this.map.map.getCenter().toJSON(),10).subscribe(res => {
       res.forEach(async mo => {
         let res = await this.map.drawEventBasedMapObject(mo);
         res.infoWindow.onClick.subscribe(async v => {

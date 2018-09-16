@@ -7,6 +7,7 @@ import "rxjs/add/operator/take";
 import {ApplicationMapObject, EventBasedMapObject} from "../../common/models/map-objects/map-objects";
 import {AppAssetsProvider} from "../app-assets/app-assets";
 import {InfoWindow} from "./info-window";
+import {LocationTrackingProvider} from "../location-tracking/location-tracking";
 
 export class GoogleMap {
   private markers: google.maps.Marker[];
@@ -16,11 +17,8 @@ export class GoogleMap {
   private locationCircle: google.maps.Circle;
   private locationTrackingSubscription: Subscription;
 
-  public lastKnownPosition: Geoposition;
-  get lastKnownLatLng(){return this.coordToLatLngLiteral(this.lastKnownPosition)}
-
   constructor(public map: google.maps.Map,
-              public readonly geolocation: Geolocation,
+              private locationTracking: LocationTrackingProvider,
               private appAssetsProvider: AppAssetsProvider) {
     this.markers = [];
     this.circles = [];
@@ -39,10 +37,10 @@ export class GoogleMap {
     this.map = null;
   }
 
-  enableLocationTracking(options?: GeolocationOptions) {
+  enableLocationTracking() {
     this.initMarker();
     this.initCircle();
-    this.startWatchingUserPosition(options);
+    this.startWatchingUserPosition();
   }
 
   disableLocationTracking() {
@@ -53,19 +51,12 @@ export class GoogleMap {
     this.locationCircle.setMap(null);
   }
 
-  private startWatchingUserPosition(options: GeolocationOptions) {
+  private startWatchingUserPosition() {
     if (this.locationTrackingSubscription != null && !this.locationTrackingSubscription.closed)
       return;
-
-    this.locationTrackingSubscription = this.geolocation.watchPosition(options)
-      .filter((p) => p.coords !== undefined).subscribe((pos) => {
-        this.lastKnownPosition = pos;
-        this.changeCircleAndMarkerCenter(pos);
-      }, (err) => {
-        console.log('In watch mode: ');
-        console.log(err);
-      });
-
+    this.locationTrackingSubscription = this.locationTracking.onLocationChanged.subscribe(geoposition => {
+      this.changeCircleAndMarkerCenter(geoposition);
+    });
   }
 
   createMarkerAt(latLng: google.maps.LatLngLiteral, options: Partial<google.maps.MarkerOptions> = {}) {
@@ -116,7 +107,7 @@ export class GoogleMap {
       fillColor: "#3a84df",
       fillOpacity: .25,
       map: this.map,
-      center: this.lastKnownLatLng,
+      center: this.map.getCenter(),
       radius: 10,
       visible: true
     });
@@ -125,7 +116,7 @@ export class GoogleMap {
   private initMarker() {
     this.locationMarker = new google.maps.Marker({
       clickable: false,
-      position: this.lastKnownLatLng,
+      position: this.map.getCenter(),
       map: this.map,
       icon: {
         path: google.maps.SymbolPath.CIRCLE,

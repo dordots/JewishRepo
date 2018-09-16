@@ -10,12 +10,13 @@ import "rxjs/add/operator/filter";
 import {GoogleMap} from "./google-map";
 import {fromPromise} from "rxjs/observable/fromPromise";
 import "rxjs/add/operator/retry";
+import {LocationTrackingProvider} from "../location-tracking/location-tracking";
 
 @Injectable()
 export class GoogleMapProvider {
   public isApiLoaded: boolean;
 
-  constructor(public readonly geolocation: Geolocation,
+  constructor(private locationTracking: LocationTrackingProvider,
               private appAssets: AppAssetsProvider) {
     console.log('Hello GoogleMapProvider Provider');
   }
@@ -47,16 +48,16 @@ export class GoogleMapProvider {
       this.isApiLoaded = true;
     }
 
-    const currentLocation = await fromPromise(this.geolocation.getCurrentPosition({timeout: 20000, enableHighAccuracy: true})).retry(5).toPromise();;
+    const currentLocation = await fromPromise(this.locationTracking.getCurrentLocation({timeout: 6000, enableHighAccuracy: true})).retry(5).toPromise();
     mapOptions = mapOptions || this.defaultMapOptions;
     mapOptions.center = {
       lat: currentLocation.coords.latitude,
       lng: currentLocation.coords.longitude
     };
     let map = new GoogleMap(new google.maps.Map(mapDivElement,
-                      mapOptions || this.defaultMapOptions),
-                           this.geolocation, this.appAssets);
-    map.lastKnownPosition = currentLocation;
+                            mapOptions || this.defaultMapOptions),
+                            this.locationTracking,
+                            this.appAssets);
     return map;
   }
 

@@ -20,6 +20,7 @@ import {GoogleMapProvider} from "../providers/google-map/google-map-provider";
 import {SynagogueDetailsPage} from "../pages/synagogue-details/synagogue-details";
 import {SynagogueDetailsPageModule} from "../pages/synagogue-details/synagogue-details.module";
 import {SearchEventPageModule} from "../pages/search-event/search-event.module";
+import { LocationTrackingProvider } from '../providers/location-tracking/location-tracking';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import {SearchEventPageModule} from "../pages/search-event/search-event.module";
     {provide: APP_INITIALIZER, useFactory: initializeGoogleMaps, multi: true},
     GoogleMapProvider,
     {provide: APP_INITIALIZER, useFactory: initializeUserGeoposition, deps: [GoogleMapProvider], multi: true},
+    LocationTrackingProvider,
   ]
 })
 export class AppModule {
