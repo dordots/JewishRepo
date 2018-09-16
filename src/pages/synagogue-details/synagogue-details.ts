@@ -28,10 +28,6 @@ export class SynagogueDetailsPage {
               public navParams: NavParams,
               private datePipe: DatePipe,
               private provider:  EventBasedMapObjectProvider) {
-    this.initMockedSynagogue();
-  }
-
-  async initMockedSynagogue(){
     this.synagogue = this.navParams.get('mapObject') as Synagogue || FakeMapObject() as Synagogue;
     this.prayers = this.getPrayers();
     this.lessons = this.getLessons() as LessonEvent[];

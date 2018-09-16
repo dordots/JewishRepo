@@ -5,10 +5,12 @@ import {AbstractServerProvider} from "./abstract-server-provider";
 import {catchError, retry} from "rxjs/operators";
 import "rxjs/add/operator/map";
 import {ServerModel} from "../../common/models/common/server-model";
-import {ApplicationMapObject, EventBasedMapObject, MapObject} from "../../common/models/map-objects/map-objects";
-import {MockedMapObjects} from "../../../mocks/rendered-data/mocked-map-objects";
+import {EventBasedMapObject} from "../../common/models/map-objects/map-objects";
 import {Observable} from "rxjs/Observable";
 import LatLngLiteral = google.maps.LatLngLiteral;
+import {FakeLatLngAround, FakeMapObject} from "../../common/data-faker/data-randomizer";
+import {from} from "rxjs/observable/from";
+import {of} from "rxjs/observable/of";
 
 @Injectable()
 export class EventBasedMapObjectProvider extends AbstractServerProvider{
@@ -45,7 +47,11 @@ export class EventBasedMapObjectProvider extends AbstractServerProvider{
                     .toPromise();
   }
 
-  getAllInRadius(latLng: LatLngLiteral, radius: number): Observable<ApplicationMapObject[]> {
-    return Observable.of(MockedMapObjects);
+  getAllInRadius(latLng: LatLngLiteral, radius: number): Observable<EventBasedMapObject[]> {
+    return of(new Array(5).fill(0).map(v => FakeMapObject()).map(v => {
+      v.latLng = FakeLatLngAround(latLng);
+      console.log(v.latLng);
+      return v;
+    }));
   }
 }

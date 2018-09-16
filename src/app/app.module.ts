@@ -17,6 +17,8 @@ import {AppAssetsProvider} from '../providers/app-assets/app-assets';
 import {AddEventModalComponent} from "../components/add-event-modal/add-event-modal";
 import {initializeGoogleMaps, initializeUserGeoposition} from "./app-initializers";
 import {GoogleMapProvider} from "../providers/google-map/google-map-provider";
+import {SynagogueDetailsPage} from "../pages/synagogue-details/synagogue-details";
+import {SynagogueDetailsPageModule} from "../pages/synagogue-details/synagogue-details.module";
 
 @NgModule({
   declarations: [
@@ -27,12 +29,14 @@ import {GoogleMapProvider} from "../providers/google-map/google-map-provider";
     BrowserModule,
     HttpClientModule,
     ComponentsModule,
+    SynagogueDetailsPageModule,
     IonicModule.forRoot(MyApp, {scrollPadding: false}),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     HomePage,
+    SynagogueDetailsPage,
     LocationPickerComponent,
     AddEventModalComponent
   ],

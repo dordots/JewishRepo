@@ -6,6 +6,7 @@ export class EventBasedMapObject implements ApplicationMapObject{
   _id: string;
   latLng: google.maps.LatLngLiteral;
   type: MapObjectTypes;
+  name: string;
   userFriendlyAddress: string;
   events: Array<Event>;
 
@@ -17,6 +18,7 @@ export class EventBasedMapObject implements ApplicationMapObject{
 export interface ApplicationMapObject extends MapObject{
   _id: string;
   type: MapObjectTypes;
+  name: string;
 }
 
 export interface MapObject {

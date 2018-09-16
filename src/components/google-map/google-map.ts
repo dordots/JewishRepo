@@ -1,6 +1,9 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
 import {GoogleMapProvider} from "../../providers/google-map/google-map-provider";
 import {GoogleMap} from "../../providers/google-map/google-map";
+import {EventBasedMapObjectProvider} from "../../providers/server-providers/event-based-map-object.provider";
+import {NavController} from "ionic-angular";
+import {SynagogueDetailsPage} from "../../pages/synagogue-details/synagogue-details";
 
 @Component({
   selector: 'fk-google-map',
@@ -18,7 +21,9 @@ export class GoogleMapComponent implements AfterViewInit, OnDestroy{
   @Output()
   onMapCreated: EventEmitter<GoogleMap>;
 
-  constructor(private mapProvider: GoogleMapProvider) {
+  constructor(private mapProvider: GoogleMapProvider,
+              private navCtrl: NavController,
+              private mapObjectProvider: EventBasedMapObjectProvider) {
     console.log('Hello GoogleMapComponent Component');
     GoogleMapComponent.mapCounter++;
     this.canvasElementId = `google-map-${GoogleMapComponent.mapCounter}`;
@@ -30,11 +35,26 @@ export class GoogleMapComponent implements AfterViewInit, OnDestroy{
     this.map = await this.mapProvider.createMap(mapElement, this.mapOptions);
     this.map.enableLocationTracking({enableHighAccuracy: true, timeout: 3000});
     this.onMapCreated.emit(this.map);
+    this.fetchAllMapObjectsAround();
   }
 
   ngOnDestroy(): void {
     this.map.disableLocationTracking();
     this.map.dispose();
     this.map = null;
+  }
+
+  private fetchAllMapObjectsAround(){
+    this.mapObjectProvider.getAllInRadius(this.map.lastKnownLatLng,10).subscribe(res => {
+      res.forEach(async mo => {
+        let res = await this.map.drawEventBasedMapObject(mo);
+        res.infoWindow.onClick.subscribe(async v => {
+          await this.navCtrl.push(SynagogueDetailsPage, {mapObject: v.mapObject});
+          res.infoWindow.close();
+        })
+      });
+    }, err => {
+      console.log(err);
+    });
   }
 }

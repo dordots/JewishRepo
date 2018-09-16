@@ -1,0 +1,21 @@
+fk-google-map{
+  .window-info{
+    margin-left: 10px;
+    .window-info-image-container{
+      width: 50px;
+      height: 50px;
+      img{
+        border-radius: 50%;
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .window-info-header{
+      display: flex;
+    }
+
+    .window-info-address{
+      text-align: right;
+    }
+  }
+}

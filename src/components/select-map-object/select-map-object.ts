@@ -39,7 +39,7 @@ export class SelectMapObjectComponent {
       return;
     let nearby = await this.mapObjectProvider.getAllInRadius(mapObject.latLng,5).toPromise();
     nearby[0].latLng = mapObject.latLng;
-    this.nearbyMapObjectsMarkers = await this.googleMapProvider.drawMapObjects(this.map, nearby);
+    this.nearbyMapObjectsMarkers = await this.map.drawSimpleMapObjects(nearby);
     this.nearbyMapObjectsMarkers.forEach(marker => marker.addListener('click',args => {
       this.selectedMapObjectId = this.getMapObjectFromLatLng(nearby, marker.getPosition().toJSON());
       this.onValidMapObjectSelected();
