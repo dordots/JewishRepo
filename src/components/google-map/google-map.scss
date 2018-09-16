@@ -18,4 +18,13 @@ fk-google-map{
       text-align: right;
     }
   }
+  fk-locate-button {
+    position: absolute;
+    bottom: 5%;
+  }
+
+  .fab-size {
+    width: $fab-size;
+    height: $fab-size;
+  }
 }

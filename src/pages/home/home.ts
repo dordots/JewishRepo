@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import {HomeToolbarSegments} from "../../components/home-toolbar/home-toolbar";
 import {MapObject} from "../../common/models/map-objects/map-objects";
+import {SearchEventPage} from "../search-event/search-event";
 
 @Component({
   selector: 'page-home',
@@ -18,5 +19,9 @@ export class HomePage {
 
   updateActiveSegment(segment) {
     this.activeSegment = segment;
+  }
+
+  goToSearchPage() {
+    this.navCtrl.push(SearchEventPage)
   }
 }

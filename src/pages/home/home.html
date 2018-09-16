@@ -1,12 +1,12 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>
+    <ion-title text-center>
       Ionic Blank
     </ion-title>
     <button id="options-button"><ion-icon name="options"></ion-icon></button>
   </ion-navbar>
   <ion-item class="search-bar" dir="rtl">
-    <ion-input placeholder="חיפוש..." text-right dir="rtl"></ion-input>
+    <ion-input placeholder="חיפוש..." text-right dir="rtl" (ionFocus)="goToSearchPage()"></ion-input>
     <ion-label item-start margin-left><ion-icon name="search"></ion-icon></ion-label>
   </ion-item>
   <fk-home-toolbar (activeSegmentEvent)="updateActiveSegment($event)" [activeSegment]="activeSegment"></fk-home-toolbar>
@@ -18,10 +18,6 @@
 
   <div id="fabs-container">
     <div id="fabs">
-      <!--<fk-search-event-button class="fab-size"></fk-search-event-button>-->
-      <fk-locate-button class="fab-size"
-                        [map]="mapComponent.map"
-                        *ngIf="activeSegment == 'map'"></fk-locate-button>
     </div>
   </div>
 </ion-content>

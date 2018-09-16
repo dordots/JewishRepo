@@ -50,7 +50,6 @@ export class EventBasedMapObjectProvider extends AbstractServerProvider{
   getAllInRadius(latLng: LatLngLiteral, radius: number): Observable<EventBasedMapObject[]> {
     return of(new Array(5).fill(0).map(v => FakeMapObject()).map(v => {
       v.latLng = FakeLatLngAround(latLng);
-      console.log(v.latLng);
       return v;
     }));
   }

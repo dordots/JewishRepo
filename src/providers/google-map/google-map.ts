@@ -116,8 +116,8 @@ export class GoogleMap {
       fillColor: "#3a84df",
       fillOpacity: .25,
       map: this.map,
-      center: new google.maps.LatLng(0, 0),
-      radius: 20,
+      center: this.lastKnownLatLng,
+      radius: 10,
       visible: true
     });
   }
@@ -125,7 +125,7 @@ export class GoogleMap {
   private initMarker() {
     this.locationMarker = new google.maps.Marker({
       clickable: false,
-      position: new google.maps.LatLng(0, 0),
+      position: this.lastKnownLatLng,
       map: this.map,
       icon: {
         path: google.maps.SymbolPath.CIRCLE,

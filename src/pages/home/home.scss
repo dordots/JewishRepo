@@ -1,34 +1,16 @@
-#fabs-container {
-  position: fixed;
-  bottom: 0;
-}
-
-#fabs {
-  display: flex;
-  flex-direction: column;
-}
-
-.fab-size {
-  width: $fab-size;
-  height: $fab-size;
-}
-
 page-home{
   ion-header{
     background-color: map_get($colors, white);
     .toolbar-background{
       background-color: map_get($colors, white);
     }
-    #page-title{
-      width: 90%;
-      text-align: center;
-    }
 
     #options-button{
       background-color: transparent;
       margin-left: 10px;
       margin-top: 10px;
-      display: flex;
+      position: absolute;
+      top: calc(6%);
       justify-content: center;
       align-items: center;
       ion-icon{
@@ -53,5 +35,20 @@ page-home{
     .item-inner{
       border-bottom: none !important;
     }
+  }
+
+  #fabs-container {
+    position: fixed;
+    bottom: 0;
+  }
+
+  #fabs {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .fab-size {
+    width: $fab-size;
+    height: $fab-size;
   }
 }

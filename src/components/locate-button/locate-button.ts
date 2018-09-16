@@ -1,5 +1,3 @@
-///<reference path="../../../node_modules/@types/google-maps/index.d.ts"/>
-
 import {Component, Input} from '@angular/core';
 import {GoogleMapProvider} from "../../providers/google-map/google-map-provider";
 import {GoogleMap} from "../../providers/google-map/google-map";
