@@ -5,34 +5,32 @@
 </ion-header>
 
 <ion-content class="form-background-color" dir="rtl">
-  <form [formGroup]="form">
+  <form #form="ngForm">
     <ion-item>
-      <ion-input formControlName="name" [(ngModel)]="synagogue.name"
+      <ion-input name="name" [(ngModel)]="synagogue.name"
                  placeholder="שם הבית כנסת" clearInput dir="rtl"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-input #ionInput fkPlaceAutoComplete [(ngModel)]="synagogue"
-                 [formControl]="form.get('location')"
-                 [inputElement]="ionInput._native?.nativeElement"
+      <ion-input #placeAutoCompleteInput fkPlaceAutoComplete
+                 name="location"
+                 [inputElement]="placeAutoCompleteInput._native?.nativeElement"
                  clearInput placeholder="בחר כתובת" dir="rtl"></ion-input>
       <ion-label>
         <ion-icon name="md-map" class="input-icon"></ion-icon>
       </ion-label>
       <a item-end margin-left fkLocationPickerModal
-         [(ngModel)]="synagogue" [ngModelOptions]="{standalone: true}"
          (modalClosed)="onModalClosed($event)">מפה</a>
     </ion-item>
 
-    <fk-prayer-version-options label="נוסח עיקרי " formControlName="primaryNosach"
+    <fk-prayer-version-options label="נוסח עיקרי " name="primaryNosach"
                                [(ngModel)]="synagogue.primaryPrayerNosach">
     </fk-prayer-version-options>
 
     <ion-card>
       <ion-card-header class="form-section-title">אפשרויות מקום</ion-card-header>
       <ion-card-content>
-        <fk-synagogue-options [(ngModel)]="synagogue.synagogueOptions"
-                              [ngModelOptions]="{standalone: true}"></fk-synagogue-options>
+        <fk-synagogue-options [(ngModel)]="synagogue.synagogueOptions" name="options"></fk-synagogue-options>
       </ion-card-content>
     </ion-card>
 
@@ -41,10 +39,11 @@
       <ion-card-content>
 
         <ion-item class="phone-item" dir="ltr">
-          <ion-input type="tel" [(ngModel)]="phoneNumber" formControlName="phone"
+          <ion-input type="tel" [(ngModel)]="phoneNumber" name="phone"
+                     [pattern]="phonePattern"
                      placeholder="הכנס כאן את מספר הפלאפון" text-left></ion-input>
 
-          <button [disabled]="!form.get('phone').valid || phoneNumber==''||phoneNumber==null"
+          <button [disabled]="!(form?.controls?.phone?.valid) || phoneNumber == '' || !phoneNumber"
                   class="mini-phone-plus-button" item-right (click)="addPhoneNumber()">
             <ion-icon name="call" class="mini-phone-plus-icon">
               <ion-icon name="add"></ion-icon>
@@ -119,9 +118,7 @@
     </ion-row>
 
     <div>
-      <ion-textarea class="comments"
-                    [(ngModel)]="synagogue.comments"
-                    formControlName="comments"
+      <ion-textarea class="comments" [(ngModel)]="synagogue.comments" name="comments"
                     margin placeholder="כתוב כאן הערות" rows="5"></ion-textarea>
     </div>
   </form>

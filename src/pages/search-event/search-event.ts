@@ -45,8 +45,4 @@ export class SearchEventPage {
     let isMapObjectValid = StaticValidators.IsLocationValid(this.searchEvent.mapObject, false);
     return isMapObjectValid && this.form.valid;
   }
-
-  printFormErrors() {
-    PrintFormValidationErrors(this.form);
-  }
 }

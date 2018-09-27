@@ -1,6 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormControl, FormGroup, NgForm, Validators} from "@angular/forms";
 import {Synagogue} from "../../common/models/map-objects/synagogue";
 import {ImagePicker, ImagePickerOptions, OutputType} from "@ionic-native/image-picker";
 import {EventBasedMapObjectProvider} from "../../providers/server-providers/event-based-map-object.provider";
@@ -18,38 +18,41 @@ import {EventTypes} from "../../common/models/common/enums/event-types";
 })
 export class AddSynagoguePage {
 
-  @ViewChild('ionInput') locationInput;
+  @ViewChild('placeAutoCompleteInput') locationInput;
+  @ViewChild('form') form: NgForm;
 
   phoneNumber: string;
-  form: FormGroup;
   synagogue: Synagogue;
   eventsToShow: string;
+  phonePattern = /^\d{2,3}-?\d{7}$/;
   eventsDictionary: {[type: string]: Event[]};
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private imagePicker: ImagePicker,
               private mapObjectProvider: EventBasedMapObjectProvider,
-              private datePipe: DatePipe,
               private modalCtrl: ModalController) {
     this.synagogue = this.navParams.get('synagogue') as Synagogue || new Synagogue();
     this.createEventsDictionary();
-    this.form = this.createSynagogueValidator();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AddSynagoguePage');
   }
 
-  createSynagogueValidator(){
-    let group = new FormGroup({
-      name: new FormControl(this.synagogue.name, [Validators.required]),
-      comments: new FormControl('', []),
-      primaryNosach: new FormControl(this.synagogue.primaryPrayerNosach, {validators: [Validators.required], updateOn: 'change'}),
-      phone: new FormControl('', [Validators.pattern(/^\d{2,3}-?\d{7}$/)])
-    });
-    return group;
+  ngAfterViewInit(){
+    console.log(this.form);
   }
+
+  // createSynagogueValidator(){
+  //   let group = new FormGroup({
+  //     name: new FormControl(this.synagogue.name, [Validators.required]),
+  //     comments: new FormControl('', []),
+  //     primaryNosach: new FormControl(this.synagogue.primaryPrayerNosach, {validators: [Validators.required], updateOn: 'change'}),
+  //     phone: new FormControl('', [Validators.pattern(/^\d{2,3}-?\d{7}$/)])
+  //   });
+  //   return group;
+  // }
 
   async submitNewSynagogue(){
     await this.mapObjectProvider.create(this.synagogue);
@@ -89,8 +92,8 @@ export class AddSynagoguePage {
   }
 
   onModalClosed(){
-    this.locationInput._native.nativeElement.value = this.synagogue.userFriendlyAddress;
-    this.form.get('location').updateValueAndValidity();
+    // this.locationInput._native.nativeElement.value = this.synagogue.userFriendlyAddress;
+    // this.form.get('location').updateValueAndValidity();
   }
 
   formatTimeRange(event: Event){
