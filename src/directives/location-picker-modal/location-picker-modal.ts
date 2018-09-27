@@ -5,40 +5,26 @@ import {ModalController} from "ionic-angular";
 import {AbstractValueAccessor, MakeProvider} from "../../common/component-helpers/abstract-value-accessor";
 
 @Directive({
-  selector: '[fkLocationPickerModal]',
-  providers: [MakeProvider(LocationPickerModalDirective)]
+  selector: '[fkLocationPickerModal]'
 })
-export class LocationPickerModalDirective extends AbstractValueAccessor {
+export class LocationPickerModalDirective {
 
-  @Output() public modalClosed: EventEmitter<MapObject>;
+  @Output() public locationSelected: EventEmitter<MapObject>;
 
   constructor(private modalCtrl: ModalController) {
-    super();
     console.log('Hello LocationPickerModalDirective Directive');
-    this.modalClosed = new EventEmitter<MapObject>();
+    this.locationSelected = new EventEmitter<MapObject>();
   }
 
   openMapLocationPicker(){
     const modal = this.modalCtrl.create(LocationPickerComponent);
     modal.onDidDismiss((data: MapObject) => {
-      this.updateNgModel(data);
-      this.modalClosed.emit(data);
+      this.locationSelected.emit(data);
     });
     modal.present();
   }
 
   @HostListener('click') onClick(){
     this.openMapLocationPicker();
-  }
-
-  private updateNgModel(data:MapObject){
-    if (data == null){
-      this.value.userFriendlyAddress = null;
-      this.value.latLng = null;
-    }
-    else{
-      this.value.userFriendlyAddress = data.userFriendlyAddress;
-      this.value.latLng = data.latLng;
-    }
   }
 }

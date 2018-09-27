@@ -1,71 +1,60 @@
 import {
-  AfterContentInit, ChangeDetectorRef,
+  AfterContentInit,
   Directive,
   ElementRef,
   EventEmitter,
   Input,
   OnDestroy,
-  Output, SkipSelf
+  Output
 } from '@angular/core';
 import {GoogleMapProvider} from "../../providers/google-map/google-map-provider";
 import {MapObject} from "../../common/models/map-objects/map-objects";
 import Autocomplete = google.maps.places.Autocomplete;
 import PlaceResult = google.maps.places.PlaceResult;
-import {FormControl, NgControl,} from "@angular/forms";
-import {AbstractValueAccessor, MakeProvider} from "../../common/component-helpers/abstract-value-accessor";
+import {MakeProvider} from "../../common/component-helpers/abstract-value-accessor";
 
 @Directive({
-  selector: '[fkPlaceAutoComplete]',
-  providers: [NgControl as any, MakeProvider(PlaceAutoComplete)]
+  selector: '[fkPlaceAutoComplete]'
 })
-export class PlaceAutoComplete extends AbstractValueAccessor implements AfterContentInit, OnDestroy {
+export class PlaceAutoComplete implements AfterContentInit, OnDestroy {
   private _inputElement: HTMLInputElement;
-  private previousSelectedMapObject: MapObject;
+  public mapObject: MapObject;
+  private autoComplete: Autocomplete;
+  private marker: google.maps.Marker;
 
   @Input() set inputElement(v) {
-    if (v != null) {
-      this.validateElementIsHTMLInputElement(v);
-      this._inputElement = v;
-      this.initAutoComplete();
+    if (v == null)
+      return;
+    this.validateElementIsHTMLInputElement(v);
+    this._inputElement = v;
+    this.initAutoComplete().then(() => {
       this.registerToInputElementEvents();
-      if (this.value != null)
-        this.onInputFocus();
-    }
+      if (this.mapObject != null)
+        v.value = this.mapObject.userFriendlyAddress;
+    });
   }
 
-  get inputElement() {
-    return this._inputElement;
-  }
+  get inputElement() { return this._inputElement; }
 
   @Input() useNativeInput: boolean = false;
 
   @Input() map;
 
-  @Input() formControl: FormControl;
-
   @Input() toMarkerSelectedPlace: boolean = false;
 
   @Output() placeSelected: EventEmitter<MapObject>;
 
-  autoComplete: Autocomplete;
-  marker: google.maps.Marker;
-
   constructor(private googleMapProvider: GoogleMapProvider,
-              private el: ElementRef,
-              @SkipSelf() private changeDetectRef: ChangeDetectorRef) {
-    super();
+              private el: ElementRef) {
     console.log('Hello PlaceAutocompleteComponent directive');
     this.placeSelected = new EventEmitter<MapObject>();
+    this.mapObject = {latLng: null, userFriendlyAddress: ''};
   }
 
   async ngAfterContentInit() {
     try {
       if (this.useNativeInput)
         this.inputElement = this.el.nativeElement;
-      // if (this.inputElement != null) {
-      //   this.registerToInputElementEvents();
-      //   this.initAutoComplete();
-      // }
     }
     catch (e) {
       console.error(e);
@@ -106,32 +95,25 @@ export class PlaceAutoComplete extends AbstractValueAccessor implements AfterCon
       if (!place.geometry) {
         // User entered the name of a Place that was not suggested and
         // pressed the Enter key, or the Place Details request failed.
+        this.updateSelectedMapObject(null);
         return;
       }
 
-      this.previousSelectedMapObject = {
-        latLng: this.value.latLng,
-        userFriendlyAddress: this.value.userFriendlyAddress
-      };
-
-      this.updateNgModel(place);
-      this.updateFormControl();
-
-
+      this.updateSelectedMapObject(place);
       this.emitEvents();
       this.handleMapMarkerAndNavigation(place);
     });
   }
 
-  private updateNgModel(place: PlaceResult) {
-    if (this.value == null)
-      return;
-    this.value.userFriendlyAddress = this.inputElement.value;
-    this.value.latLng = place.geometry.location.toJSON();
+  private updateSelectedMapObject(place: PlaceResult) {
+    if (place == null)
+      this.mapObject = null;
+    this.mapObject.userFriendlyAddress = this.inputElement.value;
+    this.mapObject.latLng = place.geometry.location.toJSON();
   }
 
   private emitEvents() {
-    this.placeSelected.emit(this.value);
+    this.placeSelected.emit(this.mapObject);
   }
 
   private handleMapMarkerAndNavigation(place: PlaceResult) {
@@ -157,23 +139,16 @@ export class PlaceAutoComplete extends AbstractValueAccessor implements AfterCon
    * Used for set the input value to the `userFriendlyAddress` because it always is being reset.
    */
   private onInputFocus() {
-      this.inputElement.value = this.value.userFriendlyAddress || '';
+      this.inputElement.value = this.mapObject.userFriendlyAddress || '';
   }
 
   /**
    * Used for set the input value to the `userFriendlyAddress` because it always is being reset.
    */
   private onInputBlur() {
-    if (this.value.userFriendlyAddress == null)
+    if (this.mapObject.userFriendlyAddress == null)
       this.inputElement.value = '';
     else
-      this.inputElement.value = this.value.userFriendlyAddress;
-  }
-
-  private updateFormControl() {
-    if (this.formControl) {
-      this.formControl.updateValueAndValidity({onlySelf: false, emitEvent: true});
-      this.changeDetectRef.detectChanges();
-    }
+      this.inputElement.value = this.mapObject.userFriendlyAddress;
   }
 }

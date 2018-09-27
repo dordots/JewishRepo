@@ -40,14 +40,10 @@ export class StaticValidators {
     };
   }
 
-  static ValidateLocation(mapObejctCallback: ()=> MapObject, required=true){
-    return (c) => {
-      let mapObject = mapObejctCallback();
-      if (mapObject == null || mapObject.userFriendlyAddress == null || mapObject.latLng == null && required){
-        return {invalidMapObject: true};
-      }
-      return null;
-    }
+  static IsLocationValid(mapObject: MapObject, required){
+    if (mapObject == null)
+      return false;
+    return (mapObject.userFriendlyAddress == '' || mapObject.userFriendlyAddress == null|| mapObject.latLng == null) ? (!required) : true;
   }
 
   private static isStringValidDate(date: string, format: string) {

@@ -46,7 +46,6 @@ export class AddSynagoguePage {
       name: new FormControl(this.synagogue.name, [Validators.required]),
       comments: new FormControl('', []),
       primaryNosach: new FormControl(this.synagogue.primaryPrayerNosach, {validators: [Validators.required], updateOn: 'change'}),
-      location: new FormControl(this.synagogue, [StaticValidators.ValidateLocation(()=>this.synagogue)]),
       phone: new FormControl('', [Validators.pattern(/^\d{2,3}-?\d{7}$/)])
     });
     return group;

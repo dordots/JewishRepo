@@ -1,19 +1,22 @@
-import {Component, OnDestroy, ViewChild} from '@angular/core';
-import {ViewController} from "ionic-angular";
+import {AfterViewInit, Component, OnDestroy, ViewChild, ViewChildren} from '@angular/core';
+import {TextInput, ViewController} from "ionic-angular";
 import {GoogleMapProvider} from "../../providers/google-map/google-map-provider";
 import {GoogleMapComponent} from "../google-map/google-map";
 import Map = google.maps.Map;
 import Marker = google.maps.Marker;
 import {MapObject} from "../../common/models/map-objects/map-objects";
 import LatLngLiteral = google.maps.LatLngLiteral;
+import {StaticValidators} from "../../validators/static-validators";
+import {PlaceAutoComplete} from "../../directives/place-autocomplete/place-autocomplete";
 
 @Component({
   selector: 'fk-location-picker',
   templateUrl: 'location-picker.html',
 })
-export class LocationPickerComponent implements OnDestroy{
+export class LocationPickerComponent implements OnDestroy, AfterViewInit{
   @ViewChild('mapComponent') mapComponent: GoogleMapComponent;
-  @ViewChild('ionInput') locationInput;
+  @ViewChild('PlaceAutoCompleteInput') placeAutoCompleteInput: TextInput;
+  @ViewChild(PlaceAutoComplete) placeAutoComplete: PlaceAutoComplete;
 
   marker: Marker;
   mapObject: MapObject;
@@ -30,16 +33,22 @@ export class LocationPickerComponent implements OnDestroy{
     });
   }
 
-  onAutocompleteSelect(mapObject: MapObject){
-    this.changeMarkerPosition(mapObject.latLng);
+  onAutoCompleteSelect(mapObject: MapObject){
+    if (mapObject) {
+      this.changeMarkerPosition(mapObject.latLng);
+      this.mapObject = mapObject;
+    }
   }
 
-  private async onDismiss() {
-    this.viewCtrl.dismiss();
+  public onDismiss() {
+    this.viewCtrl.dismiss(null);
   }
 
-  private onSubmit() {
-    this.viewCtrl.dismiss(this.mapObject);
+  public onSubmit() {
+    if (StaticValidators.IsLocationValid(this.mapObject, false))
+      this.viewCtrl.dismiss(this.mapObject);
+    else
+      this.viewCtrl.dismiss(null);
   }
 
   private initOnLocationPressed(map: Map) {
@@ -51,20 +60,21 @@ export class LocationPickerComponent implements OnDestroy{
 
       this.mapObject.userFriendlyAddress = userFriendlyAddress;
       this.mapObject.latLng = latLng;
-      this.locationInput._native.nativeElement.value = userFriendlyAddress;
+      this.placeAutoCompleteInput._native.nativeElement.value = userFriendlyAddress;
+      this.placeAutoComplete.mapObject = this.mapObject;
 
-      this.disappearAutocompleteList();
+      this.disappearAutoCompleteList();
     });
   }
 
   private changeMarkerPosition(newPosition: LatLngLiteral){
     if (this.marker)
-      this.marker.setMap(null);
-
-    this.marker = this.mapComponent.map.createMarkerAt(newPosition);
+      this.marker.setPosition(newPosition);
+    else
+      this.marker = this.mapComponent.map.createMarkerAt(newPosition);
   }
 
-  private disappearAutocompleteList() {
+  private disappearAutoCompleteList() {
     Array.from(document.getElementsByClassName('pac-container'))
       .forEach(el => (el as HTMLElement).style.display = "none");
   }

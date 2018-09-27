@@ -1,9 +1,11 @@
 import {Component, ViewChild} from '@angular/core';
-import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {IonicPage, ModalController, NavController, NavParams, TextInput} from 'ionic-angular';
+import {Form, FormControl, FormGroup, NgForm, Validators} from "@angular/forms";
 import {SearchEvent} from "../../common/models/event/search-event";
 import {StaticValidators} from "../../validators/static-validators";
 import {PrintFormValidationErrors} from "../../common/models/common/utils";
+import {PlaceAutoComplete} from "../../directives/place-autocomplete/place-autocomplete";
+import {MapObject} from "../../common/models/map-objects/map-objects";
 
 @IonicPage()
 @Component({
@@ -12,40 +14,39 @@ import {PrintFormValidationErrors} from "../../common/models/common/utils";
 })
 export class SearchEventPage {
 
-  @ViewChild('ionInput') locationInput;
+  @ViewChild('placeAutoCompleteInput') placeAutoCompleteInput: TextInput;
+  @ViewChild(PlaceAutoComplete) placeAutoComplete: PlaceAutoComplete;
 
   searchEvent: SearchEvent;
-  formGroup: FormGroup;
+  @ViewChild('form') form: NgForm;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams) {
     this.searchEvent = new SearchEvent();
-    this.formGroup = this.createForm();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SearchEventPage');
   }
 
-  private createForm() {
-    let group = new FormGroup({
-      startsAt: new FormControl('', [
-        StaticValidators.ValidDateIsBefore(() => this.searchEvent.endTime, "HH:mm")
-      ]),
-      endsAt: new FormControl('', [
-        StaticValidators.ValidDateIsAfter(() => this.searchEvent.startTime, "HH:mm")
-      ]),
-      location: new FormControl('', [StaticValidators.ValidateLocation(()=>this.searchEvent.mapObject, false)])
-    }, {updateOn: "blur"});
-    return group;
+  onModalClosed(mapObject: MapObject){
+    if (mapObject && mapObject.userFriendlyAddress) {
+      this.onMapObjectChanged(mapObject);
+      this.placeAutoComplete.mapObject = mapObject;
+      this.placeAutoCompleteInput._native.nativeElement.value = this.searchEvent.mapObject.userFriendlyAddress;
+    }
   }
 
-  onModalClosed(){
-    this.locationInput._native.nativeElement.value = this.searchEvent.mapObject.userFriendlyAddress;
-    this.formGroup.get('location').updateValueAndValidity();
+  onMapObjectChanged(mapObject: MapObject){
+    this.searchEvent.mapObject = mapObject;
+  }
+
+  isFormValid(){
+    let isMapObjectValid = StaticValidators.IsLocationValid(this.searchEvent.mapObject, false);
+    return isMapObjectValid && this.form.valid;
   }
 
   printFormErrors() {
-    PrintFormValidationErrors(this.formGroup);
+    PrintFormValidationErrors(this.form);
   }
 }
