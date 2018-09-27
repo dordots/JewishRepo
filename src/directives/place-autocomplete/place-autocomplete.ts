@@ -107,9 +107,13 @@ export class PlaceAutoComplete implements AfterContentInit, OnDestroy {
 
   private updateSelectedMapObject(place: PlaceResult) {
     if (place == null)
-      this.mapObject = null;
-    this.mapObject.userFriendlyAddress = this.inputElement.value;
-    this.mapObject.latLng = place.geometry.location.toJSON();
+      this.mapObject = {latLng: null, userFriendlyAddress: null};
+    else {
+      this.mapObject = {
+        userFriendlyAddress: this.inputElement.value,
+        latLng: place.geometry.location.toJSON()
+      };
+    }
   }
 
   private emitEvents() {

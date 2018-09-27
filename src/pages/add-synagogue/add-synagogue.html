@@ -7,23 +7,24 @@
 <ion-content class="form-background-color" dir="rtl">
   <form #form="ngForm">
     <ion-item>
-      <ion-input name="name" [(ngModel)]="synagogue.name"
+      <ion-input name="name" [(ngModel)]="synagogue.name" required
                  placeholder="שם הבית כנסת" clearInput dir="rtl"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-input #placeAutoCompleteInput fkPlaceAutoComplete
                  name="location"
+                 (placeSelected)="onMapObjectChanged($event)"
                  [inputElement]="placeAutoCompleteInput._native?.nativeElement"
                  clearInput placeholder="בחר כתובת" dir="rtl"></ion-input>
       <ion-label>
         <ion-icon name="md-map" class="input-icon"></ion-icon>
       </ion-label>
       <a item-end margin-left fkLocationPickerModal
-         (modalClosed)="onModalClosed($event)">מפה</a>
+         (locationSelected)="onModalClosed($event)">מפה</a>
     </ion-item>
 
-    <fk-prayer-version-options label="נוסח עיקרי " name="primaryNosach"
+    <fk-prayer-version-options label="נוסח עיקרי " name="primaryNosach" required
                                [(ngModel)]="synagogue.primaryPrayerNosach">
     </fk-prayer-version-options>
 
@@ -122,9 +123,11 @@
                     margin placeholder="כתוב כאן הערות" rows="5"></ion-textarea>
     </div>
   </form>
+
+  <pre dir="ltr" text-left>{{synagogue | json}}</pre>
 </ion-content>
-<ion-footer padding [attr.disabled]="!form.valid" text-center>
-  <button class="transparent save-synagogue-button" (click)="submitNewSynagogue()" [disabled]="!form.valid">שמור פרטי
+<ion-footer padding [attr.disabled]="!isFormValid()" text-center>
+  <button class="transparent save-synagogue-button" (click)="submitNewSynagogue()" [disabled]="!isFormValid()">שמור פרטי
     בית כנסת
   </button>
 </ion-footer>

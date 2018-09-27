@@ -29,20 +29,20 @@ export class SearchEventPage {
     console.log('ionViewDidLoad SearchEventPage');
   }
 
-  onModalClosed(mapObject: MapObject){
-    if (mapObject && mapObject.userFriendlyAddress) {
-      this.onMapObjectChanged(mapObject);
-      this.placeAutoComplete.mapObject = mapObject;
-      this.placeAutoCompleteInput._native.nativeElement.value = this.searchEvent.mapObject.userFriendlyAddress;
+    onModalClosed(mapObject: MapObject){
+      if (mapObject && mapObject.userFriendlyAddress) {
+        this.onMapObjectChanged(mapObject);
+        this.placeAutoComplete.mapObject = mapObject;
+        this.placeAutoCompleteInput._native.nativeElement.value = this.searchEvent.mapObject.userFriendlyAddress;
+      }
     }
-  }
 
-  onMapObjectChanged(mapObject: MapObject){
-    this.searchEvent.mapObject = mapObject;
-  }
+    onMapObjectChanged(mapObject: MapObject){
+      this.searchEvent.mapObject = mapObject;
+    }
 
-  isFormValid(){
-    let isMapObjectValid = StaticValidators.IsLocationValid(this.searchEvent.mapObject, false);
-    return isMapObjectValid && this.form.valid;
-  }
+    isFormValid(){
+      let isMapObjectValid = StaticValidators.IsLocationValid(this.searchEvent.mapObject, false);
+      return isMapObjectValid && this.form.valid;
+    }
 }
