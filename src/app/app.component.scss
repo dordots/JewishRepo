@@ -44,12 +44,20 @@
   font-size: 1.2em;
 }
 
-footer{
+ion-footer{
+  padding: 0 !important;
+  height: 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: map_get($colors, primary);
+  * {
+    color: white;
+  }
 }
 
-.footer-disabled {
-  background-color: transparentize(map_get($colors, primary), 0.5);
+ion-footer[disabled=true]{
+  background-color: transparentize(map_get($colors, primary), 0.2);
 }
 
 ion-input[dir=rtl][clearInput]{

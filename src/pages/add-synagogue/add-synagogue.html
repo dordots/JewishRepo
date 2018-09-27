@@ -126,7 +126,7 @@
     </div>
   </form>
 </ion-content>
-<ion-footer padding class="dark-footer" [ngClass]="{'footer-disabled': !form.valid}" text-center>
+<ion-footer padding [attr.disabled]="!form.valid" text-center>
   <button class="transparent save-synagogue-button" (click)="submitNewSynagogue()" [disabled]="!form.valid">שמור פרטי
     בית כנסת
   </button>

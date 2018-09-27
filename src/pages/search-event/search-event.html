@@ -73,10 +73,11 @@
     </ion-card>
   </form>
 
+  <button (click)="printFormErrors()">check errors</button>
 </ion-content>
 
-<ion-footer padding class="dark-footer" [ngClass]="{'footer-disabled': !formGroup.valid}" text-center>
-  <button class="transparent save-synagogue-button" dir="rtl">
+<ion-footer padding text-center [attr.disabled]="!formGroup.valid">
+  <button id="search-button" class="transparent" dir="rtl" [disabled]="!formGroup.valid">
     <span>חפש מניינים</span>
     <ion-icon name="search"></ion-icon>
   </button>
