@@ -48,7 +48,7 @@ export class PlaceAutoComplete implements AfterContentInit, OnDestroy {
               private el: ElementRef) {
     console.log('Hello PlaceAutocompleteComponent directive');
     this.placeSelected = new EventEmitter<MapObject>();
-    this.mapObject = {latLng: null, userFriendlyAddress: ''};
+    this.mapObject = new MapObject();
   }
 
   async ngAfterContentInit() {
@@ -107,12 +107,12 @@ export class PlaceAutoComplete implements AfterContentInit, OnDestroy {
 
   private updateSelectedMapObject(place: PlaceResult) {
     if (place == null)
-      this.mapObject = {latLng: null, userFriendlyAddress: null};
+      this.mapObject = new MapObject();
     else {
-      this.mapObject = {
+      this.mapObject = new MapObject({
         userFriendlyAddress: this.inputElement.value,
         latLng: place.geometry.location.toJSON()
-      };
+      });
     }
   }
 

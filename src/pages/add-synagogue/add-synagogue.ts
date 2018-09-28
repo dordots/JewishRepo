@@ -85,18 +85,21 @@ export class AddSynagoguePage {
   }
 
   onModalClosed(mapObject: MapObject){
-    if (mapObject && mapObject.userFriendlyAddress) {
-      this.onMapObjectChanged(mapObject);
-      this.placeAutoComplete.mapObject = mapObject;
-      this.placeAutoCompleteInput._native.nativeElement.value = this.synagogue.userFriendlyAddress;
-    }
+    if (!mapObject || !mapObject.isFullyValid())
+      return;
+
+    this.synagogue.latLng = mapObject.latLng;
+    this.synagogue.userFriendlyAddress = mapObject.userFriendlyAddress;
+
+    this.placeAutoComplete.mapObject = mapObject;
+    this.placeAutoCompleteInput._native.nativeElement.value = this.synagogue.userFriendlyAddress;
   }
 
   onMapObjectChanged(mapObject: MapObject){
-    if (!mapObject || !mapObject.userFriendlyAddress)
+    if (!mapObject || !mapObject.isFullyValid())
       return;
-    this.synagogue.latLng = mapObject.latLng && mapObject.latLng;
-    this.synagogue.userFriendlyAddress = mapObject.userFriendlyAddress && mapObject.userFriendlyAddress;
+    this.synagogue.latLng = mapObject.latLng;
+    this.synagogue.userFriendlyAddress = mapObject.userFriendlyAddress;
   }
 
   isFormValid(){

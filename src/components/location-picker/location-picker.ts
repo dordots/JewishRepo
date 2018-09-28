@@ -24,13 +24,13 @@ export class LocationPickerComponent implements OnDestroy, AfterViewInit{
   constructor(private viewCtrl: ViewController,
               private mapProvider: GoogleMapProvider) {
     console.log('Hello LocationPickerComponent Component');
-    this.mapObject = {latLng: null, userFriendlyAddress: null};
+    this.mapObject = new MapObject();
   }
 
   ngAfterViewInit() {
     this.mapComponent.onMapCreated.subscribe(args => {
       this.initOnLocationPressed(this.mapComponent.map.map);
-    });
+    }, err => { console.error('Could not load Location-Picker because it could not create a Map')});
   }
 
   onAutoCompleteSelect(mapObject: MapObject){

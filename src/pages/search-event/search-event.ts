@@ -6,6 +6,8 @@ import {StaticValidators} from "../../validators/static-validators";
 import {PrintFormValidationErrors} from "../../common/models/common/utils";
 import {PlaceAutoComplete} from "../../directives/place-autocomplete/place-autocomplete";
 import {MapObject} from "../../common/models/map-objects/map-objects";
+import {EventBasedMapObjectProvider} from "../../providers/server-providers/event-based-map-object.provider";
+import {LocationTrackingProvider} from "../../providers/location-tracking/location-tracking";
 
 @IonicPage()
 @Component({
@@ -21,7 +23,9 @@ export class SearchEventPage {
   @ViewChild('form') form: NgForm;
 
   constructor(public navCtrl: NavController,
-              public navParams: NavParams) {
+              public navParams: NavParams,
+              private locationProvider: LocationTrackingProvider,
+              private mapObjectProvider: EventBasedMapObjectProvider) {
     this.searchEvent = new SearchEvent();
   }
 
@@ -29,20 +33,29 @@ export class SearchEventPage {
     console.log('ionViewDidLoad SearchEventPage');
   }
 
-    onModalClosed(mapObject: MapObject){
-      if (mapObject && mapObject.userFriendlyAddress) {
-        this.onMapObjectChanged(mapObject);
-        this.placeAutoComplete.mapObject = mapObject;
-        this.placeAutoCompleteInput._native.nativeElement.value = this.searchEvent.mapObject.userFriendlyAddress;
-      }
-    }
+  onModalClosed(mapObject: MapObject) {
+    if (!mapObject || !mapObject.isFullyValid())
+      return;
+    this.onMapObjectChanged(mapObject);
+    this.placeAutoComplete.mapObject = mapObject;
+    this.placeAutoCompleteInput._native.nativeElement.value = this.searchEvent.mapObject.userFriendlyAddress;
+  }
 
-    onMapObjectChanged(mapObject: MapObject){
-      this.searchEvent.mapObject = mapObject;
-    }
+  onMapObjectChanged(mapObject: MapObject) {
+    if (!mapObject || !mapObject.isFullyValid())
+      return;
+    this.searchEvent.mapObject = mapObject;
+  }
 
-    isFormValid(){
-      let isMapObjectValid = StaticValidators.IsLocationValid(this.searchEvent.mapObject, false);
-      return isMapObjectValid && this.form.valid;
+  isFormValid() {
+    // let isMapObjectValid = StaticValidators.IsLocationValid(this.searchEvent.mapObject, false);
+    return /*isMapObjectValid && */ this.form.valid;
+  }
+
+  search() {
+    if (!this.searchEvent.mapObject.isPartiallyValid()){
+      this.searchEvent.mapObject.latLng = this.locationProvider.lastKnownLatLng;
     }
+    this.mapObjectProvider.getByQuery(this.searchEvent);
+  }
 }
