@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import {NavController, NavParams} from 'ionic-angular';
 import {HomeToolbarSegments} from "../../components/home-toolbar/home-toolbar";
 import {MapObject} from "../../common/models/map-objects/map-objects";
 import {SearchEventPage} from "../search-event/search-event";
@@ -14,7 +14,8 @@ export class HomePage {
   private activeSegment: HomeToolbarSegments;
   private nearMapObjects: MapObject;
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController,
+              private navParams: NavParams) {
 
   }
 

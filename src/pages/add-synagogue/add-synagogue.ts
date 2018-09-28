@@ -41,10 +41,7 @@ export class AddSynagoguePage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AddSynagoguePage');
-  }
-
-  ngAfterViewInit(){
-    console.log(this.form);
+    this.placeAutoComplete.mapObject = new Synagogue({latLng: this.synagogue.latLng, userFriendlyAddress: this.synagogue.userFriendlyAddress});
   }
 
   async submitNewSynagogue(){
