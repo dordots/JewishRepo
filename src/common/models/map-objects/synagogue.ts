@@ -9,7 +9,7 @@ import LatLngLiteral = google.maps.LatLngLiteral;
 import {PrayerEvent} from "../event/prayer-event";
 import {EventBasedMapObject} from "./map-objects";
 
-export class Synagogue implements EventBasedMapObject, ServerModel {
+export class Synagogue extends EventBasedMapObject implements ServerModel {
   _id: string;
   latLng: LatLngLiteral;
   userFriendlyAddress: string;

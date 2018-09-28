@@ -48,12 +48,18 @@ export class GoogleMapProvider {
       this.isApiLoaded = true;
     }
 
-    const currentLocation = await fromPromise(this.locationTracking.getCurrentLocation({timeout: 12000, enableHighAccuracy: true})).retry(5).toPromise();
     mapOptions = mapOptions || this.defaultMapOptions;
-    mapOptions.center = {
-      lat: currentLocation.coords.latitude,
-      lng: currentLocation.coords.longitude
-    };
+
+
+    try{
+      const currentLocation = await fromPromise(this.locationTracking.getCurrentLocation({timeout: 12000, maximumAge:2419200000,  enableHighAccuracy: true})).retry(5).toPromise();
+      mapOptions.center = {
+        lat: currentLocation.coords.latitude,
+        lng: currentLocation.coords.longitude
+      };
+    }
+    catch (e) { console.error('Could not get current location or last known location of last month'); }
+
     let map = new GoogleMap(new google.maps.Map(mapDivElement,
                             mapOptions || this.defaultMapOptions),
                             this.locationTracking,

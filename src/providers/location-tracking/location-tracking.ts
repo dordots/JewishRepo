@@ -11,10 +11,34 @@ export class LocationTrackingProvider {
 
   public onLocationChanged: EventEmitter<Geoposition>;
   public lastKnownPosition: Geoposition;
-  public get lastKnownLatLng(): LatLngLiteral {return this.geopositionToLatLngLiteral(this.lastKnownPosition)};
+
+  public get lastKnownLatLng(): LatLngLiteral {
+    return this.geopositionToLatLngLiteral(this.lastKnownPosition)
+  };
 
   constructor(private readonly geolocation: Geolocation) {
     this.onLocationChanged = new EventEmitter<Geoposition>();
+    this.watchLocation();
+  }
+
+  async getCurrentLocation(options: GeolocationOptions) {
+    if (this.lastKnownPosition)
+      return Promise.resolve(this.lastKnownPosition);
+    this.stopWatchLocation();
+    const pos = await this.geolocation.getCurrentPosition(options);
+    this.lastKnownPosition = pos;
+    this.watchLocation();
+    return pos;
+  }
+
+  public geopositionToLatLngLiteral(geoposition: Geoposition) {
+    return {
+      lat: geoposition.coords.latitude,
+      lng: geoposition.coords.longitude
+    }
+  }
+
+  private watchLocation() {
     this.subscription = this.geolocation.watchPosition({enableHighAccuracy: true, timeout: 3000})
       .filter((p) => p.coords !== undefined).subscribe((pos) => {
         this.lastKnownPosition = pos;
@@ -25,20 +49,7 @@ export class LocationTrackingProvider {
       });
   }
 
-  async getCurrentLocation(options: GeolocationOptions){
-    if (this.lastKnownPosition)
-      return Promise.resolve(this.lastKnownPosition);
-    const promise = this.geolocation.getCurrentPosition(options);
-    promise.then(geo => this.lastKnownPosition = geo, err => {
-      console.error(err);
-    });
-    return promise;
-  }
-
-  public geopositionToLatLngLiteral(geoposition: Geoposition) {
-    return {
-      lat: geoposition.coords.latitude,
-      lng: geoposition.coords.longitude
-    }
+  private stopWatchLocation() {
+    this.subscription.unsubscribe();
   }
 }

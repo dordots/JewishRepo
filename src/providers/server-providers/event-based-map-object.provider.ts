@@ -9,13 +9,11 @@ import {EventBasedMapObject} from "../../common/models/map-objects/map-objects";
 import {Observable} from "rxjs/Observable";
 import LatLngLiteral = google.maps.LatLngLiteral;
 import {FakeLatLngAround, FakeMapObject} from "../../common/data-faker/data-randomizer";
-import {from} from "rxjs/observable/from";
 import {of} from "rxjs/observable/of";
+import {SearchEvent} from "../../common/models/event/search-event";
 
 @Injectable()
 export class EventBasedMapObjectProvider extends AbstractServerProvider{
-
-  static mockedId = "5b5468974f46c65fa709efcb";
 
   constructor(private http: HttpClient, appConfig: AppConfigProvider) {
     super(appConfig);
@@ -50,6 +48,13 @@ export class EventBasedMapObjectProvider extends AbstractServerProvider{
   getAllInRadius(latLng: LatLngLiteral, radius: number): Observable<EventBasedMapObject[]> {
     return of(new Array(5).fill(0).map(v => FakeMapObject()).map(v => {
       v.latLng = FakeLatLngAround(latLng);
+      return v;
+    }));
+  }
+
+  getByQuery(searchEvent: SearchEvent) {
+    return of(new Array(5).fill(0).map(v => FakeMapObject()).map(v => {
+      v.latLng = FakeLatLngAround(searchEvent.mapObject.latLng);
       return v;
     }));
   }

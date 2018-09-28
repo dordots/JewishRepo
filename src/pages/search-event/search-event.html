@@ -6,22 +6,21 @@
 
 
 <ion-content>
-  <form [formGroup]="formGroup" dir="rtl">
+  <form #form="ngForm" dir="rtl">
     <ion-item>
-      <ion-input [(ngModel)]="searchEvent.name" [ngModelOptions]="{standalone: true}"
+      <ion-input [(ngModel)]="searchEvent.name" name="name"
                  placeholder="חפש לפי שם בית כנסת..." clearInput dir="rtl"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label stacked>כתובת</ion-label>
-      <ion-input #ionInput fkPlaceAutoComplete [(ngModel)]="searchEvent.mapObject"
-                 [ngModelOptions]="{standalone: true}"
-                 [inputElement]="ionInput._native?.nativeElement"
+      <ion-input #placeAutoCompleteInput fkPlaceAutoComplete name="address"
+                 [inputElement]="placeAutoCompleteInput._native?.nativeElement"
+                 (placeSelected)="onMapObjectChanged($event)"
                  clearInput placeholder="חפש ביחס לכתובת" dir="rtl"></ion-input>
 
-      <a item-end margin-left fkLocationPickerModal
-         [(ngModel)]="searchEvent.mapObject" [ngModelOptions]="{standalone: true}"
-         (modalClosed)="onModalClosed($event)">מפה</a>
+      <a item-end margin-left fkLocationPickerModal name="address"
+         (locationSelected)="onModalClosed($event)">מפה</a>
     </ion-item>
 
     <ion-card margin-top>
@@ -31,7 +30,7 @@
         <ion-col>
           <ion-item>
             <ion-label stacked>החל מ-</ion-label>
-            <ion-datetime formControlName="startsAt" [(ngModel)]="searchEvent.startTime"
+            <ion-datetime [(ngModel)]="searchEvent.startTime" name="startTime"
                           displayFormat="HH:mm" pickerFormat="HH:mm" placeholder="בחר שעה"></ion-datetime>
           </ion-item>
         </ion-col>
@@ -39,15 +38,15 @@
         <ion-col>
           <ion-item>
             <ion-label stacked>עד ל-</ion-label>
-            <ion-datetime formControlName="startsAt" [(ngModel)]="searchEvent.endTime"
-                          displayFormat="HH:mm" pickerFormat="HH:mm" placeholder="בחר שעה"></ion-datetime>
+            <ion-datetime [(ngModel)]="searchEvent.endTime" name="endTime"  displayFormat="HH:mm" pickerFormat="HH:mm"
+                          [min]="searchEvent.startTime" placeholder="בחר שעה"></ion-datetime>
           </ion-item>
         </ion-col>
 
       </ion-row>
       <ion-item dir="ltr">
         <ion-label>טווח רדיוס</ion-label>
-        <ion-range min="1" max="25" pin="true" [ngModelOptions]="{standalone: true}"
+        <ion-range [min]="1" [max]="25" [pin]="true" name="radius"
                    [(ngModel)]="searchEvent.radiusRange">
           <ion-label range-left>1</ion-label>
           <ion-label range-right>25</ion-label>
@@ -56,28 +55,27 @@
 
       <ion-item>
         <ion-label fixed>נוסח תפילה</ion-label>
-        <fk-prayer-version-options [(ngModel)]="searchEvent.prayerNosach" [ngModelOptions]="{standalone: true}"
+        <fk-prayer-version-options [(ngModel)]="searchEvent.prayerNosach" name="prayerNosach"
                                    [allowMultiple]="true" title="בחר נוסח תפילה"
                                    placeholder="בחר נוסח תפילה" item-content></fk-prayer-version-options>
       </ion-item>
     </ion-card>
 
     <ion-card margin-top>
-      <fk-synagogue-options [(ngModel)]="searchEvent.synagogueOptions"
-                            [ngModelOptions]="{standalone: true}" class="form-background-color"></fk-synagogue-options>
+      <fk-synagogue-options [(ngModel)]="searchEvent.synagogueOptions" name="options" class="form-background-color"></fk-synagogue-options>
 
       <div margin>
         <div text-center margin-bottom>באילו ימים?</div>
-        <fk-day-range [(ngModel)]="searchEvent.daysRange" [ngModelOptions]="{standalone: true}"></fk-day-range>
+        <fk-day-range [(ngModel)]="searchEvent.daysRange" name="daysRange"></fk-day-range>
       </div>
     </ion-card>
   </form>
 
-  <button (click)="printFormErrors()">check errors</button>
+  <!--<pre dir="ltr" text-left>{{searchEvent | json}}</pre>-->
 </ion-content>
 
-<ion-footer padding text-center [attr.disabled]="!formGroup.valid">
-  <button id="search-button" class="transparent" dir="rtl" [disabled]="!formGroup.valid">
+<ion-footer padding text-center [attr.disabled]="!isFormValid()">
+  <button id="search-button" class="transparent" (click)="search()" dir="rtl" [disabled]="!isFormValid()">
     <span>חפש מניינים</span>
     <ion-icon name="search"></ion-icon>
   </button>

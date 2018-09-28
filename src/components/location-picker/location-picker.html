@@ -3,10 +3,9 @@
     <button item-start class="transparent" (click)="onDismiss()">
       <ion-icon name="arrow-forward" class="x2"></ion-icon>
     </button>
-    <ion-input #ionInput fkPlaceAutoComplete [map]="mapComponent.map"
-               [(ngModel)]="mapObject"
-               [inputElement]="ionInput._native?.nativeElement"
-               (placeSelected)="onAutocompleteSelect($event)"
+    <ion-input #PlaceAutoCompleteInput fkPlaceAutoComplete [map]="mapComponent?.map?.map"
+               [inputElement]="placeAutoCompleteInput._native?.nativeElement"
+               (placeSelected)="onAutoCompleteSelect($event)"
                clearInput placeholder="בחר כתובת" dir="rtl"></ion-input>
     <button item-end class="transparent">
       <ion-icon name="search"></ion-icon>

@@ -14,7 +14,7 @@ export class SearchEvent {
   constructor(){
     this.daysRange = [];
     this.prayerNosach = [];
-    this.mapObject = {latLng: null, userFriendlyAddress: null};
+    this.mapObject = new MapObject();
     this.synagogueOptions = CreateSynagogueOptions();
   }
 }

@@ -1,14 +1,16 @@
 import {Component, ViewChild} from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormControl, FormGroup, NgForm, Validators} from "@angular/forms";
 import {Synagogue} from "../../common/models/map-objects/synagogue";
 import {ImagePicker, ImagePickerOptions, OutputType} from "@ionic-native/image-picker";
 import {EventBasedMapObjectProvider} from "../../providers/server-providers/event-based-map-object.provider";
 import {Event} from "../../common/models/event/event";
 import {DatePipe} from "@angular/common";
-import {StaticValidators} from "../../validators/static-validators";
 import {AddEventModalComponent} from "../../components/add-event-modal/add-event-modal";
 import {EventTypes} from "../../common/models/common/enums/event-types";
+import {StaticValidators} from "../../validators/static-validators";
+import {MapObject} from "../../common/models/map-objects/map-objects";
+import {PlaceAutoComplete} from "../../directives/place-autocomplete/place-autocomplete";
 
 @IonicPage()
 @Component({
@@ -18,38 +20,31 @@ import {EventTypes} from "../../common/models/common/enums/event-types";
 })
 export class AddSynagoguePage {
 
-  @ViewChild('ionInput') locationInput;
+  @ViewChild('placeAutoCompleteInput') placeAutoCompleteInput;
+  @ViewChild(PlaceAutoComplete) placeAutoComplete: PlaceAutoComplete;
+  @ViewChild('form') form: NgForm;
 
   phoneNumber: string;
-  form: FormGroup;
   synagogue: Synagogue;
   eventsToShow: string;
+  phonePattern = /^\d{2,3}-?\d{7}$/;
   eventsDictionary: {[type: string]: Event[]};
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private imagePicker: ImagePicker,
               private mapObjectProvider: EventBasedMapObjectProvider,
-              private datePipe: DatePipe,
               private modalCtrl: ModalController) {
     this.synagogue = this.navParams.get('synagogue') as Synagogue || new Synagogue();
     this.createEventsDictionary();
-    this.form = this.createSynagogueValidator();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AddSynagoguePage');
   }
 
-  createSynagogueValidator(){
-    let group = new FormGroup({
-      name: new FormControl(this.synagogue.name, [Validators.required]),
-      comments: new FormControl('', []),
-      primaryNosach: new FormControl(this.synagogue.primaryPrayerNosach, {validators: [Validators.required], updateOn: 'change'}),
-      location: new FormControl(this.synagogue, [StaticValidators.ValidateLocation(()=>this.synagogue)]),
-      phone: new FormControl('', [Validators.pattern(/^\d{2,3}-?\d{7}$/)])
-    });
-    return group;
+  ngAfterViewInit(){
+    console.log(this.form);
   }
 
   async submitNewSynagogue(){
@@ -89,9 +84,28 @@ export class AddSynagoguePage {
     this.synagogue.phone.splice(index, 1);
   }
 
-  onModalClosed(){
-    this.locationInput._native.nativeElement.value = this.synagogue.userFriendlyAddress;
-    this.form.get('location').updateValueAndValidity();
+  onModalClosed(mapObject: MapObject){
+    if (!mapObject || !mapObject.isFullyValid())
+      return;
+
+    this.synagogue.latLng = mapObject.latLng;
+    this.synagogue.userFriendlyAddress = mapObject.userFriendlyAddress;
+
+    this.placeAutoComplete.mapObject = mapObject;
+    this.placeAutoCompleteInput._native.nativeElement.value = this.synagogue.userFriendlyAddress;
+  }
+
+  onMapObjectChanged(mapObject: MapObject){
+    if (!mapObject || !mapObject.isFullyValid())
+      return;
+    this.synagogue.latLng = mapObject.latLng;
+    this.synagogue.userFriendlyAddress = mapObject.userFriendlyAddress;
+  }
+
+  isFormValid(){
+    const mapObject = {latLng: this.synagogue.latLng, userFriendlyAddress: this.synagogue.userFriendlyAddress} as MapObject
+    let isMapObjectValid = StaticValidators.IsLocationValid(mapObject, true);
+    return isMapObjectValid && this.form.valid;
   }
 
   formatTimeRange(event: Event){

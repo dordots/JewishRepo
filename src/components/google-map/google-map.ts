@@ -47,6 +47,8 @@ export class GoogleMapComponent implements AfterViewInit, OnDestroy{
   }
 
   private fetchAllMapObjectsAround(){
+    if (!this.map.map.getCenter())
+      return;
     this.mapObjectProvider.getAllInRadius(this.map.map.getCenter().toJSON(),10).subscribe(res => {
       res.forEach(async mo => {
         let res = await this.map.drawEventBasedMapObject(mo);
