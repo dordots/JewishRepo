@@ -24,6 +24,8 @@ export class SynagogueDetailsPage {
   prayers: PrayerEvent[];
   lessons: LessonEvent[];
 
+  soonestPrayer: PrayerEvent;
+
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private datePipe: DatePipe,
@@ -31,18 +33,11 @@ export class SynagogueDetailsPage {
     this.synagogue = this.navParams.get('mapObject') as Synagogue || FakeMapObject() as Synagogue;
     this.prayers = this.getPrayers();
     this.lessons = this.getLessons() as LessonEvent[];
-    console.log(this.synagogue);
+    this.soonestPrayer = this.synagogue.getSoonestEvent(EventTypes.Prayer);
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SynagogueDetailsPage');
-  }
-
-  getSoonestEvent(events: Event[]){
-    if (events.length == 0)
-      return null;
-    let sorted = events.sort((e1, e2) => e1.startTime.getTime() - e2.startTime.getTime());
-    return sorted[0];
   }
 
   private getPrayers(){

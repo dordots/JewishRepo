@@ -23,6 +23,7 @@ import {SearchEventPageModule} from "../pages/search-event/search-event.module";
 import { LocationTrackingProvider } from '../providers/location-tracking/location-tracking';
 import {AddSynagoguePageModule} from "../pages/add-synagogue/add-synagogue.module";
 import {AddSynagoguePage} from "../pages/add-synagogue/add-synagogue";
+import {DirectivesModule} from "../directives/directives.module";
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import {AddSynagoguePage} from "../pages/add-synagogue/add-synagogue";
     ComponentsModule,
     SynagogueDetailsPageModule,
     AddSynagoguePageModule,
+    DirectivesModule,
     SearchEventPageModule,
     IonicModule.forRoot(MyApp, {scrollPadding: false}),
   ],

@@ -2,12 +2,12 @@
   <ion-navbar></ion-navbar>
   <img src="https://picsum.photos/500/500">
   <div class="last-updated-at">
-    <span>עודכן לאחרונה בשעה:</span>
-    <span>19:46</span>
+    <span>עודכן לאחרונה ב:</span>
+    <span>{{synagogue.getLastVerified()}}</span>
   </div>
   <div class="relative-distance">
     <div class="distance-text">
-      814 m
+      {{synagogue.relativeDistanceInMeter}} m
       <ion-icon name="md-locate"></ion-icon>
     </div>
   </div>
@@ -21,8 +21,8 @@
       זמני תפילה קרובה:
       <br>
       <div *ngIf="prayers.length  > 0;else noSoonestPrayer">
-        {{getSoonestEvent(prayers)?.prayerType}}
-        {{getSoonestEvent(prayers)?.formatTimeRange()}}
+        {{soonestPrayer?.prayerType}}
+        {{soonestPrayer?.formatTimeRange()}}
       </div>
       <ng-template #noSoonestPrayer>לא ידוע</ng-template>
     </div>

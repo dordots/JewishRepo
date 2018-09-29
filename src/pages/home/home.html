@@ -10,10 +10,8 @@
     <ion-input placeholder="חיפוש..." text-right dir="rtl" (ionFocus)="goToSearchPage()"></ion-input>
     <ion-label item-start margin-left><ion-icon name="search"></ion-icon></ion-label>
   </ion-item>
-  <fk-home-toolbar (activeSegmentEvent)="updateActiveSegment($event)" [activeSegment]="activeSegment"></fk-home-toolbar>
 </ion-header>
 
-<ion-content>
-  <fk-google-map #mapComponent [hidden]="activeSegment!=='map'"></fk-google-map>
-  <fk-map-objects-list [hidden]="activeSegment!=='list'"></fk-map-objects-list>
+<ion-content no-scroll>
+  <fk-search-results-view [results]="nearMapObjects"></fk-search-results-view>
 </ion-content>
