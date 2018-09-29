@@ -9,6 +9,7 @@ export class LocationTrackingProvider {
 
   private subscription: Subscription;
 
+  private currentLocationPromise: Promise<Geoposition>;
   public onLocationChanged: EventEmitter<Geoposition>;
   public lastKnownPosition: Geoposition;
 
@@ -18,20 +19,43 @@ export class LocationTrackingProvider {
 
   constructor(private readonly geolocation: Geolocation) {
     this.onLocationChanged = new EventEmitter<Geoposition>();
-    this.watchLocation();
+    this.getCurrentLocation({timeout: 20000, maximumAge:2419200000,  enableHighAccuracy: true}).then(async _ => {
+      await this.getCurrentLocation({timeout: 5000, enableHighAccuracy: true});
+      this.watchLocation();
+    }, _ => this.watchLocation());
   }
 
-  async getCurrentLocation(options: GeolocationOptions) {
-    if (this.lastKnownPosition)
-      return Promise.resolve(this.lastKnownPosition);
-    this.stopWatchLocation();
-    const pos = await this.geolocation.getCurrentPosition(options);
+  async getCurrentLocation(options?: GeolocationOptions) {
+    if (this.lastKnownPosition && this.subscription && !this.subscription.closed)
+      return this.lastKnownPosition;
+
+    if (this.currentLocationPromise)
+      return this.currentLocationPromise;
+
+    const watchEnabled = this.subscription && !this.subscription.closed;
+
+    if (watchEnabled)
+      this.stopWatchLocation();
+
+    this.currentLocationPromise = this.geolocation.getCurrentPosition(options);
+
+    const pos = await this.currentLocationPromise;
+
+    this.currentLocationPromise = null;
+
+    if (JSON.stringify(this.lastKnownLatLng) !== JSON.stringify(this.geopositionToLatLngLiteral(pos)))
+      this.onLocationChanged.emit(pos);
     this.lastKnownPosition = pos;
-    this.watchLocation();
+
+    if (watchEnabled)
+      this.watchLocation();
+
     return pos;
   }
 
   public geopositionToLatLngLiteral(geoposition: Geoposition) {
+    if (!geoposition)
+      return null;
     return {
       lat: geoposition.coords.latitude,
       lng: geoposition.coords.longitude
@@ -39,7 +63,7 @@ export class LocationTrackingProvider {
   }
 
   private watchLocation() {
-    this.subscription = this.geolocation.watchPosition({enableHighAccuracy: true, timeout: 3000})
+    const subscribe = () => this.subscription = this.geolocation.watchPosition({enableHighAccuracy: true, timeout: 3000})
       .filter((p) => p.coords !== undefined).subscribe((pos) => {
         this.lastKnownPosition = pos;
         this.onLocationChanged.next(pos);
@@ -47,9 +71,15 @@ export class LocationTrackingProvider {
         console.log('In watch mode: ');
         console.log(err);
       });
+
+    if (this.currentLocationPromise)
+      this.currentLocationPromise.then(_ => subscribe(), err => subscribe());
+    else
+      subscribe();
   }
 
   private stopWatchLocation() {
-    this.subscription.unsubscribe();
+    if (this.subscription)
+      this.subscription.unsubscribe();
   }
 }

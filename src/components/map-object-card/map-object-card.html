@@ -8,17 +8,17 @@
         </div>
         <div class="last-updated-at">
           עודכן לאחרונה
-          {{getLastVerified()}}
+          {{mapObject.getLastVerified()}}
         </div>
       </ion-row>
     </ion-grid>
     <div class="map-object-name"><h1>{{mapObject.type}}</h1></div>
     <ion-row justify-content-between padding-bottom>
       <small class="map-object-friendly-address" justify-content-center align-items-center>{{mapObject.userFriendlyAddress}}</small>
-      <small class="event-times" dir="ltr" text-center>
-        {{getSoonestEvent()?.getEventName()}}
+      <small class="event-times" dir="ltr" text-center *ngIf="soonestEvent">
+        {{soonestEvent.getEventName()}}
         <br>
-        {{getSoonestEvent()?.formatTimeRange()}}
+        {{soonestEvent.formatTimeRange()}}
       </small>
     </ion-row>
   </div>

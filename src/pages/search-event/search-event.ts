@@ -9,6 +9,7 @@ import {MapObject} from "../../common/models/map-objects/map-objects";
 import {EventBasedMapObjectProvider} from "../../providers/server-providers/event-based-map-object.provider";
 import {LocationTrackingProvider} from "../../providers/location-tracking/location-tracking";
 import {HomePage} from "../home/home";
+import {SearchResultsViewComponent} from "../../components/search-results-view/search-results-view";
 
 @IonicPage()
 @Component({
@@ -57,8 +58,7 @@ export class SearchEventPage {
     if (!this.searchEvent.mapObject.isPartiallyValid()){
       this.searchEvent.mapObject.latLng = this.locationProvider.lastKnownLatLng;
     }
-    const res = await this.mapObjectProvider.getByQuery(this.searchEvent);
-    this.navCtrl.push(HomePage, {mapObjects: res});
+    this.navCtrl.push(SearchResultsViewComponent, {results: this.mapObjectProvider.getByQuery(this.searchEvent)});
     // TODO: Separate HomePage into 2: A page - HomePage which contains the upper most view (add,settings,search), and a Component which contains the segmented view (map | list)
   }
 }

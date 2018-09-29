@@ -9,7 +9,7 @@ import LatLngLiteral = google.maps.LatLngLiteral;
 import {PrayerEvent} from "../event/prayer-event";
 import {EventBasedMapObject} from "./map-objects";
 
-export class Synagogue extends EventBasedMapObject implements ServerModel {
+export class Synagogue extends EventBasedMapObject {
   _id: string;
   latLng: LatLngLiteral;
   userFriendlyAddress: string;
@@ -22,17 +22,16 @@ export class Synagogue extends EventBasedMapObject implements ServerModel {
   picture: string;
   comments: string;
 
-  fromServerModel(serverModel: any): Synagogue{
-    let model = new Synagogue();
+  fromServerModel(serverModel: any) {
     let requiredFieldsFromServerModel = pick(serverModel, ['_id', 'name','primaryPrayerNosach','latlng', 'userFriendlyAddress','phone','picture', 'comments']);
-    merge(model, requiredFieldsFromServerModel);
-    model.synagogueOptions = serverModel.externals;
-    model.events = serverModel.events.map(ev => {
+    merge(this, requiredFieldsFromServerModel);
+    this.synagogueOptions = serverModel.externals;
+    this.events = serverModel.events.map(ev => {
       let evModel = new PrayerEvent();
       evModel.fromServerModel(ev);
       return evModel;
     });
-    return model;
+    return this;
   }
 
   toServerModel(): any {

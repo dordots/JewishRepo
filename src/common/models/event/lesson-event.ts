@@ -4,20 +4,15 @@ import {PrayerEvent} from "./prayer-event";
 
 export class LessonEvent extends Event {
   title: string;
+
   constructor(){
     super();
     this.type = EventTypes.Lesson;
   }
 
-  fromServerModel(model: any){
-    super.fromServerModel(model);
-    this.title = model.title;
-  }
-
   getEventName(): string {
     return this.title;
   }
-
 
   equals(other: LessonEvent): boolean {
     if (!(other instanceof LessonEvent) || other == null)

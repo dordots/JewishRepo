@@ -12,8 +12,8 @@ export class PrayerEvent extends Event {
 
   fromServerModel(model: any){
     super.fromServerModel(model);
-    this.nosach = model.nosach;
     this.prayerType = model.types;
+    return this;
   }
 
   getEventName(): string {

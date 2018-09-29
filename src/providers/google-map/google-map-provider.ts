@@ -1,7 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Geolocation} from "@ionic-native/geolocation";
 import {AppAssetsProvider} from "../app-assets/app-assets";
-import {ApplicationMapObject} from "../../common/models/map-objects/map-objects";
 import GoogleMapsLoader = require("google-maps");
 import MapOptions = google.maps.MapOptions;
 import LatLngLiteral = google.maps.LatLngLiteral;
@@ -52,13 +50,13 @@ export class GoogleMapProvider {
 
 
     try{
-      const currentLocation = await fromPromise(this.locationTracking.getCurrentLocation({timeout: 12000, maximumAge:2419200000,  enableHighAccuracy: true})).retry(5).toPromise();
+      const currentLocation = await fromPromise(this.locationTracking.getCurrentLocation()).retry(3).toPromise();
       mapOptions.center = {
         lat: currentLocation.coords.latitude,
         lng: currentLocation.coords.longitude
       };
     }
-    catch (e) { console.error('Could not get current location or last known location of last month'); }
+    catch (e) { console.error('Could not get current location or last known location of last month' + e); }
 
     let map = new GoogleMap(new google.maps.Map(mapDivElement,
                             mapOptions || this.defaultMapOptions),

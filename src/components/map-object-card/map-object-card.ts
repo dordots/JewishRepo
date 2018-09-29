@@ -6,6 +6,7 @@ import {NavController} from "ionic-angular";
 import {SynagogueDetailsPage} from "../../pages/synagogue-details/synagogue-details";
 import {PrayerEvent} from "../../common/models/event/prayer-event";
 import {LessonEvent} from "../../common/models/event/lesson-event";
+import {Event} from "../../common/models/event/event";
 
 @Component({
   selector: 'fk-map-object-card',
@@ -13,38 +14,32 @@ import {LessonEvent} from "../../common/models/event/lesson-event";
 })
 export class MapObjectCardComponent {
 
-  @Input() mapObject: EventBasedMapObject;
+  private _mapObject: EventBasedMapObject;
+
+  get mapObject(): EventBasedMapObject {
+    return this._mapObject;
+  }
+
+  @Input() set mapObject(value: EventBasedMapObject) {
+    this._mapObject = value;
+    this.soonestEvent = this.mapObject.getSoonestEvent(EventTypes.Prayer);
+  }
 
   prayers: PrayerEvent[];
   lessons: LessonEvent[];
+
+  soonestEvent: Event;
 
   constructor(private navCtrl: NavController) {
     console.log('Hello EventCardComponent Component');
   }
 
-  getSoonestEvent(type: EventTypes = EventTypes.Prayer){
-    if (this.mapObject.events.length == 0)
-      return;
-    let sorted = this.mapObject.events.filter(e => e.type == type)
-      .sort((e1, e2) => e1.startTime.getTime() - e2.startTime.getTime());
-    let soonestEvent = sorted[0];
-    if (soonestEvent == null)
-      return this.getSoonestEvent(EventTypes.Lesson);
-    return soonestEvent;
-  }
-
-  getLastVerified(){
-    let date = this.mapObject.events.map(e => e.verifiedRecentlyAt)
-      .sort((e1, e2)=>e1.getTime() - e2.getTime())[0];
-    return moment(date).format('L');
-  }
-
-  getRelativeDistance(){
-    return 500;
+  getRelativeDistance() {
+    return this._mapObject.relativeDistanceInMeter;
   }
 
   goToPageDetails() {
-    this.navCtrl.push('SynagogueDetailsPage',{mapObject: this.mapObject},{
+    this.navCtrl.push('SynagogueDetailsPage', {mapObject: this._mapObject}, {
       direction: 'up'
     })
   }

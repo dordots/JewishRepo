@@ -47,15 +47,17 @@ export class EventBasedMapObjectProvider extends AbstractServerProvider{
 
   getAllInRadius(latLng: LatLngLiteral, radius: number): Observable<EventBasedMapObject[]> {
     return of(new Array(5).fill(0).map(v => FakeMapObject()).map(v => {
-      v.latLng = FakeLatLngAround(latLng);
-      return v;
+      const model = new EventBasedMapObject().fromServerModel(v);
+      model.latLng = FakeLatLngAround(latLng);
+      return model;
     }));
   }
 
   getByQuery(searchEvent: SearchEvent) {
     return of(new Array(5).fill(0).map(v => FakeMapObject()).map(v => {
-      v.latLng = FakeLatLngAround(searchEvent.mapObject.latLng);
-      return v;
+      const model = new EventBasedMapObject().fromServerModel(v);
+      model.latLng = FakeLatLngAround(searchEvent.mapObject.latLng);
+      return model;
     }));
   }
 }

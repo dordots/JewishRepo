@@ -1,4 +1,11 @@
-fk-home-toolbar {
+fk-search-results-view {
+  ion-header {
+    background-color: map_get($colors, white);
+    .toolbar-background {
+      background-color: map_get($colors, white);
+    }
+  }
+
   ion-toolbar{
     padding-bottom: 0 !important;
     padding-right: 0 !important;

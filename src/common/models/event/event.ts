@@ -3,20 +3,22 @@ import {assign, isEqual, merge} from "lodash-es";
 import moment = require("moment");
 import {EventTypes} from "../common/enums/event-types";
 
-export abstract class Event implements ServerModel{
+export abstract class Event extends ServerModel{
   type: EventTypes;
   startTime: Date;
   endTime: Date;
   repeatedDays: number[];
   verifiedRecentlyAt: Date;
+  dateMembers = ['startTime','endTime', 'verifiedRecentlyAt'];
 
   protected constructor() {
+    super();
     this.repeatedDays = [];
   }
 
   abstract getEventName(): string;
 
-  equals(other: Event): boolean {
+  equals(other: any): boolean {
     return this.type == other.type &&
       this.startTime.getTime() == other.startTime.getTime() &&
       (this.endTime != null && other.endTime != null && this.endTime.getTime() == other.endTime.getTime()) &&
@@ -53,21 +55,6 @@ export abstract class Event implements ServerModel{
   public formatDaysToHebrewAbbr(arr?: number[]){
     return (arr || this.repeatedDays).map(d => String.fromCharCode(0x05D0 + d - 1))
   }
-
-  fromServerModel(serverModel: any) {
-    merge(this, serverModel);
-    this.getDateMembers().forEach(m => this[m] = moment(serverModel[m]).toDate());
-  }
-
-  toServerModel(): any {
-    let model = assign({}, this) as any;
-    this.getDateMembers().forEach(m => model[m] = this[m].getTime());
-    return model;
-  }
-
-  protected getDateMembers(): string[]{
-    return ['startTime','endTime', 'verifiedRecentlyAt']
-  };
 
   private isValidDate(d){
     return d instanceof Date && !isNaN(d as any);

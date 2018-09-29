@@ -1,10 +1,10 @@
 import {merge} from "lodash-es";
-import {Geolocation, GeolocationOptions, Geoposition} from "@ionic-native/geolocation";
+import {Geoposition} from "@ionic-native/geolocation";
 import {Subscription} from "rxjs/Subscription";
 import "rxjs/add/observable/interval";
 import "rxjs/add/operator/mergeMap";
 import "rxjs/add/operator/take";
-import {ApplicationMapObject, EventBasedMapObject} from "../../common/models/map-objects/map-objects";
+import {EventBasedMapObject} from "../../common/models/map-objects/map-objects";
 import {AppAssetsProvider} from "../app-assets/app-assets";
 import {InfoWindow} from "./info-window";
 import {LocationTrackingProvider} from "../location-tracking/location-tracking";
@@ -84,19 +84,19 @@ export class GoogleMap {
     return {marker, infoWindow};
   }
 
-  async drawSimpleMapObjects(mapObjects: ApplicationMapObject[]): Promise<google.maps.Marker[]> {
-    let markerParams = await Promise.all(mapObjects.map(async obj => ({
-      map: this.map,
-      latLng: obj.latLng,
-      options: {
-        icon: {
-          url: await this.appAssetsProvider.getIconPath(obj.type),
-          scaledSize: new google.maps.Size(30, 30)
-        } as google.maps.Icon
-      },
-    })));
-    return markerParams.map(params => this.createMarkerAt(params.latLng, params.options));
-  }
+  // async drawSimpleMapObjects(mapObjects: ApplicationMapObject[]): Promise<google.maps.Marker[]> {
+  //   let markerParams = await Promise.all(mapObjects.map(async obj => ({
+  //     map: this.map,
+  //     latLng: obj.latLng,
+  //     options: {
+  //       icon: {
+  //         url: await this.appAssetsProvider.getIconPath(obj.type),
+  //         scaledSize: new google.maps.Size(30, 30)
+  //       } as google.maps.Icon
+  //     },
+  //   })));
+  //   return markerParams.map(params => this.createMarkerAt(params.latLng, params.options));
+  // }
 
   private initCircle() {
     this.locationCircle = new google.maps.Circle({
