@@ -11,9 +11,12 @@ import LatLngLiteral = google.maps.LatLngLiteral;
 import {FakeLatLngAround, FakeMapObject} from "../../common/data-faker/data-randomizer";
 import {of} from "rxjs/observable/of";
 import {SearchEvent} from "../../common/models/event/search-event";
+import {Config} from "@app/env";
 
 @Injectable()
 export class EventBasedMapObjectProvider extends AbstractServerProvider{
+
+  readonly baseUrl = `${Config.serverBaseUrl}/synagogue`;
 
   constructor(private http: HttpClient, appConfig: AppConfigProvider) {
     super(appConfig);
@@ -22,15 +25,12 @@ export class EventBasedMapObjectProvider extends AbstractServerProvider{
 
   async create<T extends ServerModel&EventBasedMapObject>(mapObject: T, retryCount=1){
     let config = await this.config();
-    let postRoute = await this.makeRelativeRoute([config.mapObjectsRoute]);
-    return this.http.post<T>(postRoute, mapObject.toServerModel())
+    return this.http.post<T>(this.baseUrl, mapObject.toServerModel())
                     .pipe(retry(retryCount), catchError(this.handleError)).toPromise();
   }
 
   async getById<T extends ServerModel&EventBasedMapObject>(id: any, type: {new(): T;}, retryCount=1): Promise<T> {
-    let config = await this.config();
-    let getRoute = await this.makeRelativeRoute([config.mapObjectsRoute, id]);
-    return this.http.get<T>(getRoute)
+    return this.http.get<T>(`${this.baseUrl}/${id}`)
                     .pipe(retry(retryCount), catchError(this.handleError))
                     .map(value => {
                       return new type().fromServerModel(value)
@@ -38,9 +38,7 @@ export class EventBasedMapObjectProvider extends AbstractServerProvider{
   }
 
   async update<T extends ServerModel&EventBasedMapObject>(model: T, retryCount=1) {
-    let config = await this.config();
-    let putRoute = await this.makeRelativeRoute([config.mapObjectsRoute, model._id]);
-    return this.http.put<T>(putRoute, model.toServerModel())
+    return this.http.put<T>(`${this.baseUrl}/${model._id}`, model.toServerModel())
                     .pipe(retry(retryCount), catchError(this.handleError))
                     .toPromise();
   }
