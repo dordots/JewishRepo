@@ -10,6 +10,18 @@ export class LessonEvent extends Event {
     this.type = EventTypes.Lesson;
   }
 
+  toServerModel(){
+    const model = super.toServerModel();
+    model.name = this.title;
+    return model;
+  }
+
+  fromServerModel(sm: any){
+    super.fromServerModel(sm);
+    this.title = sm.name;
+    return this;
+  }
+
   getEventName(): string {
     return this.title;
   }

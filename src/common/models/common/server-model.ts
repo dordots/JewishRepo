@@ -6,7 +6,7 @@ export abstract class ServerModel {
   dateMembers = [];
 
   toServerModel(){
-    let model = cloneDeep(this);
+    let model = cloneDeep(this) as any;
     model.dateMembers.forEach(m => {
       if (model[m] == null)
         return;

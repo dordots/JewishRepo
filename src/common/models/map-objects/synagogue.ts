@@ -2,12 +2,14 @@ import {Event} from "../event/event";
 import {PrayerNosach} from "../common/enums/prayer-nosach";
 import {ServerModel} from "../common/server-model";
 import {generateObjectId} from "../common/utils";
-import {merge, pick} from "lodash-es";
+import {isArray, merge, pick} from "lodash-es";
 import {MapObjectTypes} from "../common/enums/map-object-types";
 import {CreateSynagogueOptions, SynagogueOptions} from "../common/enums/synagogue-option";
 import LatLngLiteral = google.maps.LatLngLiteral;
 import {PrayerEvent} from "../event/prayer-event";
 import {EventBasedMapObject} from "./map-objects";
+import {EventTypes} from "../common/enums/event-types";
+import {LessonEvent} from "../event/lesson-event";
 
 export class Synagogue extends EventBasedMapObject {
   _id: string;
@@ -22,28 +24,39 @@ export class Synagogue extends EventBasedMapObject {
   picture: string;
   comments: string;
 
-  fromServerModel(serverModel: any) {
-    let requiredFieldsFromServerModel = pick(serverModel, ['_id', 'name','primaryPrayerNosach','latlng', 'userFriendlyAddress','phone','picture', 'comments']);
-    merge(this, requiredFieldsFromServerModel);
-    this.synagogueOptions = serverModel.externals;
-    this.events = serverModel.events.map(ev => {
-      let evModel = new PrayerEvent();
-      evModel.fromServerModel(ev);
-      return evModel;
-    });
+  fromServerModel(sm: any) {
+    this._id = sm._id;
+    this.name = sm.name;
+    this.latLng = {lat: sm.location[0], lng: sm.location[1]};
+    this.userFriendlyAddress = sm.address;
+    this.synagogueOptions = sm.externals;
+    this.picture = sm.image;
+    this.phone = sm.phone_number;
+    this.primaryPrayerNosach = sm.nosahc;
+    this.comments = sm.comments;
+
+    const prayers = (sm.minyans && isArray(sm.minyans) && sm.minyans.map(m => {
+      m.nosach = m.nosach || sm.nosach;
+      return new PrayerEvent().fromServerModel(m)
+    })) || [];
+    const lessons = (sm.lessons && isArray(sm.lessons) && sm.lessons.map(l => new LessonEvent().fromServerModel(l))) || [];
+
+    this.events = prayers.concat(lessons);
+
     return this;
   }
 
   toServerModel(): any {
     return {
-      _id: this._id || generateObjectId(),
+      _id: this._id,
       name: this.name,
-      userFriendlyAddress: this.userFriendlyAddress,
-      latlng: this.latLng,
-      primaryPrayerNosach: this.primaryPrayerNosach,
-      phone: this.phone,
+      address: this.userFriendlyAddress,
+      location: {coordinates: [this.latLng.lng, this.latLng.lat], type: "Point"},
+      nosach: this.primaryPrayerNosach,
+      phone_number: this.phone,
       image: this.picture,
-      events: this.events,
+      minyans: this.events.filter(e => e.type == EventTypes.Prayer),
+      lessons: this.events.filter(e => e.type == EventTypes.Lesson),
       comments: this.comments,
       externals: {
         accessibility: this.synagogueOptions

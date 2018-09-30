@@ -18,6 +18,22 @@ export abstract class Event extends ServerModel{
 
   abstract getEventName(): string;
 
+  fromServerModel(sm: any){
+    this.startTime = moment(sm.hour,"hh:mm").toDate();
+    this.endTime = sm.endTime && moment(sm.endTime,"hh:mm").toDate();
+    this.repeatedDays = sm.days;
+
+    return this;
+  }
+
+  toServerModel(): any{
+    return {
+      days: this.repeatedDays,
+      hour: moment(this.startTime).format("hh:mm"),
+      endTime: this.endTime && moment(this.endTime).format("hh:mm"),
+    };
+  }
+
   equals(other: any): boolean {
     return this.type == other.type &&
       this.startTime.getTime() == other.startTime.getTime() &&
