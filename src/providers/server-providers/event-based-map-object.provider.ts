@@ -23,10 +23,9 @@ export class EventBasedMapObjectProvider extends AbstractServerProvider{
     console.log('Hello EventBasedMapObjectProvider Provider');
   }
 
-  async create<T extends ServerModel&EventBasedMapObject>(mapObject: T, retryCount=1){
-    let config = await this.config();
-    return this.http.post<T>(this.baseUrl, mapObject.toServerModel())
-                    .pipe(retry(retryCount), catchError(this.handleError)).toPromise();
+  create(mapObject: EventBasedMapObject, retryCount=1){
+    return this.http.post<EventBasedMapObject>(this.baseUrl, mapObject.toServerModel())
+                    .pipe(retry(retryCount), catchError(this.handleError));
   }
 
   async getById<T extends ServerModel&EventBasedMapObject>(id: any, type: {new(): T;}, retryCount=1): Promise<T> {
