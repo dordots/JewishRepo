@@ -41,28 +41,24 @@ export class GoogleMapProvider {
   }
 
   async createMap(mapDivElement: HTMLDivElement, mapOptions?: MapOptions): Promise<GoogleMap> {
-    if (!this.isApiLoaded) {
-      await this.loadAPI();
-      this.isApiLoaded = true;
-    }
-
+    await this.loadAPI();
     mapOptions = mapOptions || this.defaultMapOptions;
+    const position = await this.locationTracking.getCurrentLocation({timeout: 3000});
+    mapOptions.center = this.locationTracking.geopositionToLatLngLiteral(position);
+    const googleMap = new google.maps.Map(mapDivElement,mapOptions || this.defaultMapOptions);
+    let mapManager = new GoogleMap(googleMap,this.locationTracking,this.appAssets);
+    return mapManager;
 
+    // try{
+    //   const currentLocation = await fromPromise(this.locationTracking.getCurrentLocation()).retry(3).toPromise();
+    // }
+    // catch (e) { console.error('Could not get current location or last known location of last month' + e); }
 
-    try{
-      const currentLocation = await fromPromise(this.locationTracking.getCurrentLocation()).retry(3).toPromise();
-      mapOptions.center = {
-        lat: currentLocation.coords.latitude,
-        lng: currentLocation.coords.longitude
-      };
-    }
-    catch (e) { console.error('Could not get current location or last known location of last month' + e); }
-
-    let map = new GoogleMap(new google.maps.Map(mapDivElement,
-                            mapOptions || this.defaultMapOptions),
-                            this.locationTracking,
-                            this.appAssets);
-    return map;
+    // let map = new GoogleMap(new google.maps.Map(mapDivElement,
+    //                         mapOptions || this.defaultMapOptions),
+    //                         this.locationTracking,
+    //                         this.appAssets);
+    // return map;
   }
 
   getPlaceDetails(location: LatLngLiteral): Promise<GeocoderResult> {

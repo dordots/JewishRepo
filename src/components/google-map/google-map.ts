@@ -22,9 +22,7 @@ export class GoogleMapComponent implements AfterViewInit, OnDestroy{
   @Output()
   onMapCreated: ReplaySubject<GoogleMap>;
 
-  constructor(private mapProvider: GoogleMapProvider,
-              private navCtrl: NavController,
-              private mapObjectProvider: EventBasedMapObjectProvider) {
+  constructor(private mapProvider: GoogleMapProvider) {
     console.log('Hello GoogleMapComponent Component');
     GoogleMapComponent.mapCounter++;
     this.canvasElementId = `google-map-${GoogleMapComponent.mapCounter}`;
@@ -36,7 +34,6 @@ export class GoogleMapComponent implements AfterViewInit, OnDestroy{
     this.map = await this.mapProvider.createMap(mapElement, this.mapOptions);
     this.map.enableLocationTracking();
     this.onMapCreated.next(this.map);
-    // this.fetchAllMapObjectsAround();
   }
 
   ngOnDestroy(): void {
@@ -46,20 +43,4 @@ export class GoogleMapComponent implements AfterViewInit, OnDestroy{
     this.map.dispose();
     this.map = null;
   }
-
-  // private fetchAllMapObjectsAround(){
-  //   if (!this.map.map.getCenter())
-  //     return;
-  //   this.mapObjectProvider.getAllInRadius(this.map.map.getCenter().toJSON(),10).subscribe(res => {
-  //     res.forEach(async mo => {
-  //       let res = await this.map.drawEventBasedMapObject(mo);
-  //       res.infoWindow.onClick.subscribe(async v => {
-  //         await this.navCtrl.push(SynagogueDetailsPage, {mapObject: v.mapObject});
-  //         res.infoWindow.close();
-  //       })
-  //     });
-  //   }, err => {
-  //     console.log(err);
-  //   });
-  // }
 }
