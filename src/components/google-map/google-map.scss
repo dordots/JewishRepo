@@ -1,4 +1,27 @@
 fk-google-map{
+  fk-locate-button {
+    position: absolute;
+    bottom: 5%;
+  }
+
+  #map-loading{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    direction: rtl;
+    font-size: 5rem;
+    #error{
+      #help{
+        margin: auto;
+        width: 70%;
+        font-size: 3.5rem;
+      }
+    }
+  }
+
   .window-info{
     margin-left: 10px;
     .window-info-image-container{
@@ -17,10 +40,6 @@ fk-google-map{
     .window-info-address{
       text-align: right;
     }
-  }
-  fk-locate-button {
-    position: absolute;
-    bottom: 5%;
   }
 
   .fab-size {

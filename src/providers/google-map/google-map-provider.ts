@@ -48,17 +48,6 @@ export class GoogleMapProvider {
     const googleMap = new google.maps.Map(mapDivElement,mapOptions || this.defaultMapOptions);
     let mapManager = new GoogleMap(googleMap,this.locationTracking,this.appAssets);
     return mapManager;
-
-    // try{
-    //   const currentLocation = await fromPromise(this.locationTracking.getCurrentLocation()).retry(3).toPromise();
-    // }
-    // catch (e) { console.error('Could not get current location or last known location of last month' + e); }
-
-    // let map = new GoogleMap(new google.maps.Map(mapDivElement,
-    //                         mapOptions || this.defaultMapOptions),
-    //                         this.locationTracking,
-    //                         this.appAssets);
-    // return map;
   }
 
   getPlaceDetails(location: LatLngLiteral): Promise<GeocoderResult> {

@@ -90,4 +90,5 @@
     <allow-navigation href="http://:8100" />
     <allow-navigation href="http://192.168.2.110:8100" />
     <engine name="android" spec="7.1.1" />
+    <plugin name="cordova-open-native-settings" spec="^1.5.1" />
 </widget>

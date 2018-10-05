@@ -27,38 +27,14 @@ export class LocationTrackingProvider {
 
   async getCurrentLocation(options?: GeolocationOptions) {
     this.currentLocationPromise = this.currentLocationPromise || this.geolocation.getCurrentPosition(options);
-    this.lastKnownPosition = await this.currentLocationPromise;
-    this.currentLocationPromise = null;
+    try{
+      this.lastKnownPosition = await this.currentLocationPromise;
+    }
+    finally {
+      this.currentLocationPromise = null;
+    }
     return this.lastKnownPosition;
   }
-
-  // async getCurrentLocation(options?: GeolocationOptions) {
-  //   if (this.lastKnownPosition && this.watchSubscription && !this.watchSubscription.closed)
-  //     return this.lastKnownPosition;
-  //
-  //   if (this.currentLocationPromise)
-  //     return this.currentLocationPromise;
-  //
-  //   const watchEnabled = this.watchSubscription && !this.watchSubscription.closed;
-  //
-  //   if (watchEnabled)
-  //     this.stopWatchLocation();
-  //
-  //   this.currentLocationPromise = this.geolocation.getCurrentPosition(options);
-  //
-  //   const pos = await this.currentLocationPromise;
-  //
-  //   this.currentLocationPromise = null;
-  //
-  //   if (JSON.stringify(this.lastKnownLatLng) !== JSON.stringify(this.geopositionToLatLngLiteral(pos)))
-  //     this.onLocationChanged.emit(pos);
-  //   this.lastKnownPosition = pos;
-  //
-  //   if (watchEnabled)
-  //     this.startWatchLocation();
-  //
-  //   return pos;
-  // }
 
   public geopositionToLatLngLiteral(geoposition: Geoposition) {
     if (!geoposition)
