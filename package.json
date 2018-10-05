@@ -85,7 +85,7 @@
       "cordova-open-native-settings": {}
     },
     "platforms": [
-      "android"""
+      "android"
     ]
   },
   "config": {
