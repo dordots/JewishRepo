@@ -7,9 +7,9 @@ import LatLngLiteral = google.maps.LatLngLiteral;
 @Injectable()
 export class LocationTrackingProvider {
 
+  private currentLocationPromise: Promise<Geoposition>;
   private subscription: Subscription;
 
-  private currentLocationPromise: Promise<Geoposition>;
   public onLocationChanged: EventEmitter<Geoposition>;
   public lastKnownPosition: Geoposition;
 
@@ -19,7 +19,7 @@ export class LocationTrackingProvider {
 
   constructor(private readonly geolocation: Geolocation) {
     this.onLocationChanged = new EventEmitter<Geoposition>();
-    this.getCurrentLocation({timeout: 20000, maximumAge:2419200000,  enableHighAccuracy: true}).then(async _ => {
+    this.getCurrentLocation({timeout: 20000, maximumAge:2419200000}).then(async _ => {
       await this.getCurrentLocation({timeout: 5000, enableHighAccuracy: true});
       this.watchLocation();
     }, _ => this.watchLocation());
@@ -63,7 +63,7 @@ export class LocationTrackingProvider {
   }
 
   private watchLocation() {
-    const subscribe = () => this.subscription = this.geolocation.watchPosition({enableHighAccuracy: true, timeout: 3000})
+    const subscribe = () => this.subscription = this.geolocation.watchPosition({timeout: 3000})
       .filter((p) => p.coords !== undefined).subscribe((pos) => {
         this.lastKnownPosition = pos;
         this.onLocationChanged.next(pos);

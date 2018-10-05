@@ -58,7 +58,14 @@ export class SearchEventPage {
     if (!this.searchEvent.mapObject.isPartiallyValid()){
       this.searchEvent.mapObject.latLng = this.locationProvider.lastKnownLatLng;
     }
-    this.navCtrl.push(SearchResultsViewComponent, {results: this.mapObjectProvider.getByQuery(this.searchEvent)});
+    try{
+      const res = await this.mapObjectProvider.getByQuery(this.searchEvent).toPromise();
+      console.log(res);
+    }catch (e) {
+      console.log(e);
+    }
+
+    // this.navCtrl.push(SearchResultsViewComponent, {results: this.mapObjectProvider.getByQuery(this.searchEvent)});
     // TODO: Separate HomePage into 2: A page - HomePage which contains the upper most view (add,settings,search), and a Component which contains the segmented view (map | list)
   }
 }
