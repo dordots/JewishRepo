@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {IonicPage, ModalController, NavController, NavParams, ToastController} from 'ionic-angular';
+import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import {FormControl, FormGroup, NgForm, Validators} from "@angular/forms";
 import {Synagogue} from "../../common/models/map-objects/synagogue";
 import {ImagePicker, ImagePickerOptions, OutputType} from "@ionic-native/image-picker";
@@ -32,7 +32,6 @@ export class AddSynagoguePage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private toastCtrl: ToastController,
               private imagePicker: ImagePicker,
               private mapObjectProvider: EventBasedMapObjectProvider,
               private modalCtrl: ModalController) {
@@ -46,13 +45,7 @@ export class AddSynagoguePage {
   }
 
   async submitNewSynagogue(){
-    try{
-      const res  = await this.mapObjectProvider.create(this.synagogue).toPromise();
-      this.toastCtrl.create({message: 'בית הכנסת נוסף בהצלחה'});
-    }
-    catch (e) {
-      this.toastCtrl.create({message: 'אירעה שגיאה.. בית הכנסת לא נוצר', duration: 3000}).present();
-    }
+    await this.mapObjectProvider.create(this.synagogue);
   }
 
   async pickImage() {
@@ -73,7 +66,6 @@ export class AddSynagoguePage {
     modal.onDidDismiss((data: Event) => {
       if (data == null)
         return;
-      this.eventsDictionary[data.type].push(data);
       this.synagogue.events.push(data);
     });
     modal.present();
