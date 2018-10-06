@@ -5,6 +5,7 @@ import {EventBasedMapObjectProvider} from "../../providers/server-providers/even
 import {NavController} from "ionic-angular";
 import {SynagogueDetailsPage} from "../../pages/synagogue-details/synagogue-details";
 import {ReplaySubject} from "rxjs/ReplaySubject";
+import {OpenNativeSettings} from "@ionic-native/open-native-settings";
 
 @Component({
   selector: 'fk-google-map',
@@ -13,6 +14,8 @@ import {ReplaySubject} from "rxjs/ReplaySubject";
 export class GoogleMapComponent implements AfterViewInit, OnDestroy{
 
   private static mapCounter = 0;
+
+  private hasError = false;
 
   public readonly canvasElementId: string;
   public map: GoogleMap;
@@ -23,8 +26,7 @@ export class GoogleMapComponent implements AfterViewInit, OnDestroy{
   onMapCreated: ReplaySubject<GoogleMap>;
 
   constructor(private mapProvider: GoogleMapProvider,
-              private navCtrl: NavController,
-              private mapObjectProvider: EventBasedMapObjectProvider) {
+              private openNativeSettings: OpenNativeSettings) {
     console.log('Hello GoogleMapComponent Component');
     GoogleMapComponent.mapCounter++;
     this.canvasElementId = `google-map-${GoogleMapComponent.mapCounter}`;
@@ -32,11 +34,7 @@ export class GoogleMapComponent implements AfterViewInit, OnDestroy{
   }
 
   async ngAfterViewInit(){
-    let mapElement = document.getElementById(this.canvasElementId) as HTMLDivElement;
-    this.map = await this.mapProvider.createMap(mapElement, this.mapOptions);
-    this.map.enableLocationTracking();
-    this.onMapCreated.next(this.map);
-    // this.fetchAllMapObjectsAround();
+    this.createMap();
   }
 
   ngOnDestroy(): void {
@@ -47,19 +45,25 @@ export class GoogleMapComponent implements AfterViewInit, OnDestroy{
     this.map = null;
   }
 
-  // private fetchAllMapObjectsAround(){
-  //   if (!this.map.map.getCenter())
-  //     return;
-  //   this.mapObjectProvider.getAllInRadius(this.map.map.getCenter().toJSON(),10).subscribe(res => {
-  //     res.forEach(async mo => {
-  //       let res = await this.map.drawEventBasedMapObject(mo);
-  //       res.infoWindow.onClick.subscribe(async v => {
-  //         await this.navCtrl.push(SynagogueDetailsPage, {mapObject: v.mapObject});
-  //         res.infoWindow.close();
-  //       })
-  //     });
-  //   }, err => {
-  //     console.log(err);
-  //   });
-  // }
+  async createMap(){
+    try{
+      let mapElement = document.getElementById(this.canvasElementId) as HTMLDivElement;
+      this.map = await this.mapProvider.createMap(mapElement, this.mapOptions);
+      this.map.enableLocationTracking();
+      this.onMapCreated.next(this.map);
+    }
+    catch (e) {
+      console.error(e);
+      this.hasError = true;
+    }
+  }
+
+  tryGetCurrentLocationAgain() {
+    this.hasError = false;
+    this.createMap();
+  }
+
+  goToLocationSettings(){
+    this.openNativeSettings.open('location');
+  }
 }

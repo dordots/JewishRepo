@@ -52,10 +52,11 @@ export class EventBasedMapObjectProvider extends AbstractServerProvider{
   }
 
   getByQuery(searchEvent: SearchEvent) {
-    return of(new Array(5).fill(0).map(v => FakeMapObject()).map(v => {
-      const model = new EventBasedMapObject().fromServerModel(v);
-      model.latLng = FakeLatLngAround(searchEvent.mapObject.latLng);
-      return model;
-    }));
+    return this.http.post(`${this.baseUrl}/search`,searchEvent.toServerModel());
+    // return of(new Array(5).fill(0).map(v => FakeMapObject()).map(v => {
+    //   const model = new EventBasedMapObject().fromServerModel(v);
+    //   model.latLng = FakeLatLngAround(searchEvent.mapObject.latLng);
+    //   return model;
+    // }));
   }
 }

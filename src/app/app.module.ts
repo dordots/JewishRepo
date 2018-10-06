@@ -24,6 +24,7 @@ import { LocationTrackingProvider } from '../providers/location-tracking/locatio
 import {AddSynagoguePageModule} from "../pages/add-synagogue/add-synagogue.module";
 import {AddSynagoguePage} from "../pages/add-synagogue/add-synagogue";
 import {DirectivesModule} from "../directives/directives.module";
+import {OpenNativeSettings} from "@ionic-native/open-native-settings";
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import {DirectivesModule} from "../directives/directives.module";
   providers: [
     StatusBar,
     SplashScreen,
+    OpenNativeSettings,
     Geolocation,
     ImagePicker,
     {provide: ErrorHandler, useClass: IonicErrorHandler},

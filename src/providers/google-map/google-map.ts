@@ -8,6 +8,7 @@ import {EventBasedMapObject} from "../../common/models/map-objects/map-objects";
 import {AppAssetsProvider} from "../app-assets/app-assets";
 import {InfoWindow} from "./info-window";
 import {LocationTrackingProvider} from "../location-tracking/location-tracking";
+import LatLngLiteral = google.maps.LatLngLiteral;
 
 export class GoogleMap {
   private markers: google.maps.Marker[];
@@ -31,10 +32,6 @@ export class GoogleMap {
     this.markers.forEach(m => m.setMap(null));
     this.circles.forEach(c => c.setMap(null));
     this.infoWindows.forEach(iw => iw.dispose());
-    this.circles = null;
-    this.markers = null;
-    this.infoWindows = null;
-    this.map = null;
   }
 
   enableLocationTracking() {
@@ -55,7 +52,8 @@ export class GoogleMap {
     if (this.locationTrackingSubscription != null && !this.locationTrackingSubscription.closed)
       return;
     this.locationTrackingSubscription = this.locationTracking.onLocationChanged.subscribe(geoposition => {
-      this.changeCircleAndMarkerCenter(geoposition);
+      const latLng = this.locationTracking.geopositionToLatLngLiteral(geoposition);
+      this.changeCircleAndMarkerCenter(latLng);
     });
   }
 
@@ -83,20 +81,6 @@ export class GoogleMap {
     this.infoWindows.push(infoWindow);
     return {marker, infoWindow};
   }
-
-  // async drawSimpleMapObjects(mapObjects: ApplicationMapObject[]): Promise<google.maps.Marker[]> {
-  //   let markerParams = await Promise.all(mapObjects.map(async obj => ({
-  //     map: this.map,
-  //     latLng: obj.latLng,
-  //     options: {
-  //       icon: {
-  //         url: await this.appAssetsProvider.getIconPath(obj.type),
-  //         scaledSize: new google.maps.Size(30, 30)
-  //       } as google.maps.Icon
-  //     },
-  //   })));
-  //   return markerParams.map(params => this.createMarkerAt(params.latLng, params.options));
-  // }
 
   private initCircle() {
     this.locationCircle = new google.maps.Circle({
@@ -130,16 +114,9 @@ export class GoogleMap {
     });
   }
 
-  private changeCircleAndMarkerCenter(geoposition: Geoposition) {
-    const center = this.coordToLatLngLiteral(geoposition);
-    this.locationMarker.setPosition(center);
-    this.locationCircle.setCenter(center);
-  }
-
-  coordToLatLngLiteral(geoposition: Geoposition) {
-    return {
-      lat: geoposition.coords.latitude,
-      lng: geoposition.coords.longitude
-    }
+  private changeCircleAndMarkerCenter(latLng: LatLngLiteral) {
+    this.locationMarker.setPosition(latLng);
+    this.locationCircle.setCenter(latLng);
+    this.map.setCenter(latLng);
   }
 }

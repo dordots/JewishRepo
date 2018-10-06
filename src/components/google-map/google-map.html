@@ -1,6 +1,12 @@
-<!--<div id="map-loading" *ngIf="!map">-->
-  <!---->
-<!--</div>-->
+<div id="map-loading" *ngIf="!map">
+  <div id="loading-text" *ngIf="!hasError">טוען מפה...</div>
+  <div id="error" *ngIf="hasError">
+    <div>לא ניתן למצוא את מיקומך</div>
+    <div id="help">בדוק שאכן שירותי המיקום מופעלים. בנוסף וודא שישנה הרשאת גישה למיקום המכשיר עבור אפליקציה זו</div>
+    <button ion-button (click)="tryGetCurrentLocationAgain()">נסה שוב</button>
+    <button ion-button (click)="goToLocationSettings()">הגדרות שירותי מיקום</button>
+  </div>
+</div>
 <div [attr.id]="canvasElementId" style="width: 100%;height: 100%;"></div>
 <fk-locate-button class="fab-size"
                   [map]="map" *ngIf="map">

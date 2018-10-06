@@ -80,6 +80,10 @@
   version "4.11.0"
   resolved "https://registry.yarnpkg.com/@ionic-native/image-picker/-/image-picker-4.11.0.tgz#3784310474401b113b83644dd9c1b666b5f77d5e"
 
+"@ionic-native/open-native-settings@^4.15.0":
+  version "4.15.0"
+  resolved "https://registry.yarnpkg.com/@ionic-native/open-native-settings/-/open-native-settings-4.15.0.tgz#a83c7c5e60441c0c880605dc5f88b816fbf3375c"
+
 "@ionic-native/splash-screen@~4.11.0":
   version "4.11.0"
   resolved "https://registry.yarnpkg.com/@ionic-native/splash-screen/-/splash-screen-4.11.0.tgz#4d2bc6e4b8bb753d324347a127280152151e6263"
@@ -1002,6 +1006,10 @@ cordova-common@2.2.5:
     shelljs "^0.5.3"
     underscore "^1.8.3"
     unorm "^1.3.3"
+
+cordova-open-native-settings@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/cordova-open-native-settings/-/cordova-open-native-settings-1.5.1.tgz#63b3f08f995317a8304ab5b156e3a7a4d944088f"
 
 cordova-plugin-device@^2.0.2:
   version "2.0.2"

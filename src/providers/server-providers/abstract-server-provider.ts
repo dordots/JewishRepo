@@ -6,14 +6,6 @@ export abstract class AbstractServerProvider {
 
   protected constructor(protected appConfig: AppConfigProvider){}
 
-  protected makeRoute(segments: string[]){
-    return segments.join('/');
-  }
-
-  protected async makeRelativeRoute(segments: string[]){
-    return (await this.config()).serverBaseUrl + '/' + this.makeRoute(segments);
-  }
-
   protected async config(){
     return this.appConfig.config.toPromise();
   }
