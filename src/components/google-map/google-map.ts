@@ -1,11 +1,10 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
 import {GoogleMapProvider} from "../../providers/google-map/google-map-provider";
 import {GoogleMap} from "../../providers/google-map/google-map";
-import {EventBasedMapObjectProvider} from "../../providers/server-providers/event-based-map-object.provider";
-import {NavController} from "ionic-angular";
-import {SynagogueDetailsPage} from "../../pages/synagogue-details/synagogue-details";
 import {ReplaySubject} from "rxjs/ReplaySubject";
 import {OpenNativeSettings} from "@ionic-native/open-native-settings";
+import MapOptions = google.maps.MapOptions;
+import {MapObject} from "../../common/models/map-objects/map-objects";
 
 @Component({
   selector: 'fk-google-map',
@@ -24,17 +23,20 @@ export class GoogleMapComponent implements AfterViewInit, OnDestroy{
 
   @Output()
   onMapCreated: ReplaySubject<GoogleMap>;
+  manualCenter: MapObject;
 
   constructor(private mapProvider: GoogleMapProvider,
+              private cdRef: ChangeDetectorRef,
               private openNativeSettings: OpenNativeSettings) {
     console.log('Hello GoogleMapComponent Component');
     GoogleMapComponent.mapCounter++;
     this.canvasElementId = `google-map-${GoogleMapComponent.mapCounter}`;
     this.onMapCreated = new ReplaySubject<GoogleMap>(1);
+    this.manualCenter = new MapObject();
   }
 
   async ngAfterViewInit(){
-    this.createMap();
+    this.createMap(true);
   }
 
   ngOnDestroy(): void {
@@ -45,11 +47,17 @@ export class GoogleMapComponent implements AfterViewInit, OnDestroy{
     this.map = null;
   }
 
-  async createMap(){
+  ngAfterViewChecked()
+  {
+    this.cdRef.detectChanges();
+  }
+
+  async createMap(withLocationTracking: boolean, mapOptions: MapOptions = this.mapOptions){
     try{
       let mapElement = document.getElementById(this.canvasElementId) as HTMLDivElement;
-      this.map = await this.mapProvider.createMap(mapElement, this.mapOptions);
-      this.map.enableLocationTracking();
+      this.map = await this.mapProvider.createMap(mapElement, mapOptions);
+      if (withLocationTracking)
+        this.map.enableLocationTracking();
       this.onMapCreated.next(this.map);
     }
     catch (e) {
@@ -60,10 +68,18 @@ export class GoogleMapComponent implements AfterViewInit, OnDestroy{
 
   tryGetCurrentLocationAgain() {
     this.hasError = false;
-    this.createMap();
+    this.createMap(true);
   }
 
   goToLocationSettings(){
     this.openNativeSettings.open('location');
+  }
+
+  mapWithManualLocation() {
+    this.createMap(false, {center: this.manualCenter.latLng})
+  }
+
+  onPlaceSelected(mapObject: MapObject) {
+    this.manualCenter = mapObject;
   }
 }

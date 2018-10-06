@@ -9,6 +9,7 @@ import {GoogleMap} from "./google-map";
 import {fromPromise} from "rxjs/observable/fromPromise";
 import "rxjs/add/operator/retry";
 import {LocationTrackingProvider} from "../location-tracking/location-tracking";
+import {merge} from "lodash-es";
 
 @Injectable()
 export class GoogleMapProvider {
@@ -42,11 +43,13 @@ export class GoogleMapProvider {
 
   async createMap(mapDivElement: HTMLDivElement, mapOptions?: MapOptions): Promise<GoogleMap> {
     await this.loadAPI();
-    mapOptions = mapOptions || this.defaultMapOptions;
-    const position = await this.locationTracking.getCurrentLocation({timeout: 3000});
-    mapOptions.center = this.locationTracking.geopositionToLatLngLiteral(position);
+    mapOptions = merge(mapOptions , this.defaultMapOptions);
+
+    mapOptions.center = await this.getMapCenterOrCurrentLocation(mapOptions);
+
     const googleMap = new google.maps.Map(mapDivElement,mapOptions || this.defaultMapOptions);
     let mapManager = new GoogleMap(googleMap,this.locationTracking,this.appAssets);
+
     return mapManager;
   }
 
@@ -61,5 +64,14 @@ export class GoogleMapProvider {
         }
       });
     });
+  }
+
+  private async getMapCenterOrCurrentLocation(mapOptions?: MapOptions){
+    if (mapOptions.center){
+      return mapOptions.center;
+    }
+
+    const position = await this.locationTracking.getCurrentLocation({timeout: 3000});
+    return this.locationTracking.geopositionToLatLngLiteral(position);
   }
 }
