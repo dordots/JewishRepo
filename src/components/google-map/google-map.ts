@@ -81,5 +81,6 @@ export class GoogleMapComponent implements AfterViewInit, OnDestroy{
 
   onPlaceSelected(mapObject: MapObject) {
     this.manualCenter = mapObject;
+    this.cdRef.detectChanges();
   }
 }

@@ -5,17 +5,18 @@
     <div id="description">בדוק שאכן שירותי המיקום מופעלים.<br> בנוסף וודא שישנה הרשאת גישה למיקום המכשיר עבור אפליקציה זו</div>
     <button ion-button (click)="tryGetCurrentLocationAgain()">נסה שוב</button>
     <button ion-button (click)="goToLocationSettings()">הגדרות שירותי מיקום</button>
-    <br>
-    <ion-item>
+    <div id="manual-locate">
       <div margin-top>או לחלופין מקם ידנית</div>
-      <ion-input #placeAutoCompleteInput fkPlaceAutoComplete (placeSelected)="onPlaceSelected($event)"
-                 placeholder="הזן כתובת..."
-                 clearInput
-                 dir="rtl"
-                 [inputElement]="placeAutoCompleteInput._native?.nativeElement"></ion-input>
-    </ion-item>
-    <button ion-button color="secondary" (click)="mapWithManualLocation()"
-            [disabled]="!manualCenter.isFullyValid()">מקם ידנית</button>
+      <ion-item>
+        <ion-input #placeAutoCompleteInput fkPlaceAutoComplete (placeSelected)="onPlaceSelected($event)"
+                   placeholder="הזן כתובת..."
+                   clearInput
+                   dir="rtl"
+                   [inputElement]="placeAutoCompleteInput._native?.nativeElement"></ion-input>
+      </ion-item>
+      <button ion-button color="secondary" (click)="mapWithManualLocation()" margin-top
+              [disabled]="!manualCenter.isFullyValid()">מקם ידנית</button>
+    </div>
 
   </div>
 </div>
