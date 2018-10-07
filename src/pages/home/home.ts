@@ -8,7 +8,6 @@ import {EventBasedMapObject} from "../../common/models/map-objects/map-objects";
 import {LocationTrackingProvider} from "../../providers/location-tracking/location-tracking";
 import {Subject} from "rxjs/Subject";
 import {SearchResultsViewComponent} from "../../components/search-results-view/search-results-view";
-import {Geoposition} from "@ionic-native/geolocation";
 import LatLngLiteral = google.maps.LatLngLiteral;
 
 const EarthRadiusInKm = 6378

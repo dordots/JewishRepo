@@ -1,12 +1,10 @@
 import {Injectable} from '@angular/core';
-import {AppAssetsProvider} from "../app-assets/app-assets";
 import GoogleMapsLoader = require("google-maps");
 import MapOptions = google.maps.MapOptions;
 import LatLngLiteral = google.maps.LatLngLiteral;
 import GeocoderResult = google.maps.GeocoderResult;
 import "rxjs/add/operator/filter";
 import {GoogleMap} from "./google-map";
-import {fromPromise} from "rxjs/observable/fromPromise";
 import "rxjs/add/operator/retry";
 import {LocationTrackingProvider} from "../location-tracking/location-tracking";
 import {merge} from "lodash-es";
@@ -15,8 +13,7 @@ import {merge} from "lodash-es";
 export class GoogleMapProvider {
   public isApiLoaded: boolean;
 
-  constructor(private locationTracking: LocationTrackingProvider,
-              private appAssets: AppAssetsProvider) {
+  constructor(private locationTracking: LocationTrackingProvider) {
     console.log('Hello GoogleMapProvider Provider');
   }
 
@@ -48,7 +45,7 @@ export class GoogleMapProvider {
     mapOptions.center = await this.getMapCenterOrCurrentLocation(mapOptions);
 
     const googleMap = new google.maps.Map(mapDivElement,mapOptions || this.defaultMapOptions);
-    let mapManager = new GoogleMap(googleMap,this.locationTracking,this.appAssets);
+    let mapManager = new GoogleMap(googleMap,this.locationTracking);
 
     return mapManager;
   }

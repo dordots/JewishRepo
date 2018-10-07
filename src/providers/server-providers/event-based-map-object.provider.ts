@@ -1,10 +1,8 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {AppConfigProvider} from "../app-config/app-config";
 import {AbstractServerProvider} from "./abstract-server-provider";
 import {catchError, retry} from "rxjs/operators";
 import "rxjs/add/operator/map";
-import {ServerModel} from "../../common/models/common/server-model";
 import {EventBasedMapObject} from "../../common/models/map-objects/map-objects";
 import {Observable} from "rxjs/Observable";
 import LatLngLiteral = google.maps.LatLngLiteral;
@@ -18,8 +16,8 @@ export class EventBasedMapObjectProvider extends AbstractServerProvider{
 
   readonly baseUrl = `${Config.serverBaseUrl}/synagogue`;
 
-  constructor(private http: HttpClient, appConfig: AppConfigProvider) {
-    super(appConfig);
+  constructor(private http: HttpClient) {
+    super();
     console.log('Hello EventBasedMapObjectProvider Provider');
   }
 

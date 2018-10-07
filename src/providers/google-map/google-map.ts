@@ -1,14 +1,13 @@
 import {merge} from "lodash-es";
-import {Geoposition} from "@ionic-native/geolocation";
 import {Subscription} from "rxjs/Subscription";
 import "rxjs/add/observable/interval";
 import "rxjs/add/operator/mergeMap";
 import "rxjs/add/operator/take";
 import {EventBasedMapObject} from "../../common/models/map-objects/map-objects";
-import {AppAssetsProvider} from "../app-assets/app-assets";
 import {InfoWindow} from "./info-window";
 import {LocationTrackingProvider} from "../location-tracking/location-tracking";
 import LatLngLiteral = google.maps.LatLngLiteral;
+import {Config} from "@app/env";
 
 export class GoogleMap {
   private markers: google.maps.Marker[];
@@ -19,8 +18,7 @@ export class GoogleMap {
   private locationTrackingSubscription: Subscription;
 
   constructor(public map: google.maps.Map,
-              private locationTracking: LocationTrackingProvider,
-              private appAssetsProvider: AppAssetsProvider) {
+              private locationTracking: LocationTrackingProvider) {
     this.markers = [];
     this.circles = [];
     this.infoWindows = [];
@@ -65,14 +63,14 @@ export class GoogleMap {
   }
 
   async drawEventBasedMapObject(mapObject: EventBasedMapObject): Promise<{marker: google.maps.Marker, infoWindow: InfoWindow}> {
-    let iconUrl = await this.appAssetsProvider.getIconPath(mapObject.type);
+    let iconUrl = `${Config.iconsBasePath}/${mapObject.type}.png`;
     let markerParams = {
       map: this.map,
       latLng: mapObject.latLng,
       options: {
         icon: {
           url: iconUrl,
-          scaledSize: new google.maps.Size(30, 30)
+          scaledSize: new google.maps.Size(64, 64)
         } as google.maps.Icon
       }
     };

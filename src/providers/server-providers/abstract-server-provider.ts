@@ -1,14 +1,9 @@
 import {HttpErrorResponse} from "@angular/common/http";
 import {ErrorObservable} from "rxjs/observable/ErrorObservable";
-import {AppConfigProvider} from "../app-config/app-config";
 
 export abstract class AbstractServerProvider {
 
-  protected constructor(protected appConfig: AppConfigProvider){}
-
-  protected async config(){
-    return this.appConfig.config.toPromise();
-  }
+  protected constructor(){}
 
   protected handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
