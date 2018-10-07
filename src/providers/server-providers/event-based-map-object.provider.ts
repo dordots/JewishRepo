@@ -23,24 +23,14 @@ export class EventBasedMapObjectProvider extends AbstractServerProvider{
     console.log('Hello EventBasedMapObjectProvider Provider');
   }
 
-  async create<T extends ServerModel&EventBasedMapObject>(mapObject: T, retryCount=1){
-    let config = await this.config();
-    return this.http.post<T>(this.baseUrl, mapObject.toServerModel())
-                    .pipe(retry(retryCount), catchError(this.handleError)).toPromise();
+  create(mapObject: EventBasedMapObject, retryCount=1){
+    return this.http.post<EventBasedMapObject>(this.baseUrl, mapObject.toServerModel())
+                    .pipe(retry(retryCount), catchError(this.handleError));
   }
 
-  async getById<T extends ServerModel&EventBasedMapObject>(id: any, type: {new(): T;}, retryCount=1): Promise<T> {
-    return this.http.get<T>(`${this.baseUrl}/${id}`)
-                    .pipe(retry(retryCount), catchError(this.handleError))
-                    .map(value => {
-                      return new type().fromServerModel(value)
-                    }).toPromise();
-  }
-
-  async update<T extends ServerModel&EventBasedMapObject>(model: T, retryCount=1) {
-    return this.http.put<T>(`${this.baseUrl}/${model._id}`, model.toServerModel())
-                    .pipe(retry(retryCount), catchError(this.handleError))
-                    .toPromise();
+  update(model: EventBasedMapObject, retryCount=1) {
+    return this.http.put(`${this.baseUrl}/${model._id}`, model.toServerModel())
+                    .pipe(retry(retryCount), catchError(this.handleError));
   }
 
   getAllInRadius(latLng: LatLngLiteral, radius: number): Observable<EventBasedMapObject[]> {
@@ -53,10 +43,5 @@ export class EventBasedMapObjectProvider extends AbstractServerProvider{
 
   getByQuery(searchEvent: SearchEvent) {
     return this.http.post(`${this.baseUrl}/search`,searchEvent.toServerModel());
-    // return of(new Array(5).fill(0).map(v => FakeMapObject()).map(v => {
-    //   const model = new EventBasedMapObject().fromServerModel(v);
-    //   model.latLng = FakeLatLngAround(searchEvent.mapObject.latLng);
-    //   return model;
-    // }));
   }
 }
