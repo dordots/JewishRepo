@@ -7,7 +7,7 @@ import { SynagogueDetailsPage } from './synagogue-details';
     SynagogueDetailsPage,
   ],
   imports: [
-    IonicPageModule.forChild(SynagogueDetailsPage),
+    IonicPageModule.forChild(SynagogueDetailsPage)
   ],
 })
 export class SynagogueDetailsPageModule {}

@@ -36,7 +36,9 @@
     <ion-row>
       <ion-col col-2 ion-row align-items-center><ion-icon name="call"></ion-icon></ion-col>
       <ion-col col-7 ion-row align-items-center><div class="phone-number-to-call">{{synagogue.phone[0]}}</div></ion-col>
-      <ion-col col-3 ion-row align-items-center end><button class="call-now-button">התקשר עכשיו</button></ion-col>
+      <ion-col col-3 ion-row align-items-center end>
+        <button class="call-now-button" (click)="goToDial()" [disabled]="!isCallSupported && synagogue.phone[0]">התקשר עכשיו</button>
+      </ion-col>
     </ion-row>
   </ion-grid>
   <hr>
