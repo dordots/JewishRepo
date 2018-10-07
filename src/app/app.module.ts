@@ -39,7 +39,7 @@ import {OpenNativeSettings} from "@ionic-native/open-native-settings";
     AddSynagoguePageModule,
     DirectivesModule,
     SearchEventPageModule,
-    IonicModule.forRoot(MyApp, {scrollPadding: false}),
+    IonicModule.forRoot(MyApp, {scrollPadding: false, scrollAssist: false, autoFocusAssist: false}),
   ],
   bootstrap: [IonicApp],
   entryComponents: [

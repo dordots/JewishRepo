@@ -7,8 +7,10 @@
   "scripts": {
     "ionic:serve": "ionic-app-scripts serve",
     "mock:jsonserver": "json-server --id=_id mocks/json-server-db.js",
-    "android": "ionic cordova run android --debug",
-    "android:livereload": "ionic cordova run android --livereload",
+    "android-debug": "ionic cordova run android --debug",
+    "android-prod": "ionic cordova run android --prod",
+    "android:livereload-debug": "ionic cordova run android --debug --livereload --address=localhost",
+    "android:livereload-prod": "ionic cordova run android --prod --livereload --address=localhost",
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",
     "lint": "ionic-app-scripts lint"

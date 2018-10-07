@@ -1,3 +1,6 @@
-<div *ngFor="let mapObject of mapObjects | async">
-  <fk-map-object-card [mapObject]="mapObject"></fk-map-object-card>
-</div>
+<ion-content>
+  <div *ngFor="let mapObject of mapObjects | async">
+    <fk-map-object-card [mapObject]="mapObject"></fk-map-object-card>
+  </div>
+</ion-content>
+

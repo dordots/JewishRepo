@@ -12,13 +12,22 @@ fk-google-map{
     text-align: center;
     align-items: center;
     direction: rtl;
-    font-size: 5rem;
+    #loading-text{
+      font-size: 2.5rem;
+    }
     #error{
       #help{
+        font-size: 3rem;
+      }
+      #description{
         margin: auto;
         width: 70%;
-        font-size: 3.5rem;
+        font-size: 1.5rem;
       }
+    }
+    #manual-locate{
+      width: 80%;
+      margin: auto;
     }
   }
 
