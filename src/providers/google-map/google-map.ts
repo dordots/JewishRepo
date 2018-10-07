@@ -63,7 +63,7 @@ export class GoogleMap {
   }
 
   async drawEventBasedMapObject(mapObject: EventBasedMapObject): Promise<{marker: google.maps.Marker, infoWindow: InfoWindow}> {
-    let iconUrl = `${Config.iconsBasePath}/${mapObject.type}.png`;
+    let iconUrl = `${Config.iconsBasePath}/${mapObject.type}.svg`;
     let markerParams = {
       map: this.map,
       latLng: mapObject.latLng,
