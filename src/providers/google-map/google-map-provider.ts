@@ -68,7 +68,7 @@ export class GoogleMapProvider {
       return mapOptions.center;
     }
 
-    const position = await this.locationTracking.getCurrentLocation({timeout: 3000});
+    const position = await this.locationTracking.getCurrentLocation({timeout: 3000, enableHighAccuracy: true});
     return this.locationTracking.geopositionToLatLngLiteral(position);
   }
 }

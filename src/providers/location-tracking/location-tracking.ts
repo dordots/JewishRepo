@@ -47,7 +47,7 @@ export class LocationTrackingProvider {
 
   private startWatchLocation() {
     this.watchSubscription =
-      this.geolocation.watchPosition({timeout: 5000})
+      this.geolocation.watchPosition({timeout: 5000, enableHighAccuracy: true})
         .filter((p) => p.coords !== undefined)
         .subscribe((pos) => {
           this.lastKnownPosition = pos;

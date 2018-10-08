@@ -34,8 +34,13 @@ export class SynagogueDetailsPage {
     this.prayers = this.getPrayers();
     this.lessons = this.getLessons() as LessonEvent[];
     this.soonestPrayer = this.synagogue.getSoonestEvent(EventTypes.Prayer);
-    this.dial.isCallSupported().then(v => this.isCallSupported = true,
-      r => this.isCallSupported = false);
+    this.dial.isCallSupported().then(v => {
+      this.isCallSupported = true
+      this.toastCtrl.create({message: 'קיימת גם קיימת', duration: 3000}).present();
+      },r => {
+      this.isCallSupported = false
+      this.toastCtrl.create({message: 'תכונה זו לא קיימת במכשירך' + r, duration: 3000}).present();
+    });
   }
 
   ionViewDidLoad() {
