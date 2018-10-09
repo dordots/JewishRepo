@@ -71,7 +71,7 @@ export class LocationPickerComponent implements OnDestroy, AfterViewInit{
     if (this.marker)
       this.marker.setPosition(newPosition);
     else
-      this.marker = this.mapComponent.map.createMarkerAt(newPosition);
+      this.marker = this.mapComponent.map.createMarkerAt({position: newPosition});
   }
 
   private disappearAutoCompleteList() {

@@ -8,6 +8,8 @@ import {InfoWindow} from "./info-window";
 import {LocationTrackingProvider} from "../location-tracking/location-tracking";
 import LatLngLiteral = google.maps.LatLngLiteral;
 import {Config} from "@app/env";
+import {ToastController} from "ionic-angular";
+import MarkerOptions = google.maps.MarkerOptions;
 
 export class GoogleMap {
   private markers: google.maps.Marker[];
@@ -16,8 +18,10 @@ export class GoogleMap {
   private locationMarker: google.maps.Marker;
   private locationCircle: google.maps.Circle;
   private locationTrackingSubscription: Subscription;
+  private prevLocation: LatLngLiteral;
 
   constructor(public map: google.maps.Map,
+              private toastCtrl: ToastController,
               private locationTracking: LocationTrackingProvider) {
     this.markers = [];
     this.circles = [];
@@ -34,7 +38,7 @@ export class GoogleMap {
 
   enableLocationTracking() {
     this.initMarker();
-    this.initCircle();
+    // this.initCircle();
     this.startWatchingUserPosition();
   }
 
@@ -43,38 +47,51 @@ export class GoogleMap {
       return;
     this.locationTrackingSubscription.unsubscribe();
     this.locationMarker.setMap(null);
-    this.locationCircle.setMap(null);
+    // this.locationCircle.setMap(null);
   }
 
   private startWatchingUserPosition() {
     if (this.locationTrackingSubscription != null && !this.locationTrackingSubscription.closed)
       return;
+    const toast = this.toastCtrl.create();
+    toast.present();
     this.locationTrackingSubscription = this.locationTracking.onLocationChanged.subscribe(geoposition => {
       const latLng = this.locationTracking.geopositionToLatLngLiteral(geoposition);
-      this.changeCircleAndMarkerCenter(latLng);
+      if (!this.prevLocation){
+        this.prevLocation = latLng;
+      } else{
+        if (Math.abs(this.prevLocation.lat - latLng.lat) < 0.00001 ||
+            Math.abs(this.prevLocation.lat - latLng.lat) < 0.000001)
+          return;
+
+        this.prevLocation = latLng;
+        this.changeCircleAndMarkerCenter(latLng);
+        toast.setMessage(JSON.stringify(latLng))
+      }
+      // To set map center to be as the user location uncomment the line below
+      // this.map.setCenter(latLng);
     });
   }
 
-  createMarkerAt(latLng: google.maps.LatLngLiteral, options: Partial<google.maps.MarkerOptions> = {}) {
-    let markerOptions = merge({position: latLng, map: this.map}, options);
-    let marker = new google.maps.Marker(markerOptions);
+  createMarkerAt(options: google.maps.MarkerOptions) {
+    options = merge({map: this.map}, options);
+    let marker = new google.maps.Marker(options);
     this.markers.push(marker);
     return marker;
   }
 
   async drawEventBasedMapObject(mapObject: EventBasedMapObject): Promise<{marker: google.maps.Marker, infoWindow: InfoWindow}> {
     let iconUrl = `${Config.iconsBasePath}/${mapObject.type}.svg`;
-    let markerParams = {
+    let markerParams: MarkerOptions = {
       map: this.map,
-      latLng: mapObject.latLng,
-      options: {
-        icon: {
-          url: iconUrl,
-          scaledSize: new google.maps.Size(64, 64)
-        } as google.maps.Icon
-      }
+      position: mapObject.latLng,
+      zIndex: 1,
+      icon: {
+        url: iconUrl,
+        scaledSize: new google.maps.Size(64, 64)
+      } as google.maps.Icon
     };
-    let marker = this.createMarkerAt(markerParams.latLng, markerParams.options);
+    let marker = this.createMarkerAt(markerParams);
     let infoWindow = new InfoWindow(mapObject, marker)
     this.infoWindows.push(infoWindow);
     return {marker, infoWindow};
@@ -82,6 +99,7 @@ export class GoogleMap {
 
   private initCircle() {
     this.locationCircle = new google.maps.Circle({
+      zIndex: 2,
       clickable: false,
       strokeColor: "#3a84df",
       strokeOpacity: .8,
@@ -98,8 +116,10 @@ export class GoogleMap {
   private initMarker() {
     this.locationMarker = new google.maps.Marker({
       clickable: false,
+      optimized: false,
       position: this.map.getCenter(),
       map: this.map,
+      zIndex: 2,
       icon: {
         path: google.maps.SymbolPath.CIRCLE,
         scale: 9,
@@ -114,7 +134,6 @@ export class GoogleMap {
 
   private changeCircleAndMarkerCenter(latLng: LatLngLiteral) {
     this.locationMarker.setPosition(latLng);
-    this.locationCircle.setCenter(latLng);
-    this.map.setCenter(latLng);
+    // this.locationCircle.setCenter(latLng);
   }
 }

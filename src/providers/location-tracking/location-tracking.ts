@@ -5,6 +5,7 @@ import LatLngLiteral = google.maps.LatLngLiteral;
 import {Observable} from "rxjs/Observable";
 import {fromPromise} from "rxjs/observable/fromPromise";
 import "rxjs/add/operator/finally";
+import {Config} from "@app/env";
 
 
 @Injectable()
@@ -47,7 +48,7 @@ export class LocationTrackingProvider {
 
   private startWatchLocation() {
     this.watchSubscription =
-      this.geolocation.watchPosition({timeout: 5000, enableHighAccuracy: true})
+      this.geolocation.watchPosition({timeout: Config.watchLocationIntervalInMs, enableHighAccuracy: true})
         .filter((p) => p.coords !== undefined)
         .subscribe((pos) => {
           this.lastKnownPosition = pos;

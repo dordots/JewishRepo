@@ -1,8 +1,8 @@
 import {Component, Input} from '@angular/core';
-import {GoogleMapProvider} from "../../providers/google-map/google-map-provider";
 import {GoogleMap} from "../../providers/google-map/google-map";
 import {LocationTrackingProvider} from "../../providers/location-tracking/location-tracking";
 import {ToastController} from "ionic-angular";
+import {Config} from '@app/env';
 
 @Component({
   selector: 'fk-locate-button',
@@ -20,7 +20,7 @@ export class LocateButtonComponent {
 
   async onButtonClicked() {
     try{
-      let position = await this.locationTracking.getCurrentLocation({timeout: 3000, enableHighAccuracy: true});
+      let position = await this.locationTracking.getCurrentLocation({timeout: Config.locateMeTimeoutInMs, enableHighAccuracy: true});
       this.map.map.panTo({
         lat: position.coords.latitude,
         lng: position.coords.longitude

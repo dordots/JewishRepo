@@ -128,7 +128,7 @@ export class PlaceAutoComplete implements AfterContentInit, OnDestroy {
       this.marker.setMap(null);
 
     if (this.toMarkerSelectedPlace)
-      this.marker = this.map.createMarkerAt(place.geometry.location.toJSON());
+      this.marker = this.map.createMarkerAt({position: place.geometry.location.toJSON()});
 
     // If the place has a geometry, then present it on a map.
     if (place.geometry.viewport) {
