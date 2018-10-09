@@ -53,8 +53,6 @@ export class GoogleMap {
   private startWatchingUserPosition() {
     if (this.locationTrackingSubscription != null && !this.locationTrackingSubscription.closed)
       return;
-    const toast = this.toastCtrl.create();
-    toast.present();
     this.locationTrackingSubscription = this.locationTracking.onLocationChanged.subscribe(geoposition => {
       const latLng = this.locationTracking.geopositionToLatLngLiteral(geoposition);
       if (!this.prevLocation){
@@ -66,7 +64,6 @@ export class GoogleMap {
 
         this.prevLocation = latLng;
         this.changeCircleAndMarkerCenter(latLng);
-        toast.setMessage(JSON.stringify(latLng))
       }
       // To set map center to be as the user location uncomment the line below
       // this.map.setCenter(latLng);
