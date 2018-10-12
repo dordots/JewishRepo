@@ -40,6 +40,7 @@ export class EventBasedMapObject extends MapObject{
   userFriendlyAddress: string;
   events: Array<Event>;
   relativeDistanceInMeter: Promise<number>;
+  // relativeDistanceInMeter: number;
   dateMembers = ['lastUpdatedAt'];
 
   isEventExist(event: Event){

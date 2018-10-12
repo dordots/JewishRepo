@@ -31,8 +31,6 @@ export class SynagogueDetailsPage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private dial: CallNumber,
-              private googleMapProvider: GoogleMapProvider,
-              private locationTracking: LocationTrackingProvider,
               private toastCtrl: ToastController) {
     this.synagogue = this.navParams.get('mapObject') as Synagogue || FakeMapObject() as Synagogue;
     this.prayers = this.getPrayers();

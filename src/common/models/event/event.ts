@@ -51,6 +51,10 @@ export abstract class Event extends ServerModel{
     return formatted != '' ? formatted : 'לא ידוע';
   }
 
+  public isTimeRangeValid(){
+    return this.isValidDate(this.startTime)
+  }
+
   public formatDaysArray(){
     if (this.repeatedDays.length == 1)
       return this.formatDaysToHebrewAbbr();

@@ -7,7 +7,7 @@
   </div>
   <div class="relative-distance">
     <div class="distance-text">
-      {{synagogue.relativeDistanceInMeter | async}} m
+      {{(synagogue.relativeDistanceInMeter | async) | distancePipe}}
       <ion-icon name="md-locate"></ion-icon>
     </div>
   </div>

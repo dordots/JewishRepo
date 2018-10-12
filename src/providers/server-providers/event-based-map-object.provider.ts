@@ -15,7 +15,7 @@ import {GoogleMapProvider} from "../google-map/google-map-provider";
 import {LocationTrackingProvider} from "../location-tracking/location-tracking";
 
 @Injectable()
-export class EventBasedMapObjectProvider extends AbstractServerProvider{
+export class EventBasedMapObjectProvider extends AbstractServerProvider {
 
   readonly baseUrl = `${Config.serverBaseUrl}/synagogue`;
 
@@ -26,14 +26,14 @@ export class EventBasedMapObjectProvider extends AbstractServerProvider{
     console.log('Hello EventBasedMapObjectProvider Provider');
   }
 
-  create(mapObject: EventBasedMapObject, retryCount=1){
+  create(mapObject: EventBasedMapObject, retryCount = 1) {
     return this.http.post<EventBasedMapObject>(this.baseUrl, mapObject.toServerModel())
-                    .pipe(retry(retryCount), catchError(this.handleError));
+      .pipe(retry(retryCount), catchError(this.handleError));
   }
 
-  update(model: EventBasedMapObject, retryCount=1) {
+  update(model: EventBasedMapObject, retryCount = 1) {
     return this.http.put(`${this.baseUrl}/${model._id}`, model.toServerModel())
-                    .pipe(retry(retryCount), catchError(this.handleError));
+      .pipe(retry(retryCount), catchError(this.handleError));
   }
 
   getAllInRadius(latLng: LatLngLiteral, radius: number): Observable<EventBasedMapObject[]> {
@@ -45,16 +45,23 @@ export class EventBasedMapObjectProvider extends AbstractServerProvider{
   }
 
   getByQuery(searchEvent: SearchEvent) {
-    return this.http.post<any>(`${this.baseUrl}/search`,searchEvent.toServerModel()).map(res => {
+    return this.http.post<any>(`${this.baseUrl}/search`, searchEvent.toServerModel()).map(res => {
       return res.content.map(o => new Synagogue().fromServerModel(o)) as Synagogue[];
-    }).map(all => all.forEach(s => s.relativeDistanceInMeter = new Promise<number>((resolve, reject) => {
-      try{
-        const distance = this.googleMapProvider.getDistanceFromLatLonInKm(this.locationProvider.lastKnownLatLng, s.latLng);
-        resolve(distance);
-      }
-      catch (e) {
-        reject(e);
-      }
-    })));
+    })
+      .map(all => {
+        all.forEach(s => s.relativeDistanceInMeter = new Promise<number>((resolve, reject) => {
+          if (!this.locationProvider.lastKnownLatLng)
+            reject('Unknown current location');
+          try {
+            let distance = this.googleMapProvider.getDistanceFromLatLonInKm(this.locationProvider.lastKnownLatLng, s.latLng) * 1000;
+            distance = Math.round(distance);
+            resolve(distance);
+          }
+          catch (e) {
+            reject(e);
+          }
+        }));
+        return all;
+      });
   }
 }

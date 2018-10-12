@@ -39,17 +39,20 @@ export class InfoWindow {
 
   private createWindowContent(mapObject: EventBasedMapObject) {
     let soonestEvent = this.getSoonestEvent(mapObject.events, EventTypes.Prayer);
-    const element = document.createElement('template')
+    const element = document.createElement('template');
+    const timeRange = soonestEvent && soonestEvent.isTimeRangeValid() && `${soonestEvent.getEventName()} - ${soonestEvent.formatTimeRange()}`;
     element.innerHTML = `
       <div id="${mapObject._id}" class="window-info">
         <div class="window-info-header">
         <div class="window-info-image-container"><img class="window-info-image" src="https://picsum.photos/500/500"/></div>
           <div style="margin-left: 10px;text-align: right">
             <div style="font-size: 1.3em; font-weight: bold">${mapObject.name}</div>
-            ${soonestEvent ? `<div style="margin-top: 5px">${soonestEvent.getEventName()} ${soonestEvent.formatTimeRange()}</div>` : ""}
+            <div style="margin-top: 5px" dir="ltr">
+              ${timeRange ? timeRange : ''}
+            </div>
           </div>
+          <div class="window-info-address">${mapObject.userFriendlyAddress}</div>
         </div>
-        <div class="window-info-address">${mapObject.userFriendlyAddress}</div>
       </div>
     `;
     element.content.firstElementChild.addEventListener('click', (ev: MouseEvent)=>{

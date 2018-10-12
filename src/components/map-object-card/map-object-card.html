@@ -4,7 +4,7 @@
 
     <ion-grid>
       <ion-row justify-content-between>
-        <div class="relative-distance"><span dir="ltr">{{getRelativeDistance()|async}} m <ion-icon name="md-locate"></ion-icon></span>
+        <div class="relative-distance"><span dir="ltr">{{(mapObject.relativeDistanceInMeter | async) | distancePipe}}<ion-icon name="md-locate"></ion-icon></span>
         </div>
         <div class="last-updated-at">
           עודכן לאחרונה

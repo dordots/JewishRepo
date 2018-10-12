@@ -13,6 +13,7 @@ import {AddEventModalComponent} from "./add-event-modal/add-event-modal";
 import {MapObjectsListComponent} from "./map-objects-list/map-objects-list.component";
 import {MapObjectCardComponent} from "./map-object-card/map-object-card";
 import { SearchResultsViewComponent } from './search-results-view/search-results-view';
+import {PipesModule} from "../pipes/pipes.module";
 
 @NgModule({
 	declarations: [
@@ -29,7 +30,7 @@ import { SearchResultsViewComponent } from './search-results-view/search-results
     AddEventModalComponent,
     SearchResultsViewComponent,
   ],
-	imports: [IonicModule, DirectivesModule],
+	imports: [IonicModule, DirectivesModule, PipesModule],
   providers: [],
   entryComponents: [],
 	exports: [

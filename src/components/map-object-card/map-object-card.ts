@@ -34,10 +34,6 @@ export class MapObjectCardComponent {
     console.log('Hello EventCardComponent Component');
   }
 
-  async getRelativeDistance() {
-    return await this._mapObject.relativeDistanceInMeter;
-  }
-
   goToPageDetails() {
     this.navCtrl.push('SynagogueDetailsPage', {mapObject: this._mapObject}, {
       direction: 'up'
