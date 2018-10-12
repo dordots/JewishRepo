@@ -4,7 +4,12 @@
 
     <ion-grid>
       <ion-row justify-content-between>
-        <div class="relative-distance"><span dir="ltr">{{(mapObject.relativeDistanceInMeter | async) | distancePipe}}<ion-icon name="md-locate"></ion-icon></span>
+        <div class="relative-distance">
+          <span dir="ltr">
+            <span *ngIf="!relativeDistance" dir="rtl">מחשב מרחק...</span>
+            <span *ngIf="relativeDistance">{{ relativeDistance | distancePipe}}</span>
+            <ion-icon name="md-locate"></ion-icon>
+          </span>
         </div>
         <div class="last-updated-at">
           עודכן לאחרונה
@@ -14,7 +19,9 @@
     </ion-grid>
     <div class="map-object-name"><h1>{{mapObject.type}}</h1></div>
     <ion-row justify-content-between padding-bottom>
-      <small class="map-object-friendly-address" justify-content-center align-items-center>{{mapObject.userFriendlyAddress}}</small>
+      <small class="map-object-friendly-address" justify-content-center align-items-center>
+        {{mapObject.userFriendlyAddress}}
+      </small>
       <small class="event-times" dir="ltr" text-center *ngIf="soonestEvent">
         {{soonestEvent.getEventName()}}
         <br>

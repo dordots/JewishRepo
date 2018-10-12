@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {AfterContentChecked, ChangeDetectionStrategy, ChangeDetectorRef, Component} from '@angular/core';
 import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 import {Synagogue} from "../../common/models/map-objects/synagogue";
 import {EventBasedMapObjectProvider} from "../../providers/server-providers/event-based-map-object.provider";
@@ -12,7 +12,6 @@ import {CallNumber} from "@ionic-native/call-number";
 import {GoogleMapProvider} from "../../providers/google-map/google-map-provider";
 import {LocationTrackingProvider} from "../../providers/location-tracking/location-tracking";
 
-@IonicPage()
 @Component({
   selector: 'page-synagogue-details',
   templateUrl: 'synagogue-details.html',
@@ -21,6 +20,7 @@ import {LocationTrackingProvider} from "../../providers/location-tracking/locati
 export class SynagogueDetailsPage {
 
   synagogue: Synagogue;
+  relativeDistance: number;
 
   prayers: PrayerEvent[];
   lessons: LessonEvent[];
@@ -31,6 +31,7 @@ export class SynagogueDetailsPage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private dial: CallNumber,
+              private changeDet: ChangeDetectorRef,
               private toastCtrl: ToastController) {
     this.synagogue = this.navParams.get('mapObject') as Synagogue || FakeMapObject() as Synagogue;
     this.prayers = this.getPrayers();
@@ -43,10 +44,15 @@ export class SynagogueDetailsPage {
       this.isCallSupported = false
       this.toastCtrl.create({message: 'תכונה זו לא קיימת במכשירך' + r, duration: 3000}).present();
     });
+    this.synagogue.relativeDistanceInMeter.then(val => {
+      this.relativeDistance = val;
+      this.changeDet.markForCheck();
+    });
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SynagogueDetailsPage');
+
   }
 
   private getPrayers() {
@@ -82,6 +88,8 @@ export class SynagogueDetailsPage {
       console.warn('Cordova is not available');
     }
   }
+
+
 
 
 }

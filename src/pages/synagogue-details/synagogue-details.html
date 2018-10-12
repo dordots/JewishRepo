@@ -7,7 +7,8 @@
   </div>
   <div class="relative-distance">
     <div class="distance-text">
-      {{(synagogue.relativeDistanceInMeter | async) | distancePipe}}
+      <span *ngIf="!relativeDistance" dir="rtl">מחשב מרחק...</span>
+      <span *ngIf="relativeDistance">{{ relativeDistance | distancePipe}}</span>
       <ion-icon name="md-locate"></ion-icon>
     </div>
   </div>

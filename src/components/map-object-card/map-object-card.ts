@@ -15,6 +15,7 @@ import {Event} from "../../common/models/event/event";
 export class MapObjectCardComponent {
 
   private _mapObject: EventBasedMapObject;
+  relativeDistance: number;
 
   get mapObject(): EventBasedMapObject {
     return this._mapObject;
@@ -22,6 +23,9 @@ export class MapObjectCardComponent {
 
   @Input() set mapObject(value: EventBasedMapObject) {
     this._mapObject = value;
+    this._mapObject.relativeDistanceInMeter.then(val => {
+      this.relativeDistance = val;
+    });
     this.soonestEvent = this.mapObject.getSoonestEvent(EventTypes.Prayer);
   }
 

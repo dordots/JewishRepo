@@ -29,8 +29,8 @@ export class ApplicationMenuComponent {
 
   initPages(){
     this.pages = {};
-    this.pages.AddSynagoguePage = {title: "הוספת בית כנסת", componentName: "AddSynagoguePage"};
-    this.pages.SynagogueDetails = {title: "פרטי בית כנסת", componentName: "SynagogueDetailsPage"};
+    // this.pages.AddSynagoguePage = {title: "הוספת בית כנסת", componentName: "AddSynagoguePage"};
+    // this.pages.SynagogueDetails = {title: "פרטי בית כנסת", componentName: "SynagogueDetailsPage"};
   }
 
   registerToNavEvents(){
@@ -45,11 +45,11 @@ export class ApplicationMenuComponent {
 
   changePage(page: MenuPageItem) {
     // do change page
-    this.applicationContentNav.push(page.componentName, page.args || {}, {
-      animation: 'transition',
-      animate: true,
-      duration: 500,
-      direction: 'forward'
-    })
+    // this.applicationContentNav.push(page.componentName, page.args || {}, {
+    //   animation: 'transition',
+    //   animate: true,
+    //   duration: 500,
+    //   direction: 'forward'
+    // })
   }
 }
