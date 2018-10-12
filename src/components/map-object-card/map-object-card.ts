@@ -34,8 +34,8 @@ export class MapObjectCardComponent {
     console.log('Hello EventCardComponent Component');
   }
 
-  getRelativeDistance() {
-    return this._mapObject.relativeDistanceInMeter;
+  async getRelativeDistance() {
+    return await this._mapObject.relativeDistanceInMeter;
   }
 
   goToPageDetails() {

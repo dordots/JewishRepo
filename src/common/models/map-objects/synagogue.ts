@@ -27,11 +27,11 @@ export class Synagogue extends EventBasedMapObject {
   fromServerModel(sm: any) {
     this._id = sm._id;
     this.name = sm.name;
-    this.latLng = {lat: sm.location[0], lng: sm.location[1]};
+    this.latLng = {lat: sm.location.coordinates[1], lng: sm.location.coordinates[0]};
     this.userFriendlyAddress = sm.address;
     this.synagogueOptions = sm.externals;
     this.picture = sm.image;
-    this.phone = sm.phone_number;
+    this.phone = sm.phone_number || [];
     this.primaryPrayerNosach = sm.nosahc;
     this.comments = sm.comments;
 

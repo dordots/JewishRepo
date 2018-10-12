@@ -16,6 +16,6 @@
   </ion-toolbar>
 </ion-header>
 <ion-content no-scroll>
-  <fk-google-map #googleMap [hidden]="activeSegment!=='map'"></fk-google-map>
+  <fk-google-map #googleMap [mapOptions]="mapOptions" [hidden]="activeSegment!=='map'"></fk-google-map>
   <fk-map-objects-list [mapObjects]="results" [hidden]="activeSegment!=='list'"></fk-map-objects-list>
 </ion-content>

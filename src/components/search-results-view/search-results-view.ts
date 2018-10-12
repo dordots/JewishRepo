@@ -6,7 +6,6 @@ import {SynagogueDetailsPage} from "../../pages/synagogue-details/synagogue-deta
 import {GoogleMapComponent} from "../google-map/google-map";
 import {timeout} from "rxjs/operators";
 import {of} from "rxjs/observable/of";
-import {Subject} from "rxjs/Subject";
 import "rxjs/add/operator/merge";
 import {ReplaySubject} from "rxjs/ReplaySubject";
 
@@ -23,8 +22,12 @@ export class SearchResultsViewComponent {
   private readonly _results: ReplaySubject<EventBasedMapObject[]>;
   canGoBack: any;
 
+  @Input() mapOptions: google.maps.MapOptions;
+
   @Input() set results(v: Observable<EventBasedMapObject[]>) {
-    v.subscribe(res => this._results.next(res));
+    v.subscribe(res => {
+      this._results.next(res)
+    });
   }
 
   get results() {
@@ -36,6 +39,7 @@ export class SearchResultsViewComponent {
     console.log('Hello SearchResultsViewComponent Component');
     this._results = new ReplaySubject<EventBasedMapObject[]>(1);
     this.results = this.navParams.get('results') || of([]);
+    this.mapOptions = this.navParams.get('mapOptions') || of([]);
     this.canGoBack = this.navCtrl.canGoBack();
   }
 

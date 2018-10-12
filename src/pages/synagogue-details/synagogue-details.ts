@@ -9,6 +9,8 @@ import {LessonEvent} from "../../common/models/event/lesson-event";
 import {PrayerEvent} from "../../common/models/event/prayer-event";
 import {AddSynagoguePage} from "../add-synagogue/add-synagogue";
 import {CallNumber} from "@ionic-native/call-number";
+import {GoogleMapProvider} from "../../providers/google-map/google-map-provider";
+import {LocationTrackingProvider} from "../../providers/location-tracking/location-tracking";
 
 @IonicPage()
 @Component({
@@ -29,6 +31,8 @@ export class SynagogueDetailsPage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private dial: CallNumber,
+              private googleMapProvider: GoogleMapProvider,
+              private locationTracking: LocationTrackingProvider,
               private toastCtrl: ToastController) {
     this.synagogue = this.navParams.get('mapObject') as Synagogue || FakeMapObject() as Synagogue;
     this.prayers = this.getPrayers();
@@ -59,6 +63,10 @@ export class SynagogueDetailsPage {
     this.navCtrl.push('AddSynagoguePage', {synagogue: this.synagogue});
   }
 
+  getPhoneNumber(){
+    return (this.synagogue.phone && this.synagogue.phone.length > 0 && this.synagogue.phone[0]) || 'לא ידוע';
+  }
+
   async goToDial() {
     try {
       if (!this.isCallSupported) {
@@ -76,4 +84,6 @@ export class SynagogueDetailsPage {
       console.warn('Cordova is not available');
     }
   }
+
+
 }

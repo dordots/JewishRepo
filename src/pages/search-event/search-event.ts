@@ -1,15 +1,13 @@
 import {Component, ViewChild} from '@angular/core';
-import {IonicPage, ModalController, NavController, NavParams, TextInput} from 'ionic-angular';
-import {Form, FormControl, FormGroup, NgForm, Validators} from "@angular/forms";
+import {AlertController, IonicPage, NavController, NavParams, TextInput} from 'ionic-angular';
+import {NgForm} from "@angular/forms";
 import {SearchEvent} from "../../common/models/event/search-event";
-import {StaticValidators} from "../../validators/static-validators";
-import {PrintFormValidationErrors} from "../../common/models/common/utils";
 import {PlaceAutoComplete} from "../../directives/place-autocomplete/place-autocomplete";
 import {MapObject} from "../../common/models/map-objects/map-objects";
 import {EventBasedMapObjectProvider} from "../../providers/server-providers/event-based-map-object.provider";
 import {LocationTrackingProvider} from "../../providers/location-tracking/location-tracking";
-import {HomePage} from "../home/home";
 import {SearchResultsViewComponent} from "../../components/search-results-view/search-results-view";
+import {cloneDeep} from "lodash-es";
 
 @IonicPage()
 @Component({
@@ -26,6 +24,7 @@ export class SearchEventPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
+              private alertCtrl: AlertController,
               private locationProvider: LocationTrackingProvider,
               private mapObjectProvider: EventBasedMapObjectProvider) {
     this.searchEvent = new SearchEvent();
@@ -55,17 +54,25 @@ export class SearchEventPage {
   }
 
   async search() {
-    if (!this.searchEvent.mapObject.isPartiallyValid()){
-      this.searchEvent.mapObject.latLng = this.locationProvider.lastKnownLatLng;
+    let search = cloneDeep(this.searchEvent);
+    if (!search.mapObject.isPartiallyValid()) {
+      if (this.locationProvider.lastKnownLatLng == null) {
+        this.alertCtrl.create({message: 'לא ניתן לזהות את מיקומך. יש להזין כתובת לחיפוש'}).present();
+      }
+      search.mapObject.latLng = this.locationProvider.lastKnownLatLng;
     }
-    try{
-      const res = await this.mapObjectProvider.getByQuery(this.searchEvent).toPromise();
-      console.log(res);
-    }catch (e) {
+    delete search.mapObject.userFriendlyAddress;
+    try {
+      const res$ = this.mapObjectProvider.getByQuery(search);
+      this.navCtrl.push(SearchResultsViewComponent, {
+        results: res$.map(res => res),
+        mapOptions: {
+          center: search.mapObject.latLng
+        } as google.maps.MapOptions
+      });
+      console.log(await res$.toPromise());
+    } catch (e) {
       console.log(e);
     }
-
-    // this.navCtrl.push(SearchResultsViewComponent, {results: this.mapObjectProvider.getByQuery(this.searchEvent)});
-    // TODO: Separate HomePage into 2: A page - HomePage which contains the upper most view (add,settings,search), and a Component which contains the segmented view (map | list)
   }
 }

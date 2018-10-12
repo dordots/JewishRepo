@@ -1,7 +1,7 @@
 import {CreateSynagogueOptions, SynagogueOptions} from "../common/enums/synagogue-option";
 import {MapObject} from "../map-objects/map-objects";
 import moment = require("moment");
-import {keys} from "lodash-es";
+import {isArray, keys} from "lodash-es";
 
 export class SearchEvent {
   name: string;
@@ -12,11 +12,10 @@ export class SearchEvent {
   endTime: Date;
   daysRange: number[];
   synagogueOptions: SynagogueOptions;
-  prayerNosach: string[];
+  prayerNosach: string;
 
   constructor(){
     this.daysRange = [];
-    this.prayerNosach = [];
     this.mapObject = new MapObject();
     this.synagogueOptions = CreateSynagogueOptions();
   }
@@ -31,12 +30,18 @@ export class SearchEvent {
       max_radius: this.maxRadiusRange,
       start_time: this.startTime && this.startTime && moment(this.startTime).format('hh:mm'),
       end_time: this.endTime && this.endTime && moment(this.endTime).format('hh:mm'),
-      days: this.daysRange,
-      nosach: this.prayerNosach
+      days: this.daysRange && this.daysRange.length > 0 && this.daysRange,
+      nosach: this.prayerNosach && this.prayerNosach
     };
+
     keys(this.synagogueOptions).forEach(k => {
       if (this.synagogueOptions[k] && this.synagogueOptions[k] == true)
         model[`externals.${k}`] = true;
+    });
+
+    Object.keys(model).forEach(k => {
+      if (!model[k] || (isArray(model[k]) && model[k].length == 0))
+        delete model[k];
     });
 
     return model;

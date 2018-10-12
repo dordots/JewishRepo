@@ -22,7 +22,7 @@ export abstract class Event extends ServerModel{
     this.startTime = moment(sm.hour,"hh:mm").toDate();
     this.endTime = sm.endTime && moment(sm.endTime,"hh:mm").toDate();
     this.repeatedDays = sm.days;
-    this.verifiedRecentlyAt = moment(this.verifiedRecentlyAt, "dd/mm/yyyy").toDate();
+    this.verifiedRecentlyAt = moment(sm.last_verified_at, "dd/mm/yyyy").toDate();
     return this;
   }
 
@@ -48,7 +48,7 @@ export abstract class Event extends ServerModel{
       formatted = moment(this.startTime).format(format);
     if (this.isValidDate(this.endTime))
       formatted += ` - ${moment(this.endTime).format(format)}`;
-    return formatted;
+    return formatted != '' ? formatted : 'לא ידוע';
   }
 
   public formatDaysArray(){
@@ -70,7 +70,10 @@ export abstract class Event extends ServerModel{
   }
 
   public formatDaysToHebrewAbbr(arr?: number[]){
-    return (arr || this.repeatedDays).map(d => String.fromCharCode(0x05D0 + d - 1))
+    const days = ['א','ב','ג','ד','ה','ו','ש']
+    return (arr || this.repeatedDays).map(d => {
+      return days[d-1];
+    })
   }
 
   private isValidDate(d){

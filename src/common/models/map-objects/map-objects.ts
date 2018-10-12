@@ -39,8 +39,7 @@ export class EventBasedMapObject extends MapObject{
   name: string;
   userFriendlyAddress: string;
   events: Array<Event>;
-  relativeDistanceInMeter: number;
-
+  relativeDistanceInMeter: Promise<number>;
   dateMembers = ['lastUpdatedAt'];
 
   isEventExist(event: Event){
@@ -58,6 +57,8 @@ export class EventBasedMapObject extends MapObject{
   getLastVerified() {
     let date = this.events.map(e => e.verifiedRecentlyAt)
       .sort((e1, e2) => e1.getTime() - e2.getTime())[0];
-    return moment(date).format('L');
+    if (moment(date).isValid())
+      return moment(date).format('L');
+    return 'לא ידוע';
   }
 }

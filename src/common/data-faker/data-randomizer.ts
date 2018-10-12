@@ -50,7 +50,7 @@ export function FakeMapObject() {
   mapObject._id = fakerStatic.random.uuid();
   mapObject.latLng = {lat: Number(fakerStatic.address.latitude()), lng: Number(fakerStatic.address.longitude())};
   mapObject.userFriendlyAddress = fakerStatic.address.streetAddress(true);
-  mapObject.relativeDistanceInMeter = fakerStatic.random.number({min: 10, max: 1000});
+  mapObject.relativeDistanceInMeter = Promise.resolve(fakerStatic.random.number({min: 10, max: 1000}));
   mapObject.events = new Array<Event>(fakerStatic.random.number(10));
   mapObject.name = fakerStatic.name.title();
   for (let i = 0; i < mapObject.events.length; i++) {

@@ -10,13 +10,18 @@ import {FakeLatLngAround, FakeMapObject} from "../../common/data-faker/data-rand
 import {of} from "rxjs/observable/of";
 import {SearchEvent} from "../../common/models/event/search-event";
 import {Config} from "@app/env";
+import {Synagogue} from "../../common/models/map-objects/synagogue";
+import {GoogleMapProvider} from "../google-map/google-map-provider";
+import {LocationTrackingProvider} from "../location-tracking/location-tracking";
 
 @Injectable()
 export class EventBasedMapObjectProvider extends AbstractServerProvider{
 
   readonly baseUrl = `${Config.serverBaseUrl}/synagogue`;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+              private googleMapProvider: GoogleMapProvider,
+              private locationProvider: LocationTrackingProvider) {
     super();
     console.log('Hello EventBasedMapObjectProvider Provider');
   }
@@ -40,6 +45,16 @@ export class EventBasedMapObjectProvider extends AbstractServerProvider{
   }
 
   getByQuery(searchEvent: SearchEvent) {
-    return this.http.post(`${this.baseUrl}/search`,searchEvent.toServerModel());
+    return this.http.post<any>(`${this.baseUrl}/search`,searchEvent.toServerModel()).map(res => {
+      return res.content.map(o => new Synagogue().fromServerModel(o)) as Synagogue[];
+    }).map(all => all.forEach(s => s.relativeDistanceInMeter = new Promise<number>((resolve, reject) => {
+      try{
+        const distance = this.googleMapProvider.getDistanceFromLatLonInKm(this.locationProvider.lastKnownLatLng, s.latLng);
+        resolve(distance);
+      }
+      catch (e) {
+        reject(e);
+      }
+    })));
   }
 }
