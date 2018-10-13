@@ -8,7 +8,12 @@ import {EventBasedMapObject} from "../../common/models/map-objects/map-objects";
 import {LocationTrackingProvider} from "../../providers/location-tracking/location-tracking";
 import {Subject} from "rxjs/Subject";
 import {SearchResultsViewComponent} from "../../components/search-results-view/search-results-view";
-import LatLngLiteral = google.maps.LatLngLiteral;
+import {UserSettingsPage} from "../user-settings/user-settings";
+import {UserSettingsProvider} from "../../providers/user-settings/user-settings";
+import {fromPromise} from "rxjs/observable/fromPromise";
+import "rxjs/add/operator/zip";
+import "rxjs/add/operator/debounceTime";
+import "rxjs/add/operator/distinctUntilChanged";
 
 const EarthRadiusInKm = 6378
 
@@ -23,20 +28,35 @@ export class HomePage {
 
   public nearMapObjects: Subject<EventBasedMapObject[]>;
 
-  private prevSearchedLocation: LatLngLiteral;
+  // private prevSearchedLocation: google.maps.LatLngLiteral;
 
   constructor(public navCtrl: NavController,
               private locationTracking: LocationTrackingProvider,
               private mapObjectProvider: EventBasedMapObjectProvider,
+              private userSettings: UserSettingsProvider,
               private navParams: NavParams) {
     this.nearMapObjects = new Subject<EventBasedMapObject[]>();
   }
 
-  ngAfterViewInit(){
-    this.resultsComponent.googleMap.onMapCreated.flatMap(res => {
-      const mapCenter = res.map.getCenter().toJSON();
-      return this.mapObjectProvider.getAllInRadius(mapCenter,2);
-    }).subscribe(res => {
+  ngAfterViewInit() {
+    this.resultsComponent.googleMap.onMapCreated.zip(fromPromise(this.userSettings.getMaxRangeInHomePage()))
+      .flatMap(zip => {
+        const mapCenter = zip[0].map.getCenter().toJSON();
+        this.registerToRangeChanges(mapCenter);
+        return this.mapObjectProvider.getAllInRadius(mapCenter, zip[1]);
+      }).subscribe(res => {
+      if (res.length > 0)
+        this.nearMapObjects.next(res);
+    });
+  }
+
+  registerToRangeChanges(mapCenter: google.maps.LatLngLiteral) {
+    this.userSettings.registerToSettingChange('maxRangeInHomePage')
+      .debounceTime(1500)
+      .distinctUntilChanged()
+      .flatMap(range => {
+        return this.mapObjectProvider.getAllInRadius(mapCenter, range);
+      }).subscribe(res => {
       if (res.length > 0)
         this.nearMapObjects.next(res);
     });
@@ -50,4 +70,7 @@ export class HomePage {
     this.navCtrl.push(AddSynagoguePage)
   }
 
+  goToUserSettings() {
+    this.navCtrl.push(UserSettingsPage);
+  }
 }

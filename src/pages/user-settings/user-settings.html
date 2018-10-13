@@ -1,15 +1,22 @@
-<ion-header>
-
-  <ion-navbar>
-    <ion-title>הגדרות</ion-title>
+<ion-header no-border>
+  <ion-navbar color="white">
+    <ion-title text-center>הגדרות</ion-title>
   </ion-navbar>
-
 </ion-header>
 
 
-<ion-content padding>
-  <ion-item>
-    <ion-label stacked>רדיוס חיפוש בתי כנסת בעמוד הבית</ion-label>
-    <ion-range [min]="1" [max]="25"></ion-range>
-  </ion-item>
+<ion-content padding dir="rtl">
+  <div id="settings">
+    <ion-card>
+      <ion-item>
+        <ion-label stacked>רדיוס חיפוש בתי כנסת בעמוד הבית</ion-label>
+        <ion-range [min]="1" [max]="25" [pin]="true" [disabled]="currentSettings.rangeInHomePage.disabled"
+                   (ngModelChange)="saveRange($event)"
+                   [(ngModel)]="currentSettings.rangeInHomePage.value" dir="ltr">
+          <ion-label range-left>1</ion-label>
+          <ion-label range-right>25</ion-label>
+        </ion-range>
+      </ion-item>
+    </ion-card>
+  </div>
 </ion-content>
