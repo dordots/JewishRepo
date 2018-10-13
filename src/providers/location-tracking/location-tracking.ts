@@ -27,12 +27,14 @@ export class LocationTrackingProvider {
   }
 
   async getCurrentLocation(options?: GeolocationOptions) {
+    this.stopWatchLocation();
     this.currentLocationPromise = this.currentLocationPromise || this.geolocation.getCurrentPosition(options);
     try{
       this.lastKnownPosition = await this.currentLocationPromise;
     }
     finally {
       this.currentLocationPromise = null;
+      this.startWatchLocation();
     }
     return this.lastKnownPosition;
   }
