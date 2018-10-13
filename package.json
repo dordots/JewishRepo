@@ -13,7 +13,7 @@
     "android:livereload-prod": "ionic cordova run android --prod --livereload --address=localhost",
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",
-    "build-android": "ionic-app-scripts build android",
+    "build-android": "ionic cordova build android",
     "lint": "ionic-app-scripts lint"
   },
   "dependencies": {
