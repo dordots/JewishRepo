@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 import {AbstractServerProvider} from "./abstract-server-provider";
 import {catchError, retry} from "rxjs/operators";
 import "rxjs/add/operator/map";
-import {EventBasedMapObject} from "../../common/models/map-objects/map-objects";
+import {EventBasedMapObject, MapObject} from "../../common/models/map-objects/map-objects";
 import {Observable} from "rxjs/Observable";
 import LatLngLiteral = google.maps.LatLngLiteral;
 import {FakeLatLngAround, FakeMapObject} from "../../common/data-faker/data-randomizer";
@@ -37,11 +37,16 @@ export class EventBasedMapObjectProvider extends AbstractServerProvider {
   }
 
   getAllInRadius(latLng: LatLngLiteral, radius: number): Observable<EventBasedMapObject[]> {
-    return of(new Array(5).fill(0).map(v => FakeMapObject()).map(v => {
-      const model = new EventBasedMapObject().fromServerModel(v);
-      model.latLng = FakeLatLngAround(latLng);
-      return model;
-    }));
+    // return of(new Array(5).fill(0).map(v => FakeMapObject()).map(v => {
+    //   const model = new EventBasedMapObject().fromServerModel(v);
+    //   model.latLng = FakeLatLngAround(latLng);
+    //   return model;
+    // }));
+    let query = new SearchEvent();
+    query.mapObject = new MapObject({latLng: latLng});
+    query.radiusRange = 0;
+    query.maxRadiusRange = radius;
+    return this.getByQuery(query);
   }
 
   getByQuery(searchEvent: SearchEvent) {

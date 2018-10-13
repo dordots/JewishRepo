@@ -30,35 +30,16 @@ export class HomePage {
               private mapObjectProvider: EventBasedMapObjectProvider,
               private navParams: NavParams) {
     this.nearMapObjects = new Subject<EventBasedMapObject[]>();
-    // this.locationTracking.onLocationChanged.filter((res: Geoposition) => {
-    //   if (this.prevSearchedLocation){
-    //     this.prevSearchedLocation = this.locationTracking.geopositionToLatLngLiteral(res);
-    //     return true;
-    //   }
-    //
-    //   const offsetYInKm = 0.005;
-    //   const offsetXInKm = 0.005;
-    //   const new_latitude_top  = res.coords.latitude  + (offsetYInKm / EarthRadiusInKm) * (180 / Math.PI);
-    //   const new_latitude_bottom  = res.coords.latitude  - (offsetYInKm / EarthRadiusInKm) * (180 / Math.PI);
-    //   const new_longitude_right = res.coords.longitude + (offsetXInKm / EarthRadiusInKm) * (180 / Math.PI) / Math.cos(res.coords.longitude * Math.PI/180);
-    //   const new_longitude_left = res.coords.longitude - (offsetXInKm / EarthRadiusInKm) * (180 / Math.PI) / Math.cos(res.coords.longitude * Math.PI/180);
-    //   if (this.prevSearchedLocation.lat > new_latitude_top || this.prevSearchedLocation.lat < new_latitude_bottom ||
-    //       this.prevSearchedLocation.lng > new_longitude_right || this.prevSearchedLocation.lng < new_longitude_left){
-    //     this.prevSearchedLocation = this.locationTracking.geopositionToLatLngLiteral(res);
-    //     return true;
-    //   }
-    //   return false;
-    // }).flatMap(res => {
-    //   const myLocation = this.locationTracking.geopositionToLatLngLiteral(res);
-    //   return this.mapObjectProvider.getAllInRadius(myLocation,10);
-    // }).subscribe(res => this.nearMapObjects.next(res));
   }
 
   ngAfterViewInit(){
     this.resultsComponent.googleMap.onMapCreated.flatMap(res => {
-      const myLocation = res.map.getCenter().toJSON();
-      return this.mapObjectProvider.getAllInRadius(myLocation,10);
-    }).subscribe(res => this.nearMapObjects.next(res));
+      const mapCenter = res.map.getCenter().toJSON();
+      return this.mapObjectProvider.getAllInRadius(mapCenter,2);
+    }).subscribe(res => {
+      if (res.length > 0)
+        this.nearMapObjects.next(res);
+    });
   }
 
   goToSearchPage() {
