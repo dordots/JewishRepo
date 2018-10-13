@@ -5,8 +5,8 @@ import {isArray, keys} from "lodash-es";
 
 export class SearchEvent {
   name: string;
-  radiusRange = 1;
-  maxRadiusRange = 25;
+  radiusRange = 0;
+  maxRadiusRange = 1;
   mapObject: MapObject;
   startTime: Date;
   endTime: Date;

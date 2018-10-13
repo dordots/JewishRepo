@@ -55,13 +55,9 @@ export class EventBasedMapObjectProvider extends AbstractServerProvider {
     })
       .map(all => {
         all.forEach(s => s.relativeDistanceInMeter = new Promise<number>((resolve, reject) => {
-          if (!this.locationProvider.lastKnownLatLng){
-            console.warn('could not find current location');
-            resolve(-1);
-            return;
-          }
+
           try {
-            let distance = this.googleMapProvider.getDistanceFromLatLonInKm(this.locationProvider.lastKnownLatLng, s.latLng) * 1000;
+            let distance = this.googleMapProvider.getDistanceFromLatLonInKm(searchEvent.mapObject.latLng, s.latLng) * 1000;
             distance = Math.round(distance);
             resolve(distance);
           }
