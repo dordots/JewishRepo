@@ -23,6 +23,9 @@ import {AddSynagoguePageModule} from "../pages/add-synagogue/add-synagogue.modul
 import {AddSynagoguePage} from "../pages/add-synagogue/add-synagogue";
 import {DirectivesModule} from "../directives/directives.module";
 import {OpenNativeSettings} from "@ionic-native/open-native-settings";
+import { UserSettingsProvider } from '../providers/user-settings/user-settings';
+import {UserSettingsPage} from "../pages/user-settings/user-settings";
+import {UserSettingsPageModule} from "../pages/user-settings/user-settings.module";
 
 @NgModule({
   declarations: [
@@ -37,6 +40,7 @@ import {OpenNativeSettings} from "@ionic-native/open-native-settings";
     AddSynagoguePageModule,
     DirectivesModule,
     SearchEventPageModule,
+    UserSettingsPageModule,
     IonicModule.forRoot(MyApp, {scrollPadding: false, scrollAssist: false, autoFocusAssist: false}),
   ],
   bootstrap: [IonicApp],
@@ -45,6 +49,7 @@ import {OpenNativeSettings} from "@ionic-native/open-native-settings";
     HomePage,
     SynagogueDetailsPage,
     AddSynagoguePage,
+    UserSettingsPage,
     LocationPickerComponent,
     AddEventModalComponent
   ],
@@ -60,6 +65,7 @@ import {OpenNativeSettings} from "@ionic-native/open-native-settings";
     GoogleMapProvider,
     {provide: APP_INITIALIZER, useFactory: initializeUserGeoposition, deps: [GoogleMapProvider], multi: true},
     LocationTrackingProvider,
+    UserSettingsProvider,
   ]
 })
 export class AppModule {

@@ -5,8 +5,8 @@ import {isArray, keys} from "lodash-es";
 
 export class SearchEvent {
   name: string;
-  radiusRange = 1;
-  maxRadiusRange = 25;
+  radiusRange = 0;
+  maxRadiusRange = 1;
   mapObject: MapObject;
   startTime: Date;
   endTime: Date;
@@ -28,9 +28,9 @@ export class SearchEvent {
       lon: this.mapObject.latLng.lng,
       min_radius: this.radiusRange,
       max_radius: this.maxRadiusRange,
-      start_time: this.startTime && this.startTime && moment(this.startTime).format('hh:mm'),
-      end_time: this.endTime && this.endTime && moment(this.endTime).format('hh:mm'),
-      days: this.daysRange && this.daysRange.length > 0 && this.daysRange,
+      start_time: (this.startTime && moment(this.startTime).format('hh:mm')) || null,
+      end_time: (this.endTime && moment(this.endTime).format('hh:mm')) || null,
+      days: this.daysRange,
       nosach: this.prayerNosach && this.prayerNosach
     };
 
@@ -40,7 +40,7 @@ export class SearchEvent {
     });
 
     Object.keys(model).forEach(k => {
-      if (!model[k] || (isArray(model[k]) && model[k].length == 0))
+      if (model[k] == null || (isArray(model[k]) && model[k].length == 0))
         delete model[k];
     });
 
