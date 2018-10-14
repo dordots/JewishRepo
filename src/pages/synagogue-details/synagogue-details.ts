@@ -1,7 +1,6 @@
-import {AfterContentChecked, ChangeDetectionStrategy, ChangeDetectorRef, Component} from '@angular/core';
+import {ChangeDetectorRef, Component} from '@angular/core';
 import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 import {Synagogue} from "../../common/models/map-objects/synagogue";
-import {EventBasedMapObjectProvider} from "../../providers/server-providers/event-based-map-object.provider";
 import {DatePipe} from "@angular/common";
 import {FakeMapObject} from "../../common/data-faker/data-randomizer";
 import {EventTypes} from "../../common/models/common/enums/event-types";
@@ -9,9 +8,8 @@ import {LessonEvent} from "../../common/models/event/lesson-event";
 import {PrayerEvent} from "../../common/models/event/prayer-event";
 import {AddSynagoguePage} from "../add-synagogue/add-synagogue";
 import {CallNumber} from "@ionic-native/call-number";
-import {GoogleMapProvider} from "../../providers/google-map/google-map-provider";
-import {LocationTrackingProvider} from "../../providers/location-tracking/location-tracking";
 
+@IonicPage()
 @Component({
   selector: 'page-synagogue-details',
   templateUrl: 'synagogue-details.html',
