@@ -1,5 +1,5 @@
 <ion-content>
-  <ion-item id="search-container" dir="rtl">
+  <ion-item id="search-container" dir="rtl" [hidden]="!mapComponent?.isMapReady">
     <button item-start class="transparent" (click)="onDismiss()">
       <ion-icon name="arrow-forward" class="x2"></ion-icon>
     </button>

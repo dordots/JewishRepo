@@ -16,6 +16,7 @@ export class GoogleMapComponent implements AfterViewInit, OnDestroy{
 
   private hasError = false;
 
+  public isMapReady = false;
   public readonly canvasElementId: string;
   public map: GoogleMap;
 
@@ -56,8 +57,10 @@ export class GoogleMapComponent implements AfterViewInit, OnDestroy{
     try{
       let mapElement = document.getElementById(this.canvasElementId) as HTMLDivElement;
       this.map = await this.mapProvider.createMap(mapElement, mapOptions);
-      if (withLocationTracking)
+      if (withLocationTracking) {
         this.map.enableLocationTracking();
+      }
+      this.isMapReady = true;
       this.onMapCreated.next(this.map);
     }
     catch (e) {
