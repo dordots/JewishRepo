@@ -20,7 +20,7 @@ export class SearchResultsViewComponent {
   private readonly _results: ReplaySubject<EventBasedMapObject[]>;
 
   @ViewChild('googleMap') googleMap: GoogleMapComponent;
-  activeSegment: string = 'map';
+  activeSegment: string = 'list';
   canGoBack: any;
 
   @Input() mapOptions: google.maps.MapOptions;
