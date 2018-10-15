@@ -2,7 +2,13 @@
   <div id="loading-text" *ngIf="!hasError">טוען מפה...</div>
   <div id="error" *ngIf="hasError">
     <div id="help">לא ניתן למצוא את מיקומך</div>
-    <div id="description">בדוק שאכן שירותי המיקום מופעלים.<br> בנוסף וודא שישנה הרשאת גישה למיקום המכשיר עבור אפליקציה זו</div>
+    <div id="description">
+      בדוק שאכן שירותי המיקום מופעלים.
+      <br>
+      בנוסף וודא שישנה הרשאת גישה למיקום המכשיר
+      <b>באמצעות GPS</b>
+      עבור אפליקציה זו
+    </div>
     <button ion-button (click)="tryGetCurrentLocationAgain()">נסה שוב</button>
     <button ion-button (click)="goToLocationSettings()">הגדרות שירותי מיקום</button>
     <div id="manual-locate">
@@ -15,7 +21,8 @@
                    [inputElement]="placeAutoCompleteInput._native?.nativeElement"></ion-input>
       </ion-item>
       <button ion-button color="secondary" (click)="mapWithManualLocation()" margin-top
-              [disabled]="!manualCenter.isFullyValid()">מקם ידנית</button>
+              [disabled]="!manualCenter.isFullyValid()">מקם ידנית
+      </button>
     </div>
 
   </div>
