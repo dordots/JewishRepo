@@ -54,7 +54,7 @@ export class Synagogue extends EventBasedMapObject {
       location: {coordinates: [this.latLng.lng, this.latLng.lat], type: "Point"},
       nosach: this.primaryPrayerNosach,
       phone_number: this.phone,
-      image: this.picture,
+      // image: this.picture,
       minyans: this.events.filter(e => e.type == EventTypes.Prayer),
       lessons: this.events.filter(e => e.type == EventTypes.Lesson),
       comments: this.comments,
