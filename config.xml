@@ -84,9 +84,6 @@
     <plugin name="cordova-plugin-ionic-keyboard" spec="2.0.5" />
     <plugin name="cordova-plugin-geolocation" spec="^4.0.1" />
     <plugin name="cordova-plugin-whitelist" spec="^1.3.3" />
-    <plugin name="cordova-plugin-telerik-imagepicker" spec="^2.2.2">
-        <variable name="PHOTO_LIBRARY_USAGE_DESCRIPTION" value="pick an image for a map object when adding it" />
-    </plugin>
     <allow-navigation href="http://192.168.2.108:8100" />
     <allow-navigation href="http://:8100" />
     <allow-navigation href="http://192.168.2.110:8100" />
