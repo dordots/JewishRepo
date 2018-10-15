@@ -28,7 +28,6 @@
     "@angular/platform-browser-dynamic": "5.2.11",
     "@ionic-native/core": "~4.11.0",
     "@ionic-native/geolocation": "^4.10.0",
-    "@ionic-native/image-picker": "^4.10.0",
     "@ionic-native/open-native-settings": "^4.15.0",
     "@ionic-native/splash-screen": "~4.11.0",
     "@ionic-native/status-bar": "~4.11.0",
@@ -63,7 +62,7 @@
     "zone.js": "0.8.26"
   },
   "devDependencies": {
-    "@ionic/app-scripts": "3.1.11",
+    "@ionic/app-scripts": "3.2.0",
     "@types/es6-promisify": "^6.0.0",
     "@types/faker": "^4.1.3",
     "@types/google-maps": "^3.2.0",
@@ -83,9 +82,6 @@
       "cordova-plugin-ionic-webview": {},
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-geolocation": {},
-      "cordova-plugin-telerik-imagepicker": {
-        "PHOTO_LIBRARY_USAGE_DESCRIPTION": "pick an image for a map object when adding it"
-      },
       "cordova-open-native-settings": {},
       "cordova-sqlite-storage": {}
     },

@@ -9,7 +9,6 @@ import {HomePage} from '../pages/home/home';
 import {ComponentsModule} from "../components/components.module";
 import {Geolocation} from "@ionic-native/geolocation";
 import {LocationPickerComponent} from "../components/location-picker/location-picker";
-import {ImagePicker} from "@ionic-native/image-picker";
 import {EventBasedMapObjectProvider} from '../providers/server-providers/event-based-map-object.provider';
 import {HttpClientModule} from "@angular/common/http";
 import {AddEventModalComponent} from "../components/add-event-modal/add-event-modal";
@@ -58,7 +57,6 @@ import {UserSettingsPageModule} from "../pages/user-settings/user-settings.modul
     SplashScreen,
     OpenNativeSettings,
     Geolocation,
-    ImagePicker,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     EventBasedMapObjectProvider,
     {provide: APP_INITIALIZER, useFactory: initializeGoogleMaps, multi: true},

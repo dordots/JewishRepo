@@ -2,10 +2,8 @@ import {ChangeDetectorRef, Component, ViewChild} from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams, ToastController} from 'ionic-angular';
 import {NgForm} from "@angular/forms";
 import {Synagogue} from "../../common/models/map-objects/synagogue";
-import {ImagePicker, ImagePickerOptions, OutputType} from "@ionic-native/image-picker";
 import {EventBasedMapObjectProvider} from "../../providers/server-providers/event-based-map-object.provider";
 import {Event} from "../../common/models/event/event";
-import {DatePipe} from "@angular/common";
 import {AddEventModalComponent} from "../../components/add-event-modal/add-event-modal";
 import {EventTypes} from "../../common/models/common/enums/event-types";
 import {StaticValidators} from "../../validators/static-validators";
@@ -16,7 +14,6 @@ import {PlaceAutoComplete} from "../../directives/place-autocomplete/place-autoc
 @Component({
   selector: 'page-add-synagogue',
   templateUrl: 'add-synagogue.html',
-  providers: [DatePipe]
 })
 export class AddSynagoguePage {
 
@@ -32,7 +29,6 @@ export class AddSynagoguePage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private imagePicker: ImagePicker,
               private toastCtrl: ToastController,
               private changeDetector: ChangeDetectorRef,
               private mapObjectProvider: EventBasedMapObjectProvider,
@@ -57,13 +53,7 @@ export class AddSynagoguePage {
   }
 
   async pickImage() {
-    try {
-      let imagePickerOptions = {maximumImagesCount: 1, outputType: OutputType.DATA_URL} as ImagePickerOptions;
-      this.synagogue.picture = await this.imagePicker.getPictures(imagePickerOptions);
-    }
-    catch (e) {
-      console.error(e);
-    }
+
   }
 
   openAddTimesModal() {
