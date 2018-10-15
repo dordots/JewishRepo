@@ -68,10 +68,6 @@
   dependencies:
     tslib "^1.7.1"
 
-"@ionic-native/call-number@^4.15.0":
-  version "4.15.0"
-  resolved "https://registry.yarnpkg.com/@ionic-native/call-number/-/call-number-4.15.0.tgz#e31d5092833f85e71c550fd5c8234df08d1aecc7"
-
 "@ionic-native/core@~4.11.0":
   version "4.11.0"
   resolved "https://registry.yarnpkg.com/@ionic-native/core/-/core-4.11.0.tgz#9397ff47c35b23c9541eb40c4936857caf5f6322"
@@ -687,10 +683,6 @@ cache-base@^1.0.1:
     to-object-path "^0.3.0"
     union-value "^1.0.0"
     unset-value "^1.0.0"
-
-call-number@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/call-number/-/call-number-1.0.1.tgz#bf9daae487fd6a5573f89aa3655fbe8af036afd2"
 
 camelcase-keys@^2.0.0:
   version "2.1.0"

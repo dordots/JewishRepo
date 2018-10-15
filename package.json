@@ -26,7 +26,6 @@
     "@angular/http": "5.2.11",
     "@angular/platform-browser": "5.2.11",
     "@angular/platform-browser-dynamic": "5.2.11",
-    "@ionic-native/call-number": "^4.15.0",
     "@ionic-native/core": "~4.11.0",
     "@ionic-native/geolocation": "^4.10.0",
     "@ionic-native/image-picker": "^4.10.0",
@@ -35,7 +34,6 @@
     "@ionic-native/status-bar": "~4.11.0",
     "@ionic/storage": "^2.2.0",
     "add": "^2.0.6",
-    "call-number": "^1.0.1",
     "chalk": "^2.4.1",
     "cordova-android": "7.1.1",
     "cordova-open-native-settings": "^1.5.1",
@@ -89,7 +87,6 @@
         "PHOTO_LIBRARY_USAGE_DESCRIPTION": "pick an image for a map object when adding it"
       },
       "cordova-open-native-settings": {},
-      "mx.ferreyra.callnumber": {},
       "cordova-sqlite-storage": {}
     },
     "platforms": [

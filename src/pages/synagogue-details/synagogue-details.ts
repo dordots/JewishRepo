@@ -7,13 +7,12 @@ import {EventTypes} from "../../common/models/common/enums/event-types";
 import {LessonEvent} from "../../common/models/event/lesson-event";
 import {PrayerEvent} from "../../common/models/event/prayer-event";
 import {AddSynagoguePage} from "../add-synagogue/add-synagogue";
-import {CallNumber} from "@ionic-native/call-number";
 
 @IonicPage()
 @Component({
   selector: 'page-synagogue-details',
   templateUrl: 'synagogue-details.html',
-  providers: [DatePipe, CallNumber]
+  providers: [DatePipe]
 })
 export class SynagogueDetailsPage {
 
@@ -28,20 +27,12 @@ export class SynagogueDetailsPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private dial: CallNumber,
               private changeDet: ChangeDetectorRef,
               private toastCtrl: ToastController) {
     this.synagogue = this.navParams.get('mapObject') as Synagogue || FakeMapObject() as Synagogue;
     this.prayers = this.getPrayers();
     this.lessons = this.getLessons() as LessonEvent[];
     this.soonestPrayer = this.synagogue.getSoonestEvent(EventTypes.Prayer);
-    this.dial.isCallSupported().then(v => {
-      this.isCallSupported = true
-      this.toastCtrl.create({message: 'קיימת גם קיימת', duration: 3000}).present();
-      },r => {
-      this.isCallSupported = false
-      this.toastCtrl.create({message: 'תכונה זו לא קיימת במכשירך' + r, duration: 3000}).present();
-    });
     this.synagogue.relativeDistanceInMeter.then(val => {
       this.relativeDistance = val;
       this.changeDet.markForCheck();
@@ -70,21 +61,7 @@ export class SynagogueDetailsPage {
   }
 
   async goToDial() {
-    try {
-      if (!this.isCallSupported) {
-        this.toastCtrl.create({message: 'תכונה זו לא קיימת במכשירך', duration: 3000}).present();
-        return;
-      }
-      try {
-        await this.dial.callNumber(this.synagogue.phone[0], true);
-      }
-      catch (e) {
-        this.toastCtrl.create({message: 'אירעה שגיאה... לא ניתן להתקשר', duration: 3000}).present();
-      }
-    }
-    catch (e) {
-      console.warn('Cordova is not available');
-    }
+
   }
 
 
