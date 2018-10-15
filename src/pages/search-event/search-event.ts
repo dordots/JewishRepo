@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ViewChild} from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams, TextInput} from 'ionic-angular';
 import {NgForm} from "@angular/forms";
 import {SearchEvent} from "../../common/models/event/search-event";
@@ -25,6 +25,7 @@ export class SearchEventPage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private alertCtrl: AlertController,
+              private changeDetector: ChangeDetectorRef,
               private locationProvider: LocationTrackingProvider,
               private mapObjectProvider: EventBasedMapObjectProvider) {
     this.searchEvent = new SearchEvent();
@@ -35,17 +36,13 @@ export class SearchEventPage {
   }
 
   onModalClosed(mapObject: MapObject) {
-    if (!mapObject || !mapObject.isFullyValid())
-      return;
     this.onMapObjectChanged(mapObject);
-    this.placeAutoComplete.mapObject = mapObject;
     this.placeAutoCompleteInput._native.nativeElement.value = this.searchEvent.mapObject.userFriendlyAddress;
   }
 
   onMapObjectChanged(mapObject: MapObject) {
-    if (!mapObject || !mapObject.isFullyValid())
-      return;
     this.searchEvent.mapObject = mapObject;
+    this.changeDetector.detectChanges();
   }
 
   isFormValid() {

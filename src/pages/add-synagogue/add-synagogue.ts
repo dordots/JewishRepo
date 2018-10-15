@@ -1,6 +1,6 @@
-import {Component, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ViewChild} from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams, ToastController} from 'ionic-angular';
-import {FormControl, FormGroup, NgForm, Validators} from "@angular/forms";
+import {NgForm} from "@angular/forms";
 import {Synagogue} from "../../common/models/map-objects/synagogue";
 import {ImagePicker, ImagePickerOptions, OutputType} from "@ionic-native/image-picker";
 import {EventBasedMapObjectProvider} from "../../providers/server-providers/event-based-map-object.provider";
@@ -34,6 +34,7 @@ export class AddSynagoguePage {
               public navParams: NavParams,
               private imagePicker: ImagePicker,
               private toastCtrl: ToastController,
+              private changeDetector: ChangeDetectorRef,
               private mapObjectProvider: EventBasedMapObjectProvider,
               private modalCtrl: ModalController) {
     this.synagogue = this.navParams.get('synagogue') as Synagogue || new Synagogue();
@@ -89,22 +90,15 @@ export class AddSynagoguePage {
     this.synagogue.phone.splice(index, 1);
   }
 
-  onModalClosed(mapObject: MapObject){
-    if (!mapObject || !mapObject.isFullyValid())
-      return;
-
-    this.synagogue.latLng = mapObject.latLng;
-    this.synagogue.userFriendlyAddress = mapObject.userFriendlyAddress;
-
-    this.placeAutoComplete.mapObject = mapObject;
+  onModalClosed(mapObject: MapObject) {
+    this.onMapObjectChanged(mapObject);
     this.placeAutoCompleteInput._native.nativeElement.value = this.synagogue.userFriendlyAddress;
   }
 
-  onMapObjectChanged(mapObject: MapObject){
-    if (!mapObject || !mapObject.isFullyValid())
-      return;
-    this.synagogue.latLng = mapObject.latLng;
+  onMapObjectChanged(mapObject: MapObject) {
     this.synagogue.userFriendlyAddress = mapObject.userFriendlyAddress;
+    this.synagogue.latLng = mapObject.latLng;
+    this.changeDetector.detectChanges();
   }
 
   isFormValid(){

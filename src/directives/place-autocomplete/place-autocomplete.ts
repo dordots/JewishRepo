@@ -1,5 +1,5 @@
 import {
-  AfterContentInit,
+  AfterContentInit, ChangeDetectorRef,
   Directive,
   ElementRef,
   EventEmitter,
@@ -11,7 +11,6 @@ import {GoogleMapProvider} from "../../providers/google-map/google-map-provider"
 import {MapObject} from "../../common/models/map-objects/map-objects";
 import Autocomplete = google.maps.places.Autocomplete;
 import PlaceResult = google.maps.places.PlaceResult;
-import {MakeProvider} from "../../common/component-helpers/abstract-value-accessor";
 
 @Directive({
   selector: '[fkPlaceAutoComplete]'
@@ -34,7 +33,9 @@ export class PlaceAutoComplete implements AfterContentInit, OnDestroy {
     });
   }
 
-  get inputElement() { return this._inputElement; }
+  get inputElement() {
+    return this._inputElement;
+  }
 
   @Input() useNativeInput: boolean = false;
 
@@ -127,6 +128,9 @@ export class PlaceAutoComplete implements AfterContentInit, OnDestroy {
     if (this.marker)
       this.marker.setMap(null);
 
+    if (!place)
+      return;
+
     if (this.toMarkerSelectedPlace)
       this.marker = this.map.createMarkerAt({position: place.geometry.location.toJSON()});
 
@@ -143,16 +147,17 @@ export class PlaceAutoComplete implements AfterContentInit, OnDestroy {
    * Used for set the input value to the `userFriendlyAddress` because it always is being reset.
    */
   private onInputFocus() {
-      this.inputElement.value = this.mapObject.userFriendlyAddress || '';
+    this.inputElement.value = this.mapObject.userFriendlyAddress || this.inputElement.value;
   }
 
   /**
    * Used for set the input value to the `userFriendlyAddress` because it always is being reset.
    */
   private onInputBlur() {
-    if (this.mapObject.userFriendlyAddress == null)
-      this.inputElement.value = '';
-    else
-      this.inputElement.value = this.mapObject.userFriendlyAddress;
+    if (this.mapObject.userFriendlyAddress && this.mapObject.userFriendlyAddress != this.inputElement.value) {
+      this.updateSelectedMapObject(null);
+      this.emitEvents();
+      this.handleMapMarkerAndNavigation(null);
+    }
   }
 }
