@@ -5,7 +5,7 @@ import {Synagogue} from "../../common/models/map-objects/synagogue";
 import {EventBasedMapObjectProvider} from "../../providers/server-providers/event-based-map-object.provider";
 import {Event} from "../../common/models/event/event";
 import {AddEventModalComponent} from "../../components/add-event-modal/add-event-modal";
-import {EventTypes} from "../../common/models/common/enums/event-types";
+import {EventTypes, pluralized} from "../../common/models/common/enums/event-types";
 import {StaticValidators} from "../../validators/static-validators";
 import {MapObject} from "../../common/models/map-objects/map-objects";
 import {PlaceAutoComplete} from "../../directives/place-autocomplete/place-autocomplete";
@@ -124,5 +124,9 @@ export class AddSynagoguePage {
       this.eventsToShow = null;
     else
       this.eventsToShow = eventsToShow;
+  }
+
+  pluralizeEvent(eventType: EventTypes) {
+    return pluralized(eventType);
   }
 }

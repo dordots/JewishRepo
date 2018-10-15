@@ -74,12 +74,12 @@
         <button ion-fab color="orange" margin-left (click)="openAddTimesModal()">
           <ion-icon name="md-time"></ion-icon>
         </button>
-        <div class="bold">+ הוספת זמנים</div>
+        <div class="bold">+ הוספת תפילה או שיעור תורה</div>
       </ion-row>
       <ion-grid>
         <ion-row *ngFor="let eventType of getEventTypes()" class="event-type-collapse-container">
           <div (click)="toggleCollapse(eventType)">
-            <ion-row class="event-type-collapse">{{eventType}}</ion-row>
+            <ion-row class="event-type-collapse">{{pluralizeEvent(eventType)}}</ion-row>
             <ion-row class="event-type-collapse">
               <ion-icon name="arrow-dropdown"></ion-icon>
             </ion-row>
