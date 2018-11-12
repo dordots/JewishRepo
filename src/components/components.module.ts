@@ -13,6 +13,7 @@ import {AddEventModalComponent} from "./add-event-modal/add-event-modal";
 import {MapObjectsListComponent} from "./map-objects-list/map-objects-list.component";
 import {MapObjectCardComponent} from "./map-object-card/map-object-card";
 import { SearchResultsViewComponent } from './search-results-view/search-results-view';
+import { DistanceNavigationButtonComponent } from './distance-navigation-button/distance-navigation-button';
 import {PipesModule} from "../pipes/pipes.module";
 
 @NgModule({
@@ -29,6 +30,7 @@ import {PipesModule} from "../pipes/pipes.module";
     DayRangeComponent,
     AddEventModalComponent,
     SearchResultsViewComponent,
+    DistanceNavigationButtonComponent
   ],
 	imports: [IonicModule, DirectivesModule, PipesModule],
   providers: [],
@@ -45,7 +47,8 @@ import {PipesModule} from "../pipes/pipes.module";
     LocationPickerComponent,
     DayRangeComponent,
     AddEventModalComponent,
-    SearchResultsViewComponent
+    SearchResultsViewComponent,
+    DistanceNavigationButtonComponent
   ]
 })
 export class ComponentsModule {}

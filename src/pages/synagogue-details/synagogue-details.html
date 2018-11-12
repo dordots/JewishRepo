@@ -6,11 +6,7 @@
     <span>{{synagogue.getLastVerified()}}</span>
   </div>
   <div class="relative-distance">
-    <div class="distance-text">
-      <span *ngIf="!relativeDistance" dir="rtl">מחשב מרחק...</span>
-      <span *ngIf="relativeDistance">{{ relativeDistance | distancePipe}}</span>
-      <ion-icon name="md-locate"></ion-icon>
-    </div>
+    <distance-navigation-button [relativeDistance]="relativeDistance" [destination]="synagogue.userFriendlyAddress"></distance-navigation-button>
   </div>
 </ion-header>
 

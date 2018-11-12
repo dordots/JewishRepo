@@ -25,6 +25,7 @@ import {OpenNativeSettings} from "@ionic-native/open-native-settings";
 import { UserSettingsProvider } from '../providers/user-settings/user-settings';
 import {UserSettingsPage} from "../pages/user-settings/user-settings";
 import {UserSettingsPageModule} from "../pages/user-settings/user-settings.module";
+import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import {UserSettingsPageModule} from "../pages/user-settings/user-settings.modul
     {provide: APP_INITIALIZER, useFactory: initializeUserGeoposition, deps: [GoogleMapProvider], multi: true},
     LocationTrackingProvider,
     UserSettingsProvider,
+    LaunchNavigator
   ]
 })
 export class AppModule {

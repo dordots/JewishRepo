@@ -5,11 +5,7 @@
     <ion-grid>
       <ion-row justify-content-between>
         <div class="relative-distance">
-          <span dir="ltr">
-            <span *ngIf="!relativeDistance" dir="rtl">מחשב מרחק...</span>
-            <span *ngIf="relativeDistance">{{ relativeDistance | distancePipe}}</span>
-            <ion-icon name="md-locate"></ion-icon>
-          </span>
+          <distance-navigation-button [relativeDistance]="relativeDistance" [destination]="mapObject.userFriendlyAddress"></distance-navigation-button>
         </div>
         <div class="last-updated-at">
           עודכן לאחרונה
