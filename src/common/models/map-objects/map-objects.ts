@@ -59,7 +59,7 @@ export class EventBasedMapObject extends MapObject{
     let date = this.events.map(e => e.verifiedRecentlyAt)
       .sort((e1, e2) => e1.getTime() - e2.getTime())[0];
     if (moment(date).isValid())
-      return moment(date).format('L');
+      return moment(date).format('DD/MM/YYYY');
     return 'לא ידוע';
   }
 }
