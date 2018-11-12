@@ -20,7 +20,7 @@ export class LocateButtonComponent {
 
   async onButtonClicked() {
     try{
-      let position = await this.locationTracking.getCurrentLocation({timeout: Config.locateMeTimeoutInMs, enableHighAccuracy: true});
+      let position = await this.locationTracking.getCurrentLocation({timeout: Config.locateMeTimeoutInMs});
       this.map.map.panTo({
         lat: position.coords.latitude,
         lng: position.coords.longitude

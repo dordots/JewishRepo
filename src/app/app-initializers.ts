@@ -15,7 +15,7 @@ export function initializeGoogleMaps(){
 export function initializeUserGeoposition(provider){
   return ()=>{
     return new Promise((resolve, reject) => {
-      // provider.geolocation.getCurrentPosition(/*{timeout: 10000, maximumAge: 1209600000, enableHighAccuracy: true}*/)
+      // provider.geolocation.getCurrentPosition(/*{timeout: 10000, maximumAge: 1209600000}*/)
       //   .then(()=>resolve()).catch(()=>resolve());
       resolve();
     });
