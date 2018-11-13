@@ -1,16 +1,16 @@
-import {Component, ViewChild} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
-import {SearchEventPage} from "../search-event/search-event";
-import {AddSynagoguePage} from "../add-synagogue/add-synagogue";
-import {NoScrollDirective} from "../../directives/no-scroll/no-scroll";
-import {EventBasedMapObjectProvider} from "../../providers/server-providers/event-based-map-object.provider";
-import {EventBasedMapObject} from "../../common/models/map-objects/map-objects";
-import {LocationTrackingProvider} from "../../providers/location-tracking/location-tracking";
-import {Subject} from "rxjs/Subject";
-import {SearchResultsViewComponent} from "../../components/search-results-view/search-results-view";
-import {UserSettingsPage} from "../user-settings/user-settings";
-import {UserSettingsProvider} from "../../providers/user-settings/user-settings";
-import {fromPromise} from "rxjs/observable/fromPromise";
+import { Component, ViewChild } from '@angular/core';
+import { NavController, NavParams, Platform, AlertController } from 'ionic-angular';
+import { SearchEventPage } from "../search-event/search-event";
+import { AddSynagoguePage } from "../add-synagogue/add-synagogue";
+import { NoScrollDirective } from "../../directives/no-scroll/no-scroll";
+import { EventBasedMapObjectProvider } from "../../providers/server-providers/event-based-map-object.provider";
+import { EventBasedMapObject } from "../../common/models/map-objects/map-objects";
+import { LocationTrackingProvider } from "../../providers/location-tracking/location-tracking";
+import { Subject } from "rxjs/Subject";
+import { SearchResultsViewComponent } from "../../components/search-results-view/search-results-view";
+import { UserSettingsPage } from "../user-settings/user-settings";
+import { UserSettingsProvider } from "../../providers/user-settings/user-settings";
+import { fromPromise } from "rxjs/observable/fromPromise";
 import "rxjs/add/operator/zip";
 import "rxjs/add/operator/debounceTime";
 import "rxjs/add/operator/distinctUntilChanged";
@@ -31,10 +31,19 @@ export class HomePage {
   // private prevSearchedLocation: google.maps.LatLngLiteral;
 
   constructor(public navCtrl: NavController,
-              private locationTracking: LocationTrackingProvider,
-              private mapObjectProvider: EventBasedMapObjectProvider,
-              private userSettings: UserSettingsProvider,
-              private navParams: NavParams) {
+    private locationTracking: LocationTrackingProvider,
+    private mapObjectProvider: EventBasedMapObjectProvider,
+    private userSettings: UserSettingsProvider,
+    private navParams: NavParams,
+    private platform: Platform,
+    private alertController: AlertController) {
+    this.platform.registerBackButtonAction(() => {
+      alertController.create({
+        buttons: [{ text: "Yes", handler: () => this.platform.exitApp() }, { text: "No" }],
+        title: "Close",
+        subTitle: "Are you sure you want to exit the app?"
+      });
+    });
     this.nearMapObjects = new Subject<EventBasedMapObject[]>();
   }
 
@@ -45,9 +54,9 @@ export class HomePage {
         this.registerToRangeChanges(mapCenter);
         return this.mapObjectProvider.getAllInRadius(mapCenter, zip[1]);
       }).subscribe(res => {
-      if (res.length > 0)
-        this.nearMapObjects.next(res);
-    });
+        if (res.length > 0)
+          this.nearMapObjects.next(res);
+      });
   }
 
   registerToRangeChanges(mapCenter: google.maps.LatLngLiteral) {
@@ -57,9 +66,9 @@ export class HomePage {
       .flatMap(range => {
         return this.mapObjectProvider.getAllInRadius(mapCenter, range);
       }).subscribe(res => {
-      if (res.length > 0)
-        this.nearMapObjects.next(res);
-    });
+        if (res.length > 0)
+          this.nearMapObjects.next(res);
+      });
   }
 
   goToSearchPage() {
