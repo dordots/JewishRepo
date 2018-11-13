@@ -3,6 +3,7 @@ import {APP_INITIALIZER, ErrorHandler, NgModule} from '@angular/core';
 import {IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {StatusBar} from '@ionic-native/status-bar';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 import {MyApp} from './app.component';
 import {HomePage} from '../pages/home/home';
@@ -65,7 +66,8 @@ import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-na
     {provide: APP_INITIALIZER, useFactory: initializeUserGeoposition, deps: [GoogleMapProvider], multi: true},
     LocationTrackingProvider,
     UserSettingsProvider,
-    LaunchNavigator
+    LaunchNavigator,
+    ScreenOrientation
   ]
 })
 export class AppModule {
