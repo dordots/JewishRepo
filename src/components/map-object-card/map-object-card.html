@@ -1,0 +1,28 @@
+<ion-card dir="rtl" (click)="goToPageDetails()">
+  <div class="box-shadow">
+    <img src="https://picsum.photos/400/120">
+
+    <ion-grid>
+      <ion-row justify-content-between>
+        <div class="relative-distance">
+          <distance-navigation-button [relativeDistance]="relativeDistance" [destination]="mapObject.userFriendlyAddress"></distance-navigation-button>
+        </div>
+        <div class="last-updated-at">
+          עודכן לאחרונה
+          {{mapObject.getLastVerified()}}
+        </div>
+      </ion-row>
+    </ion-grid>
+    <div class="map-object-name"><h1>{{mapObject.name}}</h1></div>
+    <ion-row justify-content-between padding-bottom>
+      <small class="map-object-friendly-address" justify-content-center align-items-center>
+        {{mapObject.userFriendlyAddress}}
+      </small>
+      <small class="event-times" dir="ltr" text-center *ngIf="soonestEvent">
+        {{soonestEvent.getEventName()}}
+        <br>
+        {{soonestEvent.formatTimeRange()}}
+      </small>
+    </ion-row>
+  </div>
+</ion-card>

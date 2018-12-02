@@ -1,0 +1,34 @@
+[
+  {
+    "_id": "5b5468974f46c65fa709efcb",
+    "type": "synagogue",
+    "name": "חמד",
+    "userFriendlyAddress": "המשקיף, אשדוד",
+    "latlng": {
+      "lat": 31.799048,
+      "lng": 34.65136849999999
+    },
+    "phone": ["050-2841626"],
+    "primaryPrayerNosach": "ספרדי - החידא",
+    "events": [
+      {
+        "title": "מנחה",
+        "repeatedDays": [1,2,3,4,5,6],
+        "nosach": "ספרדי - החידא",
+        "startTime": "13:00",
+        "endTime": null
+      },
+      {
+        "title": "ערבית",
+        "repeatedDays": [1,2,3,4,5,6],
+        "nosach": "ספרדי - החידא",
+        "startTime": "20:00",
+        "endTime": "20:30"
+      }
+    ],
+    "externals": {
+      "mikve": true,
+      "parking": true
+    }
+  }
+]

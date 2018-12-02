@@ -1,0 +1,9 @@
+<ion-content>
+  <div *ngFor="let mapObject of mapObjects | async">
+    <fk-map-object-card [mapObject]="mapObject"></fk-map-object-card>
+  </div>
+  <div margin-top *ngIf="(mapObjects | async)?.length == 0" text-center>
+    אין בתי כנסת להצגה
+  </div>
+</ion-content>
+

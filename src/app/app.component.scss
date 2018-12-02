@@ -1,0 +1,90 @@
+// http://ionicframework.com/docs/theming/
+// App Global Sass
+// --------------------------------------------------
+// Put style rules here that you want to apply globally. These
+// styles are for the entire app and not just one component.
+// Additionally, this file can be also used as an entry point
+// to import other Sass files to be included in the output CSS.
+//
+// Shared Sass variables, which can be used to adjust Ionic's
+// default Sass variables, belong in "theme/variables.scss".
+//
+// To declare rules for a specific mode, create a child rule
+// for the .md, .ios, or .wp mode classes. The mode class is
+// automatically applied to the <body> element in the app.
+@import "../theme/mixins";
+@import "../theme/typography";
+
+.alert-wrapper {
+  direction: rtl;
+  .alert-radio-icon, .alert-checkbox-icon {
+    left: 0;
+    right: 13px;
+  }
+  .alert-button-group, .alert-checkbox-group{
+    justify-content: space-between;
+  }
+}
+
+.transparent {
+  background-color: transparent;
+}
+
+.x2 {
+   font-size: 2em;
+}
+
+.form-background-color {
+  background-color: map_get($colors, cream)
+}
+
+.form-section-title{
+  color: map_get($colors, primary);
+  font-weight: 700;
+  font-size: 1.2em;
+}
+
+ion-footer{
+  padding: 0 !important;
+  height: 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: map_get($colors, primary);
+  * {
+    color: white;
+  }
+}
+
+ion-footer[disabled=true]{
+  background-color: transparentize(map_get($colors, primary), 0.2);
+}
+
+ion-input[dir=rtl][clearInput]{
+  button{
+    &.text-input-clear-icon {
+      left: 0;
+      right: inherit;
+    }
+  }
+  input{
+    padding-right: 0 !important;
+  }
+}
+
+.last-updated-at {
+  background-color: map_get($colors, primary);
+  color: white;
+  display: inline-block;
+  padding: 5px 7px 0px 7px;
+  border-radius: 3px;
+  text-align: center;
+}
+
+ion-modal {
+  ion-backdrop {
+    visibility: visible;
+    opacity: 0.4 !important;
+    z-index: 0;
+  }
+}

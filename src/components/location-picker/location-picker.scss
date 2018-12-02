@@ -1,0 +1,30 @@
+fk-location-picker {
+  #search-container{
+    max-height: 8% !important;
+    min-height: 8% !important;
+    height: 8%;
+  }
+  #map-container{
+    max-height: 84%;
+    min-height: 84%;
+    height: 84%;
+  }
+  .dark-footer{
+    min-height: 8%;
+    max-height: 8%;
+    height: 8%;
+  }
+
+  .dark-footer {
+    button{
+      $button-color: color($colors, primary);
+      width: 50%;
+      background-color: $button-color;
+      font-size: 1.2em;
+      font-weight: bold;
+      &:hover{
+        background-color: darken($button-color, 1.8);
+      }
+    }
+  }
+}

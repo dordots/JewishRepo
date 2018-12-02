@@ -1,0 +1,25 @@
+<ion-content>
+  <ion-item id="search-container" dir="rtl" [hidden]="!mapComponent?.isMapReady">
+    <button item-start class="transparent" (click)="onDismiss()">
+      <ion-icon name="arrow-forward" class="x2"></ion-icon>
+    </button>
+    <ion-input #PlaceAutoCompleteInput fkPlaceAutoComplete [map]="mapComponent?.map?.map"
+               [inputElement]="placeAutoCompleteInput._native?.nativeElement"
+               (placeSelected)="onAutoCompleteSelect($event)"
+               clearInput placeholder="בחר כתובת" dir="rtl"></ion-input>
+    <button item-end class="transparent">
+      <ion-icon name="search"></ion-icon>
+    </button>
+  </ion-item>
+
+  <div id="map-container">
+    <fk-google-map #mapComponent></fk-google-map>
+  </div>
+
+  <ion-row class="dark-footer">
+      <button class="cancel-button" (click)="onDismiss()">ביטול</button>
+      <button class="ok-button" (click)="onSubmit()">אישור</button>
+  </ion-row>
+
+</ion-content>
+

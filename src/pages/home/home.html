@@ -1,14 +1,17 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>
-      Ionic Blank
+    <ion-title text-center>
+      Jewish
     </ion-title>
+    <button id="options-button" (click)="goToUserSettings()"><ion-icon name="options"></ion-icon></button>
+    <button id="add-synagogue-button" (click)="goToAddSynagoguePage()"><ion-icon name="add"></ion-icon></button>
   </ion-navbar>
+  <ion-item class="search-bar" dir="rtl">
+    <ion-input placeholder="חיפוש..." text-right dir="rtl" (ionFocus)="goToSearchPage()"></ion-input>
+    <ion-label item-start margin-left><ion-icon name="search"></ion-icon></ion-label>
+  </ion-item>
 </ion-header>
 
-<ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+<ion-content no-scroll>
+  <fk-search-results-view #resultsComp [results]="nearMapObjects"></fk-search-results-view>
 </ion-content>

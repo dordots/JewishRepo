@@ -1,0 +1,108 @@
+#application-menu[currentPage=SynagogueDetailsPage] {
+  ion-icon[name=menu]{
+    color: white;
+  }
+}
+
+page-synagogue-details{
+  ion-content{
+    .scroll-content{
+      padding-bottom: $fab-size !important;
+    }
+  }
+  .synagogue-details-ion-header{
+    position: relative;
+    height: 40%;
+    img {
+      position: absolute;
+      top: 0;
+      z-index: -1;
+      height: 100%;
+      width: 100%;
+    }
+    ion-navbar{
+      .toolbar-background{
+        color: white;
+        background: transparent;
+      }
+      button{
+        color: white;
+      }
+    }
+    .last-updated-at{
+      position: absolute;
+      font-size: 0.73em;
+      bottom: 15px;
+      left: 15px;
+      padding-bottom: 5px;
+    }
+
+    .relative-distance {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      font-size: 0.55em;
+      background-color: rgba(0,0,0,0.4);
+      color: white;
+      padding-right: 8px;
+      padding-left: 15px;
+      padding-top: 8px;
+      padding-bottom: 8px;
+      border-radius: 28px;
+      .distance-text {
+        font-size: 1.4em;
+        padding-right: 4px;
+      }
+    }
+  }
+
+  ion-content {
+    position: relative !important;
+    height: 60%;
+
+    .fixed-content, .scroll-content{
+      margin-top: 0 !important;
+    }
+    ion-icon[name=call]{
+      font-size: 1.4em;
+      color: white;
+      background-color: map_get($colors, secondary);
+      width: 40px;
+      height: 40px;
+      @include circle-icon();
+      @include fab-low-shadow(map_get($colors, secondary));
+    }
+    .userFriendlyAddress{
+      font-size: 0.9em;
+      font-weight: bold;
+    }
+    .call-now-button {
+      background-color: map_get($colors, sky);
+      font-size: 0.7em;
+      color: white;
+      padding: 7px;
+      padding-bottom: 8px;
+      border-radius: 3px;
+    }
+    .phone-number-to-call {
+      text-align: center;
+      font-weight: bold;
+      width: 100%;
+    }
+    .event-time-range {
+      font-weight: bolder;
+    }
+  }
+
+  .comments{
+    color: map_get($colors, grey);
+  }
+
+  h4{
+    font-weight: bold;
+  }
+
+  button[ion-fab]{
+    @include fab-low-shadow(map_get($colors,dark))
+  }
+}
