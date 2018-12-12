@@ -18,7 +18,9 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
-      this.screenOrientation.lock(screenOrientation.ORIENTATIONS.PORTRAIT);
+      if (!platform.is('core')) {
+        this.screenOrientation.lock(screenOrientation.ORIENTATIONS.PORTRAIT);
+      }
     });
   }
 }
