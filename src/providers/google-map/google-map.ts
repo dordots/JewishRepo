@@ -6,9 +6,8 @@ import "rxjs/add/operator/take";
 import {EventBasedMapObject} from "../../common/models/map-objects/map-objects";
 import {InfoWindow} from "./info-window";
 import {LocationTrackingProvider} from "../location-tracking/location-tracking";
-import LatLngLiteral = google.maps.LatLngLiteral;
 import {Config} from "@app/env";
-import {ToastController} from "ionic-angular";
+import LatLngLiteral = google.maps.LatLngLiteral;
 import MarkerOptions = google.maps.MarkerOptions;
 
 export class GoogleMap {
@@ -16,12 +15,11 @@ export class GoogleMap {
   private circles: google.maps.Circle[];
   private infoWindows: InfoWindow[];
   private locationMarker: google.maps.Marker;
-  private locationCircle: google.maps.Circle;
+  //private locationCircle: google.maps.Circle;
   private locationTrackingSubscription: Subscription;
   private prevLocation: LatLngLiteral;
 
   constructor(public map: google.maps.Map,
-              private toastCtrl: ToastController,
               private locationTracking: LocationTrackingProvider) {
     this.markers = [];
     this.circles = [];
@@ -89,26 +87,26 @@ export class GoogleMap {
       } as google.maps.Icon
     };
     let marker = this.createMarkerAt(markerParams);
-    let infoWindow = new InfoWindow(mapObject, marker)
+    let infoWindow = new InfoWindow(mapObject, marker);
     this.infoWindows.push(infoWindow);
     return {marker, infoWindow};
   }
 
-  private initCircle() {
-    this.locationCircle = new google.maps.Circle({
-      zIndex: 2,
-      clickable: false,
-      strokeColor: "#3a84df",
-      strokeOpacity: .8,
-      strokeWeight: .5,
-      fillColor: "#3a84df",
-      fillOpacity: .25,
-      map: this.map,
-      center: this.map.getCenter(),
-      radius: 10,
-      visible: true
-    });
-  }
+  // private initCircle() {
+  //   this.locationCircle = new google.maps.Circle({
+  //     zIndex: 2,
+  //     clickable: false,
+  //     strokeColor: "#3a84df",
+  //     strokeOpacity: .8,
+  //     strokeWeight: .5,
+  //     fillColor: "#3a84df",
+  //     fillOpacity: .25,
+  //     map: this.map,
+  //     center: this.map.getCenter(),
+  //     radius: 10,
+  //     visible: true
+  //   });
+  // }
 
   private initMarker() {
     this.locationMarker = new google.maps.Marker({

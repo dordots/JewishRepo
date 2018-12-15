@@ -1,7 +1,6 @@
 import {ChangeDetectorRef, Component} from '@angular/core';
-import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
+import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {Synagogue} from "../../common/models/map-objects/synagogue";
-import {DatePipe} from "@angular/common";
 import {FakeMapObject} from "../../common/data-faker/data-randomizer";
 import {EventTypes} from "../../common/models/common/enums/event-types";
 import {LessonEvent} from "../../common/models/event/lesson-event";
@@ -12,7 +11,6 @@ import {AddSynagoguePage} from "../add-synagogue/add-synagogue";
 @Component({
   selector: 'page-synagogue-details',
   templateUrl: 'synagogue-details.html',
-  providers: [DatePipe]
 })
 export class SynagogueDetailsPage {
 
@@ -27,8 +25,7 @@ export class SynagogueDetailsPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private changeDet: ChangeDetectorRef,
-              private toastCtrl: ToastController) {
+              private changeDet: ChangeDetectorRef) {
     this.synagogue = this.navParams.get('mapObject') as Synagogue || FakeMapObject() as Synagogue;
     this.prayers = this.getPrayers();
     this.lessons = this.getLessons() as LessonEvent[];
@@ -53,7 +50,7 @@ export class SynagogueDetailsPage {
   }
 
   goToEditPage() {
-    this.navCtrl.push('AddSynagoguePage', {synagogue: this.synagogue});
+    this.navCtrl.push(AddSynagoguePage, {synagogue: this.synagogue});
   }
 
   getPhoneNumber(){

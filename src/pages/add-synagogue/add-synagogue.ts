@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Component, ViewChild} from '@angular/core';
-import {IonicPage, ModalController, NavController, NavParams, ToastController} from 'ionic-angular';
+import {IonicPage, ModalController, NavParams, ToastController} from 'ionic-angular';
 import {NgForm} from "@angular/forms";
 import {Synagogue} from "../../common/models/map-objects/synagogue";
 import {EventBasedMapObjectProvider} from "../../providers/server-providers/event-based-map-object.provider";
@@ -27,8 +27,7 @@ export class AddSynagoguePage {
   phonePattern = /^\d{2,3}-?\d{7}$/;
   eventsDictionary: {[type: string]: Event[]};
 
-  constructor(public navCtrl: NavController,
-              public navParams: NavParams,
+  constructor(public navParams: NavParams,
               private toastCtrl: ToastController,
               private changeDetector: ChangeDetectorRef,
               private mapObjectProvider: EventBasedMapObjectProvider,
@@ -44,7 +43,7 @@ export class AddSynagoguePage {
 
   async submitNewSynagogue(){
     try{
-      const res  = await this.mapObjectProvider.create(this.synagogue).toPromise();
+      await this.mapObjectProvider.create(this.synagogue).toPromise();
       this.toastCtrl.create({message: 'בית הכנסת נוסף בהצלחה'});
     }
     catch (e) {
@@ -92,7 +91,7 @@ export class AddSynagoguePage {
   }
 
   isFormValid(){
-    const mapObject = {latLng: this.synagogue.latLng, userFriendlyAddress: this.synagogue.userFriendlyAddress} as MapObject
+    const mapObject = {latLng: this.synagogue.latLng, userFriendlyAddress: this.synagogue.userFriendlyAddress} as MapObject;
     let isMapObjectValid = StaticValidators.IsLocationValid(mapObject, true);
     return isMapObjectValid && this.form.valid;
   }

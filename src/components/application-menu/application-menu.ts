@@ -1,6 +1,5 @@
 import {Component, Input} from '@angular/core';
 import {Nav, ViewController} from "ionic-angular";
-import {AddSynagoguePage} from "../../pages/add-synagogue/add-synagogue";
 
 declare type MenuPageItem = { title: string, componentName: string, args?: any };
 declare type PagesDictionary = { [componentName: string]: MenuPageItem}

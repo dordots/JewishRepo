@@ -1,20 +1,18 @@
 import {Component} from '@angular/core';
 import {Event} from "../../common/models/event/event";
-import {FormBuilder, FormControl, FormGroup, Validator, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {StaticValidators} from "../../validators/static-validators";
-import {DatePipe} from "@angular/common";
 import {ViewController} from "ionic-angular";
-import moment = require("moment");
 import {PrayerEvent} from "../../common/models/event/prayer-event";
 import {EventTypes} from "../../common/models/common/enums/event-types";
 import {PrintFormValidationErrors} from "../../common/models/common/utils";
 import {LessonEvent} from "../../common/models/event/lesson-event";
 import {PrayerType} from "../../common/models/common/enums/prayer-type";
+import moment = require("moment");
 
 @Component({
   selector: 'fk-event-days-and-time-modal',
   templateUrl: 'add-event-modal.html',
-  providers: [DatePipe]
 })
 export class AddEventModalComponent {
 
@@ -23,7 +21,6 @@ export class AddEventModalComponent {
   eventTypes: string[];
 
   constructor(private formBuilder: FormBuilder,
-              private datePipe: DatePipe,
               private viewCtrl: ViewController) {
     console.log('Hello EventDaysAndTimeModalComponent Component');
     this.event = {} as any;

@@ -1,13 +1,13 @@
-import {AfterViewInit, Component, OnDestroy, ViewChild, ViewChildren} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, ViewChild} from '@angular/core';
 import {TextInput, ViewController} from "ionic-angular";
 import {GoogleMapProvider} from "../../providers/google-map/google-map-provider";
 import {GoogleMapComponent} from "../google-map/google-map";
-import Map = google.maps.Map;
-import Marker = google.maps.Marker;
 import {MapObject} from "../../common/models/map-objects/map-objects";
-import LatLngLiteral = google.maps.LatLngLiteral;
 import {StaticValidators} from "../../validators/static-validators";
 import {PlaceAutoComplete} from "../../directives/place-autocomplete/place-autocomplete";
+import Map = google.maps.Map;
+import Marker = google.maps.Marker;
+import LatLngLiteral = google.maps.LatLngLiteral;
 
 @Component({
   selector: 'fk-location-picker',

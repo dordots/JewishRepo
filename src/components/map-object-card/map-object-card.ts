@@ -1,7 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {EventBasedMapObject} from "../../common/models/map-objects/map-objects";
 import {EventTypes} from "../../common/models/common/enums/event-types";
-import moment = require("moment");
 import {NavController} from "ionic-angular";
 import {SynagogueDetailsPage} from "../../pages/synagogue-details/synagogue-details";
 import {PrayerEvent} from "../../common/models/event/prayer-event";
@@ -39,7 +38,7 @@ export class MapObjectCardComponent {
   }
 
   goToPageDetails() {
-    this.navCtrl.push('SynagogueDetailsPage', {mapObject: this._mapObject}, {
+    this.navCtrl.push(SynagogueDetailsPage, {mapObject: this._mapObject}, {
       direction: 'up'
     })
   }

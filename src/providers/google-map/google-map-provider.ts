@@ -1,20 +1,19 @@
 import {Injectable} from '@angular/core';
-import GoogleMapsLoader = require("google-maps");
-import MapOptions = google.maps.MapOptions;
-import GeocoderResult = google.maps.GeocoderResult;
 import "rxjs/add/operator/filter";
 import {GoogleMap} from "./google-map";
 import "rxjs/add/operator/retry";
 import {LocationTrackingProvider} from "../location-tracking/location-tracking";
 import {merge} from "lodash-es";
-import {ToastController} from "ionic-angular";
+import GoogleMapsLoader = require("google-maps");
+import MapOptions = google.maps.MapOptions;
+import GeocoderResult = google.maps.GeocoderResult;
 import LatLngLiteral = google.maps.LatLngLiteral;
 
 @Injectable()
 export class GoogleMapProvider {
   public isApiLoaded: boolean;
 
-  constructor(private locationTracking: LocationTrackingProvider, private toastCtrl:ToastController) {
+  constructor(private locationTracking: LocationTrackingProvider) {
     console.log('Hello GoogleMapProvider Provider');
   }
 
@@ -46,15 +45,13 @@ export class GoogleMapProvider {
     mapOptions.center = await this.getMapCenterOrCurrentLocation(mapOptions);
 
     const googleMap = new google.maps.Map(mapDivElement,mapOptions || this.defaultMapOptions);
-    let mapManager = new GoogleMap(googleMap,this.toastCtrl, this.locationTracking);
-
-    return mapManager;
+    return new GoogleMap(googleMap, this.locationTracking);
   }
 
   getPlaceDetails(location: LatLngLiteral): Promise<GeocoderResult> {
     let geocoder = new google.maps.Geocoder();
     return new Promise<GeocoderResult>((resolve, reject) => {
-      geocoder.geocode({location: location}, (results, status1) => {
+      geocoder.geocode({location: location}, (results) => {
         if (results && results.length > 0) {
           resolve(results[0]);
         } else {
@@ -66,7 +63,7 @@ export class GoogleMapProvider {
 
   getDistanceFromLatLonInKm(latLng1: LatLngLiteral, latLng2: LatLngLiteral) {
     const lat1 = latLng1.lat;
-    const lon1 = latLng1.lng
+    const lon1 = latLng1.lng;
     const lat2 = latLng2.lat;
     const lon2 = latLng2.lng;
 
@@ -78,8 +75,7 @@ export class GoogleMapProvider {
       Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
       Math.sin(dLon/2) * Math.sin(dLon/2);
     let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    let d = R * c; // Distance in km
-    return d;
+    return R * c; // Distance in km
   }
 
   deg2rad(deg) {

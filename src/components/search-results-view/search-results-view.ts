@@ -1,6 +1,6 @@
 import {Component, Input, ViewChild} from '@angular/core';
 import {NavController, NavParams} from "ionic-angular";
-import {EventBasedMapObject, MapObject} from "../../common/models/map-objects/map-objects";
+import {EventBasedMapObject} from "../../common/models/map-objects/map-objects";
 import {Observable} from "rxjs/Observable";
 import {SynagogueDetailsPage} from "../../pages/synagogue-details/synagogue-details";
 import {GoogleMapComponent} from "../google-map/google-map";
