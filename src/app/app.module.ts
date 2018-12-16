@@ -27,6 +27,7 @@ import {UserSettingsProvider} from '../providers/user-settings/user-settings';
 import {UserSettingsPage} from "../pages/user-settings/user-settings";
 import {UserSettingsPageModule} from "../pages/user-settings/user-settings.module";
 import {LaunchNavigator} from '@ionic-native/launch-navigator';
+import {DoubleBackToExitProvider} from '../providers/double-back-to-exit/double-back-to-exit';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import {LaunchNavigator} from '@ionic-native/launch-navigator';
     LocationTrackingProvider,
     UserSettingsProvider,
     LaunchNavigator,
-    ScreenOrientation
+    ScreenOrientation,
+    DoubleBackToExitProvider
   ]
 })
 export class AppModule {

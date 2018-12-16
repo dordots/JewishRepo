@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {AlertController, NavController, Platform} from 'ionic-angular';
+import {NavController} from 'ionic-angular';
 import {SearchEventPage} from "../search-event/search-event";
 import {AddSynagoguePage} from "../add-synagogue/add-synagogue";
 import {NoScrollDirective} from "../../directives/no-scroll/no-scroll";
@@ -13,6 +13,7 @@ import {fromPromise} from "rxjs/observable/fromPromise";
 import "rxjs/add/operator/zip";
 import "rxjs/add/operator/debounceTime";
 import "rxjs/add/operator/distinctUntilChanged";
+import {DoubleBackToExitProvider} from "../../providers/double-back-to-exit/double-back-to-exit";
 
 @Component({
   selector: 'page-home',
@@ -23,23 +24,17 @@ export class HomePage {
 
   @ViewChild("resultsComp") resultsComponent: SearchResultsViewComponent;
 
-  public nearMapObjects: Subject<EventBasedMapObject[]>;
+  public nearMapObjects = new Subject<EventBasedMapObject[]>();
 
   // private prevSearchedLocation: google.maps.LatLngLiteral;
 
-  constructor(public navCtrl: NavController,
+  constructor(
+    public navCtrl: NavController,
     private mapObjectProvider: EventBasedMapObjectProvider,
     private userSettings: UserSettingsProvider,
-    private platform: Platform,
-    private alertController: AlertController) {
-    this.platform.registerBackButtonAction(() => {
-      this.alertController.create({
-        buttons: [{ text: "Yes", handler: () => this.platform.exitApp() }, { text: "No" }],
-        title: "Close",
-        subTitle: "Are you sure you want to exit the app?"
-      });
-    });
-    this.nearMapObjects = new Subject<EventBasedMapObject[]>();
+    dblBackService: DoubleBackToExitProvider
+  ) {
+    dblBackService.forPage(HomePage);
   }
 
   ngAfterViewInit() {
