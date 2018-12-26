@@ -15,6 +15,7 @@
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",
     "build-android": "ionic cordova build android",
+    "build-ios": "ionic cordova build ios --prod",
     "lint": "ionic-app-scripts lint"
   },
   "dependencies": {
