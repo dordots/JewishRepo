@@ -1,5 +1,5 @@
 export const Config = {
-  serverBaseUrl: 'http://jworld.startach.org.il',
+  serverBaseUrl: 'https://jewish-71aed.appspot.com/',
   iconsBasePath: 'assets/icons',
   watchLocationIntervalInMs: 2000,
   locateMeTimeoutInMs: 4000
