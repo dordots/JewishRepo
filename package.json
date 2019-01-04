@@ -1,8 +1,8 @@
 {
-  "name": "find-kdusha",
+  "name": "Jewish",
   "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "http://ionicframework.com/",
+  "author": "Jewish",
+  "homepage": "https://jewish-71aed.appspot.com/",
   "private": true,
   "scripts": {
     "start": "ionic-app-scripts serve -c --lab",

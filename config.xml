@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.startach.jewish" version="0.0.1" xmlns="http://www.w3.org/ns/widgets">
     <name>Jewish</name>
-    <description>An awesome Ionic/Cordova app.</description>
-    <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
+    <description>Jewish</description>
+    <author email="startsach@gmail.com" href="https://jewish-71aed.appspot.com/">Startach</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
