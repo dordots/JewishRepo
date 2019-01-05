@@ -1,10 +1,18 @@
 <ion-header>
   <ion-navbar>
+    <ion-buttons left>
+      <button ion-button icon-only color="dark" (click)="goToUserSettings()">
+        <ion-icon name="options"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-title text-center>
       Jewish
     </ion-title>
-    <button id="options-button" (click)="goToUserSettings()"><ion-icon name="options"></ion-icon></button>
-    <button id="add-synagogue-button" (click)="goToAddSynagoguePage()"><ion-icon name="add"></ion-icon></button>
+    <ion-buttons right>
+      <button ion-button icon-only color="dark" (click)="goToAddSynagoguePage()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
   <ion-item class="search-bar" dir="rtl">
     <ion-input placeholder="חיפוש..." text-right dir="rtl" (ionFocus)="goToSearchPage()"></ion-input>
