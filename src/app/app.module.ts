@@ -44,8 +44,13 @@ import { DoubleBackToExitProvider } from "../providers/double-back-to-exit/doubl
     IonicModule.forRoot(MyApp, {
       scrollPadding: false,
       scrollAssist: false,
-      autoFocusAssist: false
-    })
+      autoFocusAssist: false,
+      platforms: {
+        ios: {
+          backButtonText: 'חזרה'
+        }
+      }
+    }),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
